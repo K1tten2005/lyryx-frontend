@@ -11,8 +11,8 @@
 - [x] Task: Update `components/Navbar.tsx`. Change the background to a light color with a subtle border/shadow, text to dark, and hover states to the new purple accent. Update the user icon. [8d89ba8]
 - [x] Task: Update `components/SearchBar.tsx`. Change the input background to white or light gray, adjust the border, text color, placeholder, and update the focus ring to use the purple accent. Ensure shadows are suitable for a light theme. [9a60d27]
 - [x] Task: Update `components/Footer.tsx`. Change the text color and top border to match the light theme aesthetic. [0e0f617]
-- [~] Task: Run tests for all modified components (`__tests__/components/*.test.tsx`) to verify rendering.
-- [ ] Task: Conductor - User Manual Verification 'Phase 2: Refactoring Core Components' (Protocol in workflow.md)
+- [x] Task: Run tests for all modified components (`__tests__/components/*.test.tsx`) to verify rendering. [dc84d4d]
+- [~] Task: Conductor - User Manual Verification 'Phase 2: Refactoring Core Components' (Protocol in workflow.md)
 
 ## Phase 3: Home Page Refactoring and Final Polish
 - [ ] Task: Update `app/page.tsx`. Refactor the hero section: adjust the text gradients, change the background gradient to a light/subtle effect, and ensure all text has high contrast.
