@@ -9,7 +9,7 @@ export default function SearchBar() {
         </div>
         <input
           type="text"
-          className="block w-full pl-16 pr-6 py-5 bg-white border border-zinc-300 rounded-full text-xl text-zinc-900 placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:border-transparent transition-all shadow-lg shadow-zinc-200/50 hover:shadow-xl hover:shadow-zinc-200/60"
+          className="block w-full pl-16 pr-6 py-5 bg-white border border-zinc-300 rounded-full text-xl text-zinc-900 placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:border-transparent transition-all shadow-sm"
           placeholder="Search for songs, artists, or lyrics..."
         />
       </div>
