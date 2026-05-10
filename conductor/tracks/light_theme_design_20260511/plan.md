@@ -9,8 +9,8 @@
 
 ## Phase 2: Refactoring Core Components
 - [x] Task: Update `components/Navbar.tsx`. Change the background to a light color with a subtle border/shadow, text to dark, and hover states to the new purple accent. Update the user icon. [8d89ba8]
-- [~] Task: Update `components/SearchBar.tsx`. Change the input background to white or light gray, adjust the border, text color, placeholder, and update the focus ring to use the purple accent. Ensure shadows are suitable for a light theme.
-- [ ] Task: Update `components/Footer.tsx`. Change the text color and top border to match the light theme aesthetic.
+- [x] Task: Update `components/SearchBar.tsx`. Change the input background to white or light gray, adjust the border, text color, placeholder, and update the focus ring to use the purple accent. Ensure shadows are suitable for a light theme. [9a60d27]
+- [~] Task: Update `components/Footer.tsx`. Change the text color and top border to match the light theme aesthetic.
 - [ ] Task: Run tests for all modified components (`__tests__/components/*.test.tsx`) to verify rendering.
 - [ ] Task: Conductor - User Manual Verification 'Phase 2: Refactoring Core Components' (Protocol in workflow.md)
 
