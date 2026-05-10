@@ -16,4 +16,4 @@ A frontend skeleton on Next.js for a Genius analogue.
 **Community Engagement:** Focus on user interaction, annotations, and discussions.
 
 ## Design Tone
-**Modern & Sleek:** Minimalist design focusing on content readability.
+**Modern & Sleek:** Minimalist, light-themed design focusing on content readability with a vibrant purple (indigo) accent color.
