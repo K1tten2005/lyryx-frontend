@@ -3,8 +3,8 @@
 ## Phase 1: Global Styles and Tailwind Configuration
 - [x] Task: Update `tailwind.config.js` to define the new custom purple accent color ("Deep Indigo") and any necessary light theme background/text variables. [c3379f8]
 - [x] Task: Update `app/globals.css` to change the global background to a light color (e.g., white or zinc-50) and the default text color to dark (e.g., black or zinc-900). [0e7002c]
-- [~] Task: Update `app/layout.tsx` to modify the `<body>` tag classes to support the light theme base colors if necessary.
-- [ ] Task: Run existing tests (`npm run test`) to ensure global CSS and layout changes haven't broken basic rendering.
+- [x] Task: Update `app/layout.tsx` to modify the `<body>` tag classes to support the light theme base colors if necessary. [260d2e5]
+- [~] Task: Run existing tests (`npm run test`) to ensure global CSS and layout changes haven't broken basic rendering.
 - [ ] Task: Conductor - User Manual Verification 'Phase 1: Global Styles and Tailwind Configuration' (Protocol in workflow.md)
 
 ## Phase 2: Refactoring Core Components
