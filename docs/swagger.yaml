@@ -1,0 +1,1521 @@
+definitions:
+  echo.HTTPError:
+    properties:
+      message: {}
+    type: object
+  internal_rest_api_annotation.Annotation:
+    properties:
+      content:
+        type: string
+      created_at:
+        type: string
+      end_index:
+        type: integer
+      id:
+        type: integer
+      my_vote:
+        description: -1, 1 или null (опционально)
+        type: integer
+      rating:
+        type: integer
+      start_index:
+        type: integer
+      user:
+        $ref: '#/definitions/internal_rest_api_annotation.UserInfo'
+    type: object
+  internal_rest_api_annotation.ArtistInfo:
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+    type: object
+  internal_rest_api_annotation.GetAiAnnotationOut:
+    properties:
+      response:
+        type: string
+      song_id:
+        type: integer
+    type: object
+  internal_rest_api_annotation.GetAnnotationByIDOut:
+    properties:
+      content:
+        type: string
+      created_at:
+        type: string
+      end_index:
+        type: integer
+      id:
+        type: integer
+      my_vote:
+        type: integer
+      rating:
+        type: integer
+      song:
+        $ref: '#/definitions/internal_rest_api_annotation.SongInfo'
+      start_index:
+        type: integer
+      updated_at:
+        type: string
+      user:
+        $ref: '#/definitions/internal_rest_api_annotation.UserInfo'
+    type: object
+  internal_rest_api_annotation.GetAnnotationsOut:
+    properties:
+      annotations:
+        items:
+          $ref: '#/definitions/internal_rest_api_annotation.Annotation'
+        type: array
+      song_id:
+        type: integer
+    type: object
+  internal_rest_api_annotation.GetUserAnnotationsOut:
+    properties:
+      annotations:
+        items:
+          $ref: '#/definitions/internal_rest_api_annotation.Annotation'
+        type: array
+      has_more:
+        type: boolean
+      total:
+        type: integer
+      user_id:
+        type: integer
+    type: object
+  internal_rest_api_annotation.PatchUpdateAnnotationIn:
+    properties:
+      annotationID:
+        type: integer
+      content:
+        type: string
+    required:
+    - annotationID
+    type: object
+  internal_rest_api_annotation.PatchUpdateAnnotationOut:
+    properties:
+      content:
+        type: string
+      id:
+        type: integer
+      rating:
+        type: integer
+      updated_at:
+        type: string
+    type: object
+  internal_rest_api_annotation.PostAnnotationIn:
+    properties:
+      content:
+        type: string
+      end_index:
+        type: integer
+      songID:
+        type: integer
+      start_index:
+        type: integer
+    required:
+    - content
+    - end_index
+    - songID
+    - start_index
+    type: object
+  internal_rest_api_annotation.PostAnnotationOut:
+    properties:
+      content:
+        type: string
+      created_at:
+        type: string
+      end_index:
+        type: integer
+      id:
+        type: integer
+      rating:
+        type: integer
+      song_id:
+        type: integer
+      start_index:
+        type: integer
+      user:
+        $ref: '#/definitions/internal_rest_api_annotation.UserInfo'
+    type: object
+  internal_rest_api_annotation.PostVoteAnnotationIn:
+    properties:
+      annotationID:
+        type: integer
+      value:
+        type: integer
+    required:
+    - annotationID
+    - value
+    type: object
+  internal_rest_api_annotation.PostVoteAnnotationOut:
+    properties:
+      annotation_id:
+        type: integer
+      my_vote:
+        type: integer
+      new_rating:
+        type: integer
+    type: object
+  internal_rest_api_annotation.SongInfo:
+    properties:
+      artist:
+        $ref: '#/definitions/internal_rest_api_annotation.ArtistInfo'
+      cover_url:
+        type: string
+      id:
+        type: integer
+      title:
+        type: string
+    type: object
+  internal_rest_api_annotation.UserInfo:
+    properties:
+      avatar_url:
+        type: string
+      reputation_score:
+        type: integer
+      user_id:
+        type: integer
+      username:
+        type: string
+    type: object
+  internal_rest_api_artist.GetArtistByIDOut:
+    properties:
+      avatar_url:
+        type: string
+      bio:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+    type: object
+  internal_rest_api_artist.PatchUpdateArtistIn:
+    properties:
+      artistID:
+        type: integer
+      bio:
+        type: string
+      name:
+        type: string
+    required:
+    - artistID
+    type: object
+  internal_rest_api_artist.PatchUpdateArtistOut:
+    properties:
+      avatar_url:
+        type: string
+      bio:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+    type: object
+  internal_rest_api_artist.PatchUpdateAvatarOut:
+    properties:
+      avatar_url:
+        type: string
+    type: object
+  internal_rest_api_artist.PostArtistIn:
+    properties:
+      bio:
+        type: string
+      name:
+        type: string
+    required:
+    - name
+    type: object
+  internal_rest_api_artist.PostArtistOut:
+    properties:
+      avatar_url:
+        type: string
+      bio:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+    type: object
+  internal_rest_api_auth.PostRefreshTokenOut:
+    properties:
+      access_token:
+        type: string
+    type: object
+  internal_rest_api_auth.PostSignInIn:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    required:
+    - email
+    - password
+    type: object
+  internal_rest_api_auth.PostSignInOut:
+    properties:
+      access_token:
+        type: string
+      user:
+        $ref: '#/definitions/internal_rest_api_auth.UserInfo'
+    type: object
+  internal_rest_api_auth.PostSignUpIn:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+      username:
+        type: string
+    required:
+    - email
+    - password
+    - username
+    type: object
+  internal_rest_api_auth.PostSignUpOut:
+    properties:
+      access_token:
+        type: string
+      user:
+        $ref: '#/definitions/internal_rest_api_auth.UserInfo'
+    type: object
+  internal_rest_api_auth.UserInfo:
+    properties:
+      email:
+        type: string
+      reputation_score:
+        type: integer
+      role:
+        type: string
+      user_id:
+        type: integer
+      username:
+        type: string
+    type: object
+  internal_rest_api_search.ArtistInfo:
+    properties:
+      avatar_url:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+    type: object
+  internal_rest_api_search.GetSearchOut:
+    properties:
+      artists:
+        items:
+          $ref: '#/definitions/internal_rest_api_search.ArtistInfo'
+        type: array
+      lyrics_matched_songs:
+        items:
+          $ref: '#/definitions/internal_rest_api_search.SongInfo'
+        type: array
+      songs:
+        items:
+          $ref: '#/definitions/internal_rest_api_search.SongInfo'
+        type: array
+      users:
+        items:
+          $ref: '#/definitions/internal_rest_api_search.UserInfo'
+        type: array
+    type: object
+  internal_rest_api_search.SongInfo:
+    properties:
+      artist:
+        $ref: '#/definitions/internal_rest_api_search.ArtistInfo'
+      cover_url:
+        type: string
+      id:
+        type: integer
+      lyrics_snippet:
+        type: string
+      title:
+        type: string
+      views:
+        type: integer
+    type: object
+  internal_rest_api_search.UserInfo:
+    properties:
+      avatar_url:
+        type: string
+      reputation_score:
+        type: integer
+      user_id:
+        type: integer
+      username:
+        type: string
+    type: object
+  internal_rest_api_song.Artist:
+    properties:
+      avatar_url:
+        type: string
+      bio:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+    type: object
+  internal_rest_api_song.GetAiTranslationOut:
+    properties:
+      id:
+        type: integer
+      response:
+        type: string
+    type: object
+  internal_rest_api_song.GetSongByIDOut:
+    properties:
+      artist:
+        $ref: '#/definitions/internal_rest_api_song.Artist'
+      cover_url:
+        type: string
+      id:
+        type: integer
+      lyrics:
+        type: string
+      release_date:
+        type: string
+      title:
+        type: string
+      views:
+        type: integer
+    type: object
+  internal_rest_api_song.PatchUpdateCoverOut:
+    properties:
+      cover_url:
+        type: string
+    type: object
+  internal_rest_api_song.PatchUpdateSongIn:
+    properties:
+      artist_id:
+        type: integer
+      lyrics:
+        type: string
+      release_date:
+        type: string
+      songID:
+        type: integer
+      title:
+        type: string
+    required:
+    - songID
+    type: object
+  internal_rest_api_song.PatchUpdateSongOut:
+    properties:
+      artist:
+        $ref: '#/definitions/internal_rest_api_song.Artist'
+      cover_url:
+        type: string
+      id:
+        type: integer
+      lyrics:
+        type: string
+      release_date:
+        type: string
+      title:
+        type: string
+      views:
+        type: integer
+    type: object
+  internal_rest_api_song.PostSongIn:
+    properties:
+      artist_id:
+        type: integer
+      cover_url:
+        type: string
+      lyrics:
+        type: string
+      release_date:
+        type: string
+      title:
+        type: string
+    required:
+    - artist_id
+    - lyrics
+    - release_date
+    - title
+    type: object
+  internal_rest_api_song.PostSongOut:
+    properties:
+      artist:
+        $ref: '#/definitions/internal_rest_api_song.Artist'
+      cover_url:
+        type: string
+      id:
+        type: integer
+      lyrics:
+        type: string
+      release_date:
+        type: string
+      title:
+        type: string
+      views:
+        type: integer
+    type: object
+  internal_rest_api_user.GetUserByIDOut:
+    properties:
+      avatar_url:
+        type: string
+      bio:
+        type: string
+      email:
+        type: string
+      reputation_score:
+        type: integer
+      role:
+        type: string
+      user_id:
+        type: integer
+      username:
+        type: string
+    type: object
+  internal_rest_api_user.GetUserMeOut:
+    properties:
+      avatar_url:
+        type: string
+      bio:
+        type: string
+      email:
+        type: string
+      reputation_score:
+        type: integer
+      role:
+        type: string
+      user_id:
+        type: integer
+      username:
+        type: string
+    type: object
+  internal_rest_api_user.PatchUpdateAvatarOut:
+    properties:
+      avatar_url:
+        type: string
+    type: object
+  internal_rest_api_user.PatchUpdateUserIn:
+    properties:
+      bio:
+        type: string
+      email:
+        type: string
+      password:
+        type: string
+      username:
+        type: string
+    type: object
+  internal_rest_api_user.PatchUpdateUserOut:
+    properties:
+      avatar_url:
+        type: string
+      bio:
+        type: string
+      email:
+        type: string
+      reputation_score:
+        type: integer
+      role:
+        type: string
+      user_id:
+        type: integer
+      username:
+        type: string
+    type: object
+info:
+  contact: {}
+paths:
+  /v1/annotation/{id}:
+    delete:
+      description: Удаляет аннотацию. Доступно только автору или модератору.
+      parameters:
+      - description: Annotation ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/echo.HTTPError'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/echo.HTTPError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/echo.HTTPError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/echo.HTTPError'
+      security:
+      - ApiKeyAuth: []
+      summary: Удаление аннотации
+      tags:
+      - annotation
+    get:
+      description: Возвращает полную информацию об аннотации с контекстом песни
+      parameters:
+      - description: Annotation ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/internal_rest_api_annotation.GetAnnotationByIDOut'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/echo.HTTPError'
+        "404":
+          description: Аннотация не найдена
+          schema:
+            $ref: '#/definitions/echo.HTTPError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/echo.HTTPError'
+      summary: Получение аннотации по ID
+      tags:
+      - annotation
+    patch:
+      consumes:
+      - application/json
+      description: Обновляет контент аннотации. Доступно только автору или модератору.
+      parameters:
+      - description: Annotation ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Данные для обновления
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/internal_rest_api_annotation.PatchUpdateAnnotationIn'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/internal_rest_api_annotation.PatchUpdateAnnotationOut'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/echo.HTTPError'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/echo.HTTPError'
+        "403":
+          description: Недостаточно прав
+          schema:
+            $ref: '#/definitions/echo.HTTPError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/echo.HTTPError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/echo.HTTPError'
+      security:
+      - ApiKeyAuth: []
+      summary: Редактирование аннотации
+      tags:
+      - annotation
+  /v1/annotation/{id}/vote:
+    delete:
+      description: Удаляет голос пользователя за аннотацию. Доступно только аутентифицированным
+        пользователям.
+      parameters:
+      - description: Annotation ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/echo.HTTPError'
+        "404":
+          description: Аннотация не найдена
+          schema:
+            $ref: '#/definitions/echo.HTTPError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/echo.HTTPError'
+      security:
+      - ApiKeyAuth: []
+      summary: Отмена голоса за аннотацию
+      tags:
+      - annotation
+    post:
+      consumes:
+      - application/json
+      description: Поставить +1 или -1 за аннотацию. Доступно только аутентифицированным
+        пользователям.
+      parameters:
+      - description: Annotation ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Значение голоса (-1 или 1)
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/internal_rest_api_annotation.PostVoteAnnotationIn'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/internal_rest_api_annotation.PostVoteAnnotationOut'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/echo.HTTPError'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/echo.HTTPError'
+        "404":
+          description: Аннотация не найдена
+          schema:
+            $ref: '#/definitions/echo.HTTPError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/echo.HTTPError'
+      security:
+      - ApiKeyAuth: []
+      summary: Голосование за аннотацию
+      tags:
+      - annotation
+  /v1/artist:
+    post:
+      consumes:
+      - application/json
+      description: Создает нового артиста по имени и био. Доступно только модератору.
+      parameters:
+      - description: Параметры артиста
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/internal_rest_api_artist.PostArtistIn'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Артист успешно создан
+          schema:
+            $ref: '#/definitions/internal_rest_api_artist.PostArtistOut'
+        "400":
+          description: Некорректный запрос
+          schema:
+            $ref: '#/definitions/echo.HTTPError'
+        "401":
+          description: Пользователь не аутентифицирован
+          schema:
+            $ref: '#/definitions/echo.HTTPError'
+        "403":
+          description: Недостаточно прав
+          schema:
+            $ref: '#/definitions/echo.HTTPError'
+        "409":
+          description: Имя артиста уже занято
+          schema:
+            $ref: '#/definitions/echo.HTTPError'
+        "500":
+          description: Внутренняя ошибка сервера
+          schema:
+            $ref: '#/definitions/echo.HTTPError'
+      security:
+      - ApiKeyAuth: []
+      summary: Создание артиста.
+      tags:
+      - artist
+  /v1/artist/{id}:
+    get:
+      description: Возвращает полную информацию о профиле артиста по его id.
+      parameters:
+      - description: Artist ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Успешный ответ с профилем артиста
+          schema:
+            $ref: '#/definitions/internal_rest_api_artist.GetArtistByIDOut'
+        "400":
+          description: Некорректный id артиста
+          schema:
+            $ref: '#/definitions/echo.HTTPError'
+        "404":
+          description: Артист не найден
+          schema:
+            $ref: '#/definitions/echo.HTTPError'
+        "500":
+          description: Внутренняя ошибка сервера
+          schema:
+            $ref: '#/definitions/echo.HTTPError'
+      summary: Получение данных артиста по его id.
+      tags:
+      - artist
+    patch:
+      consumes:
+      - application/json
+      description: Обновляет name, bio артиста по его id. Достаточно передать только
+        нужные поля.
+      parameters:
+      - description: Параметры обновления профиля артиста
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/internal_rest_api_artist.PatchUpdateArtistIn'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Профиль артиста обновлен
+          schema:
+            $ref: '#/definitions/internal_rest_api_artist.PatchUpdateArtistOut'
+        "400":
+          description: Некорректный запрос
+          schema:
+            $ref: '#/definitions/echo.HTTPError'
+        "401":
+          description: Пользователь не аутентифицирован
+          schema:
+            $ref: '#/definitions/echo.HTTPError'
+        "404":
+          description: Артист не найден
+          schema:
+            $ref: '#/definitions/echo.HTTPError'
+        "409":
+          description: Артист с таким именем уже существует
+          schema:
+            $ref: '#/definitions/echo.HTTPError'
+        "500":
+          description: Внутренняя ошибка сервера
+          schema:
+            $ref: '#/definitions/echo.HTTPError'
+      security:
+      - ApiKeyAuth: []
+      summary: Частичное обновление профиля артиста
+      tags:
+      - artist
+  /v1/artist/{id}/avatar:
+    patch:
+      consumes:
+      - multipart/form-data
+      description: Принимает avatar в multipart/form-data, валидирует изображение,
+        загружает в MinIO и обновляет ссылку на аватар артиста.
+      parameters:
+      - description: Файл аватарки (png/jpeg)
+        in: formData
+        name: avatar
+        required: true
+        type: file
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Аватар артиста обновлен
+          schema:
+            $ref: '#/definitions/internal_rest_api_artist.PatchUpdateAvatarOut'
+        "400":
+          description: Некорректный запрос
+          schema:
+            $ref: '#/definitions/echo.HTTPError'
+        "401":
+          description: Пользователь не аутентифицирован
+          schema:
+            $ref: '#/definitions/echo.HTTPError'
+        "404":
+          description: Артист не найден
+          schema:
+            $ref: '#/definitions/echo.HTTPError'
+        "500":
+          description: Внутренняя ошибка сервера
+          schema:
+            $ref: '#/definitions/echo.HTTPError'
+      security:
+      - ApiKeyAuth: []
+      summary: Обновление аватарки артиста
+      tags:
+      - artist
+  /v1/auth/refresh:
+    post:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Успешное обновление авторизованности
+          schema:
+            $ref: '#/definitions/internal_rest_api_auth.PostRefreshTokenOut'
+        "401":
+          description: Пользователь не авторизован
+          schema:
+            $ref: '#/definitions/echo.HTTPError'
+        "500":
+          description: Внутренняя ошибка сервера
+          schema:
+            $ref: '#/definitions/echo.HTTPError'
+      summary: Проверка refresh токена
+      tags:
+      - auth
+  /v1/auth/sign-in:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Параметры запроса.
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/internal_rest_api_auth.PostSignInIn'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Успешный ответ с access_token
+          schema:
+            $ref: '#/definitions/internal_rest_api_auth.PostSignInOut'
+        "400":
+          description: Некорректный запрос
+          schema:
+            $ref: '#/definitions/echo.HTTPError'
+        "404":
+          description: Неверный email или пароль
+          schema:
+            $ref: '#/definitions/echo.HTTPError'
+        "500":
+          description: Внутренняя ошибка сервера
+          schema:
+            $ref: '#/definitions/echo.HTTPError'
+      summary: Авторизация пользователя
+      tags:
+      - auth
+  /v1/auth/sign-out:
+    post:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "401":
+          description: Пользователь не авторизован
+          schema:
+            $ref: '#/definitions/echo.HTTPError'
+        "500":
+          description: Внутренняя ошибка сервера
+          schema:
+            $ref: '#/definitions/echo.HTTPError'
+      security:
+      - ApiKeyAuth: []
+      summary: Выход из аккаунта
+      tags:
+      - auth
+  /v1/auth/sign-up:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Параметры запроса.
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/internal_rest_api_auth.PostSignUpIn'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Успешный ответ с access_token
+          schema:
+            $ref: '#/definitions/internal_rest_api_auth.PostSignUpOut'
+        "400":
+          description: Некорректный запрос
+          schema:
+            $ref: '#/definitions/echo.HTTPError'
+        "409":
+          description: Пользователь уже зарегистрирован
+          schema:
+            $ref: '#/definitions/echo.HTTPError'
+        "500":
+          description: Внутренняя ошибка сервера
+          schema:
+            $ref: '#/definitions/echo.HTTPError'
+      summary: Регистрация пользователя
+      tags:
+      - auth
+  /v1/search:
+    get:
+      description: Полнотекстовый поиск по песням, артистам и пользователям с поддержкой
+        русского и английского языков
+      parameters:
+      - description: Поисковый запрос
+        in: query
+        name: q
+        required: true
+        type: string
+      - default: 20
+        description: Лимит результатов на категорию
+        in: query
+        name: limit
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/internal_rest_api_search.GetSearchOut'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/echo.HTTPError'
+      summary: Поиск по сайту
+      tags:
+      - search
+  /v1/song:
+    post:
+      consumes:
+      - application/json
+      description: Создает новой песни по заданным параметрам. Доступно только модератору.
+      parameters:
+      - description: Параметры песни
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/internal_rest_api_song.PostSongIn'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Песня успешно создана
+          schema:
+            $ref: '#/definitions/internal_rest_api_song.PostSongOut'
+        "400":
+          description: Некорректный запрос
+          schema:
+            $ref: '#/definitions/echo.HTTPError'
+        "401":
+          description: Пользователь не аутентифицирован
+          schema:
+            $ref: '#/definitions/echo.HTTPError'
+        "403":
+          description: Недостаточно прав
+          schema:
+            $ref: '#/definitions/echo.HTTPError'
+        "500":
+          description: Внутренняя ошибка сервера
+          schema:
+            $ref: '#/definitions/echo.HTTPError'
+      security:
+      - ApiKeyAuth: []
+      summary: Создание песни.
+      tags:
+      - song
+  /v1/song/{id}:
+    get:
+      description: Возвращает полную информацию о песне по ее id.
+      parameters:
+      - description: Song ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Успешный ответ с информацией о песне
+          schema:
+            $ref: '#/definitions/internal_rest_api_song.GetSongByIDOut'
+        "400":
+          description: Некорректный id песни
+          schema:
+            $ref: '#/definitions/echo.HTTPError'
+        "404":
+          description: Песня не найдена
+          schema:
+            $ref: '#/definitions/echo.HTTPError'
+        "500":
+          description: Внутренняя ошибка сервера
+          schema:
+            $ref: '#/definitions/echo.HTTPError'
+      summary: Получение данных песни по ее id.
+      tags:
+      - artist
+    patch:
+      consumes:
+      - application/json
+      description: Обновляет title, lyrics, artist_id, release_date песни по ее id.
+        Достаточно передать только нужные поля.
+      parameters:
+      - description: Параметры обновления информации о песне
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/internal_rest_api_song.PatchUpdateSongIn'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Страница песни обновлена
+          schema:
+            $ref: '#/definitions/internal_rest_api_song.PatchUpdateSongOut'
+        "400":
+          description: Некорректный запрос
+          schema:
+            $ref: '#/definitions/echo.HTTPError'
+        "401":
+          description: Пользователь не аутентифицирован
+          schema:
+            $ref: '#/definitions/echo.HTTPError'
+        "404":
+          description: Песня не найдена
+          schema:
+            $ref: '#/definitions/echo.HTTPError'
+        "500":
+          description: Внутренняя ошибка сервера
+          schema:
+            $ref: '#/definitions/echo.HTTPError'
+      security:
+      - ApiKeyAuth: []
+      summary: Частичное обновление информации о песне
+      tags:
+      - song
+  /v1/song/{id}/ai-annotation:
+    get:
+      description: Генерирует аннотацию с помощью ИИ для указанного фрагмента песни
+      parameters:
+      - description: Song ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Вопрос для AI
+        in: query
+        name: question
+        required: true
+        type: string
+      - description: Начальный индекс фрагмента
+        in: query
+        name: start_index
+        type: integer
+      - description: Конечный индекс фрагмента
+        in: query
+        name: end_index
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/internal_rest_api_annotation.GetAiAnnotationOut'
+        "400":
+          description: Некорректный запрос
+          schema:
+            $ref: '#/definitions/echo.HTTPError'
+        "401":
+          description: Не авторизован
+          schema:
+            $ref: '#/definitions/echo.HTTPError'
+        "404":
+          description: Песня не найдена
+          schema:
+            $ref: '#/definitions/echo.HTTPError'
+        "500":
+          description: Внутренняя ошибка сервера
+          schema:
+            $ref: '#/definitions/echo.HTTPError'
+      security:
+      - ApiKeyAuth: []
+      summary: Получение AI-аннотации
+      tags:
+      - annotation
+  /v1/song/{id}/ai-translation:
+    get:
+      description: Генерирует перевод или объяснение текста песни с помощью искусственного
+        интеллекта на указанный язык. Требуется аутентификация.
+      parameters:
+      - description: Song ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: 'Код целевого языка (например: ''en'', ''de'', ''fr'')'
+        in: query
+        maxLength: 5
+        minLength: 2
+        name: language
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Успешный ответ с AI-переводом
+          schema:
+            $ref: '#/definitions/internal_rest_api_song.GetAiTranslationOut'
+        "400":
+          description: Некорректные параметры запроса
+          schema:
+            $ref: '#/definitions/echo.HTTPError'
+        "401":
+          description: Пользователь не аутентифицирован
+          schema:
+            $ref: '#/definitions/echo.HTTPError'
+        "404":
+          description: Песня не найдена
+          schema:
+            $ref: '#/definitions/echo.HTTPError'
+        "500":
+          description: Внутренняя ошибка сервера
+          schema:
+            $ref: '#/definitions/echo.HTTPError'
+      security:
+      - ApiKeyAuth: []
+      summary: Получение AI-перевода текста песни
+      tags:
+      - song
+  /v1/song/{id}/annotation:
+    post:
+      consumes:
+      - application/json
+      description: Создает новую аннотацию для песни. Не допускается пересечение диапазонов
+        с уже существующими аннотациями.
+      parameters:
+      - description: Song ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Данные аннотации
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/internal_rest_api_annotation.PostAnnotationIn'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/internal_rest_api_annotation.PostAnnotationOut'
+        "400":
+          description: Невалидные данные, неверный индекс или пересечение выделений
+          schema:
+            $ref: '#/definitions/echo.HTTPError'
+        "401":
+          description: Не авторизован
+          schema:
+            $ref: '#/definitions/echo.HTTPError'
+        "404":
+          description: Песня не найдена
+          schema:
+            $ref: '#/definitions/echo.HTTPError'
+        "500":
+          description: Внутренняя ошибка сервера
+          schema:
+            $ref: '#/definitions/echo.HTTPError'
+      security:
+      - ApiKeyAuth: []
+      summary: Создание аннотации
+      tags:
+      - annotation
+  /v1/song/{id}/annotations:
+    get:
+      description: Возвращает все аннотации для указанной песни без пагинации
+      parameters:
+      - description: Song ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/internal_rest_api_annotation.GetAnnotationsOut'
+        "400":
+          description: Некорректный запрос
+          schema:
+            $ref: '#/definitions/echo.HTTPError'
+        "404":
+          description: Песня не найдена
+          schema:
+            $ref: '#/definitions/echo.HTTPError'
+        "500":
+          description: Внутренняя ошибка сервера
+          schema:
+            $ref: '#/definitions/echo.HTTPError'
+      summary: Получение списка аннотаций песни
+      tags:
+      - annotation
+  /v1/song/{id}/cover:
+    patch:
+      consumes:
+      - multipart/form-data
+      description: Принимает cover в multipart/form-data, валидирует изображение,
+        загружает в MinIO и обновляет ссылку на обложку песни.
+      parameters:
+      - description: Файл обложки (png/jpeg)
+        in: formData
+        name: avatar
+        required: true
+        type: file
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Обложка песни обновлена
+          schema:
+            $ref: '#/definitions/internal_rest_api_song.PatchUpdateCoverOut'
+        "400":
+          description: Некорректный запрос
+          schema:
+            $ref: '#/definitions/echo.HTTPError'
+        "401":
+          description: Пользователь не аутентифицирован
+          schema:
+            $ref: '#/definitions/echo.HTTPError'
+        "404":
+          description: Песня не найдена
+          schema:
+            $ref: '#/definitions/echo.HTTPError'
+        "500":
+          description: Внутренняя ошибка сервера
+          schema:
+            $ref: '#/definitions/echo.HTTPError'
+      security:
+      - ApiKeyAuth: []
+      summary: Обновление обложки песни
+      tags:
+      - song
+  /v1/user/{id}:
+    get:
+      description: Возвращает полную информацию о профиле пользователя по его id.
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Успешный ответ с профилем пользователя
+          schema:
+            $ref: '#/definitions/internal_rest_api_user.GetUserByIDOut'
+        "400":
+          description: Некорректный id пользователя
+          schema:
+            $ref: '#/definitions/echo.HTTPError'
+        "404":
+          description: Пользователь не найден
+          schema:
+            $ref: '#/definitions/echo.HTTPError'
+        "500":
+          description: Внутренняя ошибка сервера
+          schema:
+            $ref: '#/definitions/echo.HTTPError'
+      summary: Получение данных пользователя по его id.
+      tags:
+      - user
+  /v1/user/{id}/annotations:
+    get:
+      description: Возвращает список аннотаций, созданных пользователем
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - default: 20
+        description: Лимит
+        in: query
+        name: limit
+        type: integer
+      - default: 0
+        description: Смещение
+        in: query
+        name: offset
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/internal_rest_api_annotation.GetUserAnnotationsOut'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/echo.HTTPError'
+        "404":
+          description: Пользователь не найден
+          schema:
+            $ref: '#/definitions/echo.HTTPError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/echo.HTTPError'
+      summary: Получение аннотаций пользователя
+      tags:
+      - annotation
+  /v1/user/me:
+    get:
+      description: Возвращает полную информацию о профиле текущего пользователя, идентифицированного
+        по access_token.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Успешный ответ с профилем пользователя
+          schema:
+            $ref: '#/definitions/internal_rest_api_user.GetUserMeOut'
+        "401":
+          description: Пользователь не аутентифицирован
+          schema:
+            $ref: '#/definitions/echo.HTTPError'
+        "404":
+          description: Пользователь не найден
+          schema:
+            $ref: '#/definitions/echo.HTTPError'
+        "500":
+          description: Внутренняя ошибка сервера
+          schema:
+            $ref: '#/definitions/echo.HTTPError'
+      security:
+      - ApiKeyAuth: []
+      summary: Получение данных своего профиля.
+      tags:
+      - user
+    patch:
+      consumes:
+      - application/json
+      description: Обновляет email, username, bio или password текущего пользователя.
+        Достаточно передать только нужные поля.
+      parameters:
+      - description: Параметры обновления профиля
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/internal_rest_api_user.PatchUpdateUserIn'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Профиль пользователя обновлен
+          schema:
+            $ref: '#/definitions/internal_rest_api_user.PatchUpdateUserOut'
+        "400":
+          description: Некорректный запрос
+          schema:
+            $ref: '#/definitions/echo.HTTPError'
+        "401":
+          description: Пользователь не аутентифицирован
+          schema:
+            $ref: '#/definitions/echo.HTTPError'
+        "404":
+          description: Пользователь не найден
+          schema:
+            $ref: '#/definitions/echo.HTTPError'
+        "409":
+          description: Email или username уже заняты
+          schema:
+            $ref: '#/definitions/echo.HTTPError'
+        "500":
+          description: Внутренняя ошибка сервера
+          schema:
+            $ref: '#/definitions/echo.HTTPError'
+      security:
+      - ApiKeyAuth: []
+      summary: Частичное обновление профиля пользователя
+      tags:
+      - user
+  /v1/user/me/avatar:
+    patch:
+      consumes:
+      - multipart/form-data
+      description: Принимает avatar в multipart/form-data, валидирует изображение,
+        загружает в MinIO и обновляет ссылку на аватар текущего пользователя.
+      parameters:
+      - description: Файл аватарки (png/jpeg)
+        in: formData
+        name: avatar
+        required: true
+        type: file
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Аватар пользователя обновлен
+          schema:
+            $ref: '#/definitions/internal_rest_api_user.PatchUpdateAvatarOut'
+        "400":
+          description: Некорректный запрос
+          schema:
+            $ref: '#/definitions/echo.HTTPError'
+        "401":
+          description: Пользователь не аутентифицирован
+          schema:
+            $ref: '#/definitions/echo.HTTPError'
+        "404":
+          description: Пользователь не найден
+          schema:
+            $ref: '#/definitions/echo.HTTPError'
+        "500":
+          description: Внутренняя ошибка сервера
+          schema:
+            $ref: '#/definitions/echo.HTTPError'
+      security:
+      - ApiKeyAuth: []
+      summary: Обновление аватарки пользователя
+      tags:
+      - user
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"
