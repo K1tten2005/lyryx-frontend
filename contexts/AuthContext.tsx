@@ -2,6 +2,7 @@
 
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { signIn, signUp, signOut, UserInfo } from '@/lib/api/auth';
+import { getUserMe } from '@/lib/api/user';
 
 interface AuthContextType {
   user: UserInfo | null;
@@ -24,15 +25,31 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const storedToken = localStorage.getItem('access_token');
     const storedUser = localStorage.getItem('user');
 
-    if (storedToken && storedUser) {
+    if (storedToken) {
       setToken(storedToken);
-      try {
-        setUser(JSON.parse(storedUser));
-      } catch (e) {
-        console.error('Failed to parse stored user', e);
+      if (storedUser) {
+        try {
+          setUser(JSON.parse(storedUser));
+        } catch (e) {
+          console.error('Failed to parse stored user', e);
+        }
       }
+      
+      // Sync with backend to get latest info (like avatar)
+      getUserMe(storedToken)
+        .then((latestUser) => {
+          setUser(latestUser);
+          localStorage.setItem('user', JSON.stringify(latestUser));
+        })
+        .catch((err) => {
+          console.error('Failed to sync user profile', err);
+        })
+        .finally(() => {
+          setIsInitialized(true);
+        });
+    } else {
+      setIsInitialized(true);
     }
-    setIsInitialized(true);
   }, []);
 
   const login = async (...args: Parameters<typeof signIn>) => {
