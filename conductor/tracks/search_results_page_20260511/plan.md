@@ -23,10 +23,10 @@
 - [x] Task: Create `SearchCategory` component cf7d823
     - [ ] Write failing tests for category title and result listing
     - [ ] Implement component with "Top 3" slicing logic
-- [~] Task: Implement specialized result cards (Artist, Song, User)
+- [x] Task: Implement specialized result cards (Artist, Song, User) a92bd15
     - [ ] Write tests for individual card rendering
     - [ ] Implement glassmorphic card designs
-- [ ] Task: Assemble main results page layout
+- [~] Task: Assemble main results page layout
     - [ ] Write test for correct category ordering (Artists first)
     - [ ] Implement vertical stack of categories
 - [ ] Task: Conductor - User Manual Verification 'Categorized Results Layout' (Protocol in workflow.md)
