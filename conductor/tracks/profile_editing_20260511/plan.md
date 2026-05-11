@@ -1,11 +1,11 @@
 # Implementation Plan: Profile Editing Functionality
 
 ## Phase 1: API Integration
-- [ ] Task: Add API functions to `lib/api/user.ts`
-    - [ ] Write failing unit tests in `__tests__/lib/api/user.test.ts` for `updateUserProfile` and `updateUserAvatar`
-    - [ ] Implement `updateUserProfile` (PATCH `/user/me`)
-    - [ ] Implement `updateUserAvatar` (PATCH `/user/me/avatar`) using `FormData`
-    - [ ] Ensure tests pass
+- [x] Task: Add API functions to `lib/api/user.ts` c8aa116
+    - [x] Write failing unit tests in `__tests__/lib/api/user.test.ts` for `updateUserProfile` and `updateUserAvatar`
+    - [x] Implement `updateUserProfile` (PATCH `/user/me`)
+    - [x] Implement `updateUserAvatar` (PATCH `/user/me/avatar`) using `FormData`
+    - [x] Ensure tests pass
 - [ ] Task: Conductor - User Manual Verification 'Phase 1: API Integration' (Protocol in workflow.md)
 
 ## Phase 2: Form Validation Schema
