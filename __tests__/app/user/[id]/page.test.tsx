@@ -60,8 +60,38 @@ describe("UserProfilePage", () => {
 
     await waitFor(() => {
       expect(screen.getByText("testuser")).toBeInTheDocument();
-      expect(screen.getByText("This is a test bio")).toBeInTheDocument();
+      expect(screen.getByText(/This is a test bio/i)).toBeInTheDocument();
       expect(screen.getByText("100")).toBeInTheDocument();
+      expect(screen.getByText("Annotations (0)")).toBeInTheDocument();
+    });
+  });
+
+  it("renders annotations if present", async () => {
+    const mockUser = { user_id: 1, username: "testuser", email: "test@example.com", role: "user", reputation_score: 100 };
+    const mockAnnotations = {
+      user_id: 1,
+      annotations: [
+        { 
+          id: 101, 
+          content: "Great lyrics!", 
+          rating: 5, 
+          song: { title: "Song 1", artist: { name: "Artist 1" }, cover_url: "/cover.jpg" },
+          created_at: new Date().toISOString()
+        }
+      ],
+      total: 1,
+      has_more: false,
+    };
+
+    (getUserProfile as any).mockResolvedValue(mockUser);
+    (getUserAnnotations as any).mockResolvedValue(mockAnnotations);
+
+    render(<UserProfilePage params={mockParams} />);
+
+    await waitFor(() => {
+      expect(screen.getByText("Great lyrics!")).toBeInTheDocument();
+      expect(screen.getByText("Song 1")).toBeInTheDocument();
+      expect(screen.getByText("Artist 1")).toBeInTheDocument();
     });
   });
 
