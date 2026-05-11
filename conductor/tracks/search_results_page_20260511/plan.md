@@ -1,7 +1,7 @@
 # Implementation Plan: Search Results Page
 
 ## Phase 1: Routing & Basic Scaffolding
-- [ ] Task: Create search results page at `/app/search/page.tsx`
+- [x] Task: Create search results page at `/app/search/page.tsx` 2c441e1
     - [ ] Write failing test for basic page rendering
     - [ ] Implement skeleton component with "Search Results" title
 - [ ] Task: Update `SearchBar` to navigate to `/search?q={query}`
