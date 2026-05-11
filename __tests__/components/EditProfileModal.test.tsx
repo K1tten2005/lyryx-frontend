@@ -2,10 +2,11 @@ import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import EditProfileModal from '@/components/EditProfileModal';
-import { updateUserProfile } from '@/lib/api/user';
+import { updateUserProfile, updateUserAvatar } from '@/lib/api/user';
 
 vi.mock('@/lib/api/user', () => ({
   updateUserProfile: vi.fn(),
+  updateUserAvatar: vi.fn(),
 }));
 
 vi.mock('@/contexts/AuthContext', () => ({
@@ -73,5 +74,21 @@ describe('EditProfileModal', () => {
     });
     
     expect(updateUserProfile).not.toHaveBeenCalled();
+  });
+
+  it('handles avatar file selection and upload', async () => {
+    (updateUserAvatar as any).mockResolvedValue({ avatar_url: 'http://example.com/new-avatar.jpg' });
+    
+    render(<EditProfileModal isOpen={true} onClose={mockOnClose} user={initialUser} />);
+    
+    const file = new File(['hello'], 'avatar.png', { type: 'image/png' });
+    const input = screen.getByLabelText(/change avatar/i);
+    
+    fireEvent.change(input, { target: { files: [file] } });
+    fireEvent.submit(screen.getByRole('button', { name: /save changes/i }));
+    
+    await waitFor(() => {
+      expect(updateUserAvatar).toHaveBeenCalledWith('test-token', file);
+    });
   });
 });

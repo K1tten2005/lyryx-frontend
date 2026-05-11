@@ -4,9 +4,9 @@ import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { profileEditSchema, ProfileEditInput } from '@/lib/validation/profile';
-import { updateUserProfile, UserProfile } from '@/lib/api/user';
+import { updateUserProfile, updateUserAvatar, UserProfile } from '@/lib/api/user';
 import { useAuth } from '@/contexts/AuthContext';
-import { X, Loader2, User, Mail, FileText, Lock } from 'lucide-react';
+import { X, Loader2, User, Mail, FileText, Lock, Camera } from 'lucide-react';
 import toast from 'react-hot-toast';
 
 interface EditProfileModalProps {
@@ -19,6 +19,8 @@ export default function EditProfileModal({ isOpen, onClose, user }: EditProfileM
   const { token, updateUser } = useAuth();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [avatarFile, setAvatarFile] = useState<File | null>(null);
+  const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
 
   const {
     register,
@@ -35,6 +37,18 @@ export default function EditProfileModal({ isOpen, onClose, user }: EditProfileM
 
   if (!isOpen) return null;
 
+  const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setAvatarFile(file);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setAvatarPreview(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   const onSubmit = async (data: ProfileEditInput) => {
     if (!token) return;
 
@@ -42,20 +56,25 @@ export default function EditProfileModal({ isOpen, onClose, user }: EditProfileM
     setError(null);
 
     try {
-      // Remove empty fields to avoid sending unnecessary updates
+      // 1. Handle Profile Info Update
       const submitData: any = {};
       if (data.username && data.username !== user.username) submitData.username = data.username;
       if (data.email && data.email !== user.email) submitData.email = data.email;
       if (data.bio !== undefined && data.bio !== (user.bio || '')) submitData.bio = data.bio;
       if (data.password) submitData.password = data.password;
 
-      if (Object.keys(submitData).length === 0) {
-        onClose();
-        return;
+      let latestUser = user;
+      if (Object.keys(submitData).length > 0) {
+        latestUser = await updateUserProfile(token, submitData);
       }
 
-      const updatedUser = await updateUserProfile(token, submitData);
-      updateUser(updatedUser as any);
+      // 2. Handle Avatar Update
+      if (avatarFile) {
+        const { avatar_url } = await updateUserAvatar(token, avatarFile);
+        latestUser = { ...latestUser, avatar_url };
+      }
+
+      updateUser(latestUser as any);
       toast.success('Profile updated successfully');
       onClose();
     } catch (err: any) {
@@ -88,6 +107,42 @@ export default function EditProfileModal({ isOpen, onClose, user }: EditProfileM
                 {error}
               </div>
             )}
+
+            {/* Avatar Section */}
+            <div className="flex flex-col items-center mb-6">
+              <div className="relative group">
+                <div className="w-24 h-24 rounded-full overflow-hidden bg-zinc-100 border-2 border-zinc-200">
+                  {avatarPreview || user.avatar_url ? (
+                    <img
+                      src={avatarPreview || user.avatar_url}
+                      alt="Avatar preview"
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center text-zinc-400">
+                      <User className="w-12 h-12" />
+                    </div>
+                  )}
+                </div>
+                <label
+                  htmlFor="avatar-upload"
+                  className="absolute inset-0 flex items-center justify-center bg-black/40 text-white opacity-0 group-hover:opacity-100 cursor-pointer transition-opacity rounded-full"
+                >
+                  <Camera className="w-6 h-6" />
+                  <span className="sr-only">Change avatar</span>
+                </label>
+                <input
+                  id="avatar-upload"
+                  type="file"
+                  accept="image/*"
+                  className="hidden"
+                  onChange={handleAvatarChange}
+                />
+              </div>
+              <p className="mt-2 text-xs text-zinc-500 text-center">
+                Click photo to change avatar
+              </p>
+            </div>
 
             <div>
               <label htmlFor="username" className="block text-sm font-medium text-zinc-700 mb-1">
