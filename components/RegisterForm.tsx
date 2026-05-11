@@ -105,7 +105,7 @@ export default function RegisterForm({ onSuccess }: RegisterFormProps) {
       <button
         type="submit"
         disabled={isSubmitting}
-        className="w-full btn-primary"
+        className="w-full flex items-center justify-center py-2.5 px-8 bg-accent text-white font-bold rounded-full shadow-md border border-white/20 hover:bg-accent-hover active:scale-95 transition-all disabled:opacity-50"
       >
         {isSubmitting ? 'Creating account...' : 'Create Account'}
       </button>

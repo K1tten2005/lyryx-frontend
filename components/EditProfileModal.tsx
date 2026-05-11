@@ -107,8 +107,14 @@ export default function EditProfileModal({ isOpen, onClose, user }: EditProfileM
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
-      <div className="relative w-full max-w-md bg-surface bg-glass-panel backdrop-blur-md rounded-3xl border border-white/50 shadow-glass overflow-hidden animate-in fade-in zoom-in duration-200">
+    <div 
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm"
+      onClick={onClose}
+    >
+      <div 
+        className="relative w-full max-w-md bg-surface bg-glass-panel backdrop-blur-md rounded-3xl border border-white/50 shadow-glass overflow-hidden animate-in fade-in zoom-in duration-200"
+        onClick={(e) => e.stopPropagation()}
+      >
         <div className="flex items-center justify-between p-4 border-b border-white/40">
           <h2 className="text-2xl font-bold text-slate-800 tracking-tight drop-shadow-sm">Edit Profile</h2>
           <button
@@ -269,11 +275,11 @@ export default function EditProfileModal({ isOpen, onClose, user }: EditProfileM
               )}
             </div>
 
-            <div className="pt-2">
+            <div className="pt-2 flex justify-center">
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full flex items-center justify-center btn-primary"
+                className="w-full flex items-center justify-center py-2.5 px-8 bg-accent text-white font-bold rounded-full shadow-md border border-white/20 hover:bg-accent-hover active:scale-95 transition-all disabled:opacity-50"
               >
                 {isSubmitting ? (
                   <Loader2 className="w-5 h-5 animate-spin" />

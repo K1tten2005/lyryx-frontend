@@ -59,7 +59,7 @@ export default function UserProfilePage({ params }: { params: { id: string } }) 
 
   if (loading) {
     return (
-      <div className="min-h-screen flex flex-col bg-white">
+      <div className="min-h-screen flex flex-col">
         <Navbar />
         <main className="flex-grow container mx-auto px-4 py-12">
           <UserProfileSkeleton />
@@ -71,7 +71,7 @@ export default function UserProfilePage({ params }: { params: { id: string } }) 
 
   if (error) {
     return (
-      <div className="min-h-screen flex flex-col bg-white">
+      <div className="min-h-screen flex flex-col">
         <Navbar />
         <main className="flex-grow flex flex-col items-center justify-center p-4">
           <div className="bg-red-50 p-8 rounded-2xl border border-red-100 max-w-md w-full text-center">
@@ -85,7 +85,7 @@ export default function UserProfilePage({ params }: { params: { id: string } }) 
   }
 
   return (
-    <div className="min-h-screen flex flex-col bg-white">
+    <div className="min-h-screen flex flex-col">
       <Navbar />
       <main className="flex-grow container mx-auto px-4 py-12">
         {user && (

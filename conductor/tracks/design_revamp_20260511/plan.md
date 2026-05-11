@@ -20,8 +20,8 @@
 - [x] Task: Conductor - User Manual Verification 'Phase 3: Homepage & Navigation Revamp' (Protocol in workflow.md)
 
 ## Phase 4: Lyric & Annotation Page Revamp
-- [ ] Task: Redesign the Lyric display (Typography focus)
-- [ ] Task: Redesign the Annotation interaction and sidebar/tooltip
-- [ ] Task: Update User Profile Header and Tabs to match the new style
-- [ ] Task: Final visual polish and cross-browser/mobile consistency check
-- [ ] Task: Conductor - User Manual Verification 'Phase 4: Lyric & Annotation Page Revamp' (Protocol in workflow.md)
+- [x] Task: Redesign the Lyric display (Typography focus)
+- [x] Task: Redesign the Annotation interaction and sidebar/tooltip
+- [x] Task: Update User Profile Header and Tabs to match the new style
+- [x] Task: Final visual polish and cross-browser/mobile consistency check
+- [~] Task: Conductor - User Manual Verification 'Phase 4: Lyric & Annotation Page Revamp' (Protocol in workflow.md)

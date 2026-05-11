@@ -44,11 +44,11 @@ export default function UserProfileHeader({ user: initialUser }: UserProfileHead
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4">
               <div>
                 <div className="flex items-center justify-center md:justify-start gap-4 mb-1">
-                  <h1 className="text-4xl font-black font-sans text-zinc-900 tracking-tight">{user.username}</h1>
+                  <h1 className="text-4xl font-black font-sans text-slate-800 tracking-tight drop-shadow-md">{user.username}</h1>
                   {isOwner && (
                     <button
                       onClick={() => setIsEditModalOpen(true)}
-                      className="p-2 bg-zinc-100 text-zinc-600 rounded-full hover:bg-zinc-200 hover:text-zinc-900 transition-colors shadow-sm"
+                      className="p-2 bg-white text-accent rounded-full hover:bg-white/90 transition-colors shadow-md border border-white/40 active:scale-95"
                       title="Edit Profile"
                       aria-label="Edit Profile"
                     >
@@ -56,27 +56,27 @@ export default function UserProfileHeader({ user: initialUser }: UserProfileHead
                     </button>
                   )}
                 </div>
-                <span className="inline-block px-3 py-1 bg-indigo-50 text-indigo-600 text-[10px] font-black rounded-full uppercase tracking-widest border border-indigo-100">
+                <span className="inline-block px-3 py-1 bg-gradient-to-r from-accent to-accent-light text-white text-[10px] font-black rounded-full uppercase tracking-widest shadow-md border border-white/40">
                   {user.role}
                 </span>
               </div>
               
-              <div className="flex flex-col items-center md:items-end bg-zinc-50 px-4 py-2 rounded-xl border border-zinc-100">
-                <div className="text-[10px] font-black text-zinc-400 uppercase tracking-widest mb-0.5">Reputation</div>
-                <div className="text-3xl font-black text-indigo-600 leading-none tabular-nums">
+              <div className="flex flex-col items-center md:items-end bg-white/40 px-5 py-3 rounded-2xl border border-white/50 shadow-inset-heavy">
+                <div className="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-0.5 drop-shadow-sm">Reputation</div>
+                <div className="text-3xl font-black text-accent leading-none tabular-nums drop-shadow-md">
                   {user.reputation_score.toLocaleString()}
                 </div>
               </div>
             </div>
 
             {user.bio ? (
-              <div className="bg-zinc-50/50 p-4 rounded-xl border border-zinc-100/50">
-                <p className="text-zinc-600 leading-relaxed">
+              <div className="bg-white/30 p-5 rounded-2xl border border-white/40 shadow-inner-glow">
+                <p className="text-slate-700 font-semibold leading-relaxed">
                   {user.bio}
                 </p>
               </div>
             ) : (
-              <p className="text-zinc-400 italic">No bio provided yet.</p>
+              <p className="text-slate-500 italic font-semibold drop-shadow-sm">No bio provided yet.</p>
             )}
           </div>
         </div>
