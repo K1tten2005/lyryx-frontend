@@ -1,7 +1,7 @@
 # Implementation Plan: User Profile Page Implementation
 
 ## Phase 1: API Integration & Data Models
-- [ ] Task: Define the necessary TypeScript interfaces in `lib/api/user.ts` (or equivalent file) based on the Swagger definitions: `GetUserByIDOut`, `UserAnnotation`, and `GetUserAnnotationsOut`.
+- [x] Task: Define the necessary TypeScript interfaces in `lib/api/user.ts` (or equivalent file) based on the Swagger definitions: `GetUserByIDOut`, `UserAnnotation`, and `GetUserAnnotationsOut`. 92cd8a8
 - [ ] Task: Implement the API client functions to fetch user data (`GET /v1/user/{id}`) and user annotations (`GET /v1/user/{id}/annotations`). Ensure error handling is robust.
 - [ ] Task: Write unit tests for the new API client functions, mocking the `fetch` calls to ensure correct data parsing and error throwing.
 - [ ] Task: Conductor - User Manual Verification 'Phase 1: API Integration & Data Models' (Protocol in workflow.md)
