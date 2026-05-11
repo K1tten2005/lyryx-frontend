@@ -75,12 +75,12 @@ export default function UserDropdown() {
           <Link
             href={`/user/${user.user_id}`}
             role="menuitem"
-            className="w-full flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-slate-700 hover:bg-indigo-50 hover:text-indigo-700 transition-colors"
+            className="w-full flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-slate-700 hover:bg-indigo-100 hover:text-indigo-800 transition-colors"
             onClick={() => {
               setIsOpen(false);
             }}
           >
-            <UserCircle className="w-5 h-5 text-indigo-400" />
+            <UserCircle className="w-5 h-5 text-indigo-500 group-hover:text-indigo-700" />
             Profile
           </Link>
           
@@ -90,9 +90,9 @@ export default function UserDropdown() {
               setIsOpen(false);
               logout();
             }}
-            className="w-full flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-red-600 hover:bg-red-50 hover:text-red-700 transition-colors"
+            className="w-full flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-red-600 hover:bg-red-100 hover:text-red-800 transition-colors"
           >
-            <LogOut className="w-5 h-5 text-red-400" />
+            <LogOut className="w-5 h-5 text-red-500 group-hover:text-red-700" />
             Logout
           </button>
         </div>
