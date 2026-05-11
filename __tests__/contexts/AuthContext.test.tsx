@@ -88,7 +88,8 @@ describe('AuthContext', () => {
     });
 
     await waitFor(() => {
-      expect(screen.getByTestId('auth-status')).toHaveTextContent('logged-out');
+      // We expect the UI state to *not* change to logged-out to prevent flicker before reload
+      expect(screen.getByTestId('auth-status')).toHaveTextContent('logged-in');
       expect(localStorage.getItem('access_token')).toBeNull();
       expect(localStorage.getItem('user')).toBeNull();
       expect(window.location.reload).toHaveBeenCalled();

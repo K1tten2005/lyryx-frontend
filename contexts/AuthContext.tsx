@@ -59,8 +59,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         console.error('Failed to sign out from backend', error);
       }
     }
-    setToken(null);
-    setUser(null);
+    // We intentionally do NOT call setToken(null) or setUser(null) here.
+    // Doing so causes the UI to re-render in a "logged out" state for a split 
+    // second before the window.location.reload() takes effect, creating a flicker.
     localStorage.removeItem('access_token');
     localStorage.removeItem('user');
     window.location.reload();
