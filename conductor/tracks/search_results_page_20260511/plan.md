@@ -9,7 +9,7 @@
     - [ ] Implement navigation logic in `SearchBar` component
 - [x] Task: Conductor - User Manual Verification 'Routing & Basic Scaffolding' (Protocol in workflow.md)
 
-## Phase 2: Data Fetching & Core Logic
+## Phase 2: Data Fetching & Core Logic [checkpoint: 7331b6a]
 - [x] Task: Implement Search API integration f356366
     - [ ] Create Zod schemas for search response
     - [ ] Write failing unit tests for `fetchSearchResults` function
@@ -17,7 +17,7 @@
 - [x] Task: Integrate fetching into Search Page 3a6f7aa
     - [ ] Write failing test for data loading state
     - [ ] Implement `useEffect` or React Query/SWR hook for data fetching
-- [ ] Task: Conductor - User Manual Verification 'Data Fetching & Core Logic' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Data Fetching & Core Logic' (Protocol in workflow.md)
 
 ## Phase 3: Categorized Results Layout
 - [ ] Task: Create `SearchCategory` component
