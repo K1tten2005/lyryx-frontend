@@ -9,4 +9,11 @@ describe("Footer", () => {
     expect(copyrightText).toBeInTheDocument();
     expect(screen.getByText(/Lyryx. All rights reserved./i)).toBeInTheDocument();
   });
+
+  it("has the correct background and text colors", () => {
+    const { container } = render(<Footer />);
+    const footer = container.querySelector("footer");
+    expect(footer).toHaveClass("bg-indigo-950");
+    expect(footer).toHaveClass("text-zinc-300");
+  });
 });
