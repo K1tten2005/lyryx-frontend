@@ -14,7 +14,7 @@
     - [ ] Create Zod schemas for search response
     - [ ] Write failing unit tests for `fetchSearchResults` function
     - [ ] Implement API call in `lib/api/search.ts`
-- [ ] Task: Integrate fetching into Search Page
+- [x] Task: Integrate fetching into Search Page 3a6f7aa
     - [ ] Write failing test for data loading state
     - [ ] Implement `useEffect` or React Query/SWR hook for data fetching
 - [ ] Task: Conductor - User Manual Verification 'Data Fetching & Core Logic' (Protocol in workflow.md)
