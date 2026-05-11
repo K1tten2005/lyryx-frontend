@@ -29,6 +29,7 @@ export interface UserAnnotation {
   my_vote?: number;
   start_index: number;
   end_index: number;
+  snippet?: string;
   created_at: string;
   updated_at: string;
   song: SongInfo;
@@ -50,6 +51,23 @@ export async function getUserProfile(userId: number): Promise<UserProfile> {
   if (!response.ok) {
     const errorData = await response.json().catch(() => ({}));
     throw new Error(errorData.message || 'Failed to fetch user profile');
+  }
+
+  return response.json();
+}
+
+export async function getUserMe(token: string): Promise<UserProfile> {
+  const response = await fetch(`${API_URL}/user/me`, {
+    method: 'GET',
+    headers: { 
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    },
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json().catch(() => ({}));
+    throw new Error(errorData.message || 'Failed to fetch your profile');
   }
 
   return response.json();

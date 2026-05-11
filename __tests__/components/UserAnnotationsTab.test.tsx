@@ -7,6 +7,7 @@ describe("UserAnnotationsTab", () => {
     {
       id: 1,
       content: "This is a great lyric!",
+      snippet: "Some original lyrics text here",
       rating: 10,
       start_index: 0,
       end_index: 10,
@@ -24,10 +25,11 @@ describe("UserAnnotationsTab", () => {
     },
   ];
 
-  it("renders annotations with song context", () => {
+  it("renders annotations with song context and snippet", () => {
     render(<UserAnnotationsTab annotations={mockAnnotations} />);
 
     expect(screen.getByText("This is a great lyric!")).toBeInTheDocument();
+    expect(screen.getByText(/"Some original lyrics text here"/)).toBeInTheDocument();
     expect(screen.getByText("Song Title")).toBeInTheDocument();
     expect(screen.getByText("Artist Name")).toBeInTheDocument();
     expect(screen.getByText("10")).toBeInTheDocument(); // Rating

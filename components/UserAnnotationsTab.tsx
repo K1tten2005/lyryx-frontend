@@ -64,7 +64,15 @@ export default function UserAnnotationsTab({ annotations }: UserAnnotationsTabPr
                </svg>
             </div>
             
-            <p className="text-zinc-800 text-xl font-medium leading-relaxed relative z-10 pl-6 border-l-4 border-indigo-100 italic">
+            {annotation.snippet && (
+              <div className="mb-6 relative z-10 pl-6 border-l-4 border-zinc-200">
+                <p className="text-zinc-500 font-medium italic text-lg leading-relaxed">
+                  "{annotation.snippet}"
+                </p>
+              </div>
+            )}
+
+            <p className="text-zinc-800 text-xl font-medium leading-relaxed relative z-10 pl-6 border-l-4 border-indigo-200">
               {annotation.content}
             </p>
 
