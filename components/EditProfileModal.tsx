@@ -248,6 +248,27 @@ export default function EditProfileModal({ isOpen, onClose, user }: EditProfileM
               )}
             </div>
 
+            <div>
+              <label htmlFor="confirmPassword" className="block text-sm font-medium text-zinc-700 mb-1">
+                Confirm New Password
+              </label>
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-zinc-400">
+                  <Lock className="w-4 h-4" />
+                </div>
+                <input
+                  {...register('confirmPassword')}
+                  id="confirmPassword"
+                  type="password"
+                  className="block w-full pl-10 pr-3 py-2 bg-zinc-50 border border-zinc-200 rounded-lg text-sm placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all"
+                  placeholder="••••••••"
+                />
+              </div>
+              {errors.confirmPassword && (
+                <p className="mt-1 text-xs text-red-500">{errors.confirmPassword.message}</p>
+              )}
+            </div>
+
             <div className="pt-2">
               <button
                 type="submit"

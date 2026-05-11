@@ -71,8 +71,8 @@ export default function UserProfileHeader({ user: initialUser }: UserProfileHead
 
             {user.bio ? (
               <div className="bg-zinc-50/50 p-4 rounded-xl border border-zinc-100/50">
-                <p className="text-zinc-600 leading-relaxed italic">
-                  "{user.bio}"
+                <p className="text-zinc-600 leading-relaxed">
+                  {user.bio}
                 </p>
               </div>
             ) : (

@@ -16,6 +16,7 @@ describe('profileEditSchema', () => {
     const validData = {
       username: 'newname',
       password: 'newpassword123',
+      confirmPassword: 'newpassword123',
     };
     const result = profileEditSchema.safeParse(validData);
     expect(result.success).toBe(true);
@@ -24,6 +25,7 @@ describe('profileEditSchema', () => {
   it('should allow empty password', () => {
     const validData = {
       password: '',
+      confirmPassword: '',
     };
     const result = profileEditSchema.safeParse(validData);
     expect(result.success).toBe(true);
@@ -51,6 +53,27 @@ describe('profileEditSchema', () => {
     };
     const result = profileEditSchema.safeParse(invalidData);
     expect(result.success).toBe(false);
+  });
+
+  it('should fail when passwords do not match', () => {
+    const invalidData = {
+      password: 'password123',
+      confirmPassword: 'differentpassword',
+    };
+    const result = profileEditSchema.safeParse(invalidData);
+    expect(result.success).toBe(false);
+    if (!result.success) {
+      expect(result.error.issues[0].message).toBe("Passwords don't match");
+    }
+  });
+
+  it('should pass when passwords match', () => {
+    const validData = {
+      password: 'password123',
+      confirmPassword: 'password123',
+    };
+    const result = profileEditSchema.safeParse(validData);
+    expect(result.success).toBe(true);
   });
 
   it('should require at least one field or allow empty object if it is partial', () => {
