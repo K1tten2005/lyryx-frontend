@@ -1,13 +1,13 @@
 # Implementation Plan: Search Results Page
 
-## Phase 1: Routing & Basic Scaffolding
+## Phase 1: Routing & Basic Scaffolding [checkpoint: adb7dec]
 - [x] Task: Create search results page at `/app/search/page.tsx` 2c441e1
     - [ ] Write failing test for basic page rendering
     - [ ] Implement skeleton component with "Search Results" title
 - [x] Task: Update `SearchBar` to navigate to `/search?q={query}` d7ff37a
     - [ ] Write failing test for search bar submission
     - [ ] Implement navigation logic in `SearchBar` component
-- [ ] Task: Conductor - User Manual Verification 'Routing & Basic Scaffolding' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Routing & Basic Scaffolding' (Protocol in workflow.md)
 
 ## Phase 2: Data Fetching & Core Logic
 - [ ] Task: Implement Search API integration
