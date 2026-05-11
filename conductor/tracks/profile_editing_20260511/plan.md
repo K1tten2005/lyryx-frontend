@@ -33,10 +33,10 @@
 - [x] Task: Conductor - User Manual Verification 'Phase 4: Avatar Upload Integration' (Protocol in workflow.md)
 
 ## Phase 5: Profile Page Integration
-- [ ] Task: Integrate Modal into Profile Header
-    - [ ] Update `__tests__/components/UserProfileHeader.test.tsx` to test "Edit Profile" button presence (only for the logged-in user's profile)
-    - [ ] Add "Edit Profile" button to `components/UserProfileHeader.tsx`
-    - [ ] Manage modal open/close state
-    - [ ] Handle UI update upon successful save
-    - [ ] Ensure tests pass
+- [x] Task: Integrate Modal into Profile Header 17d391f
+    - [x] Update `__tests__/components/UserProfileHeader.test.tsx` to test "Edit Profile" button presence (only for the logged-in user's profile)
+    - [x] Add "Edit Profile" button to `components/UserProfileHeader.tsx`
+    - [x] Manage modal open/close state
+    - [x] Handle UI update upon successful save
+    - [x] Ensure tests pass
 - [ ] Task: Conductor - User Manual Verification 'Phase 5: Profile Page Integration' (Protocol in workflow.md)
