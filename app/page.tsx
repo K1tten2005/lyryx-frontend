@@ -1,11 +1,13 @@
 import Navbar from '@/components/Navbar';
 import SearchBar from '@/components/SearchBar';
 import Footer from '@/components/Footer';
+import AuthModal from '@/components/AuthModal';
 
 export default function HomePage() {
   return (
     <div className="min-h-screen flex flex-col font-sans bg-zinc-50">
       <Navbar />
+
       
       <main className="flex-grow flex flex-col items-center justify-center relative">
         {/* Decorative background pattern/gradient to add depth */}

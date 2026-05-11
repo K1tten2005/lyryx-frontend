@@ -7,7 +7,7 @@ import { useState } from 'react';
 import AuthModal from './AuthModal';
 
 export default function Navbar() {
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, isInitialized } = useAuth();
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
 
   return (
@@ -23,8 +23,8 @@ export default function Navbar() {
           </Link>
         </div>
 
-        <div className="w-1/3 flex justify-end">
-          {isAuthenticated ? (
+        <div className="w-1/3 flex justify-end h-10">
+          {!isInitialized ? null : isAuthenticated ? (
             <button className="flex items-center justify-center p-2.5 rounded-full bg-indigo-900/50 text-zinc-300 hover:text-white hover:bg-indigo-800 transition-all border border-indigo-800/50 hover:border-indigo-700">
               <User className="w-5 h-5" />
             </button>

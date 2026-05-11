@@ -6,6 +6,7 @@ import { signIn, signUp, signOut, UserInfo } from '@/lib/api/auth';
 interface AuthContextType {
   user: UserInfo | null;
   isAuthenticated: boolean;
+  isInitialized: boolean;
   login: (...args: Parameters<typeof signIn>) => Promise<void>;
   register: (...args: Parameters<typeof signUp>) => Promise<void>;
   logout: () => Promise<void>;
@@ -16,6 +17,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<UserInfo | null>(null);
   const [token, setToken] = useState<string | null>(null);
+  const [isInitialized, setIsInitialized] = useState(false);
 
   useEffect(() => {
     // Load auth state from local storage on mount
@@ -30,6 +32,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         console.error('Failed to parse stored user', e);
       }
     }
+    setIsInitialized(true);
   }, []);
 
   const login = async (...args: Parameters<typeof signIn>) => {
@@ -65,6 +68,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const value = {
     user,
     isAuthenticated: !!token,
+    isInitialized,
     login,
     register,
     logout,

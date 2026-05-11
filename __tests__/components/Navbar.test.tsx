@@ -24,7 +24,7 @@ describe("Navbar", () => {
   });
 
   it("renders the Lyryx logo link", () => {
-    (useAuth as any).mockReturnValue({ isAuthenticated: false, user: null });
+    (useAuth as any).mockReturnValue({ isAuthenticated: false, isInitialized: true, user: null });
     render(<Navbar />);
     const logoLink = screen.getByRole("link", { name: /LYRYX/i });
     expect(logoLink).toBeInTheDocument();
@@ -32,7 +32,7 @@ describe("Navbar", () => {
   });
 
   it("renders a Login button when unauthenticated and opens modal on click", () => {
-    (useAuth as any).mockReturnValue({ isAuthenticated: false, user: null });
+    (useAuth as any).mockReturnValue({ isAuthenticated: false, isInitialized: true, user: null });
     render(<Navbar />);
     
     const loginButton = screen.getByRole("button", { name: /log in/i });
@@ -51,7 +51,7 @@ describe("Navbar", () => {
   });
 
   it("renders user profile icon when authenticated", () => {
-    (useAuth as any).mockReturnValue({ isAuthenticated: true, user: { username: 'testuser' }, logout: vi.fn() });
+    (useAuth as any).mockReturnValue({ isAuthenticated: true, isInitialized: true, user: { username: 'testuser' }, logout: vi.fn() });
     render(<Navbar />);
     
     const userButton = screen.getByRole("button");
@@ -62,7 +62,7 @@ describe("Navbar", () => {
   });
 
   it("renders the nav container with indigo-950 background", () => {
-    (useAuth as any).mockReturnValue({ isAuthenticated: false, user: null });
+    (useAuth as any).mockReturnValue({ isAuthenticated: false, isInitialized: true, user: null });
     render(<Navbar />);
     const navElement = screen.getByRole("navigation");
     expect(navElement).toHaveClass("bg-indigo-950");

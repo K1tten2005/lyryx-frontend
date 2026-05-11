@@ -3,7 +3,7 @@ import HomePage from "@/app/page";
 import { vi } from "vitest";
 
 vi.mock("@/contexts/AuthContext", () => ({
-  useAuth: vi.fn().mockReturnValue({ isAuthenticated: false, user: null }),
+  useAuth: vi.fn().mockReturnValue({ isAuthenticated: false, isInitialized: true, user: null }),
 }));
 
 describe("HomePage", () => {
