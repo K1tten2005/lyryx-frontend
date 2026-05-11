@@ -11,8 +11,8 @@
 - [x] Task: Implement the `AuthModal` component to host the forms, manage the toggle state between Login and Registration, and handle modal visibility. [76911a0]
 - [x] Task: Conductor - User Manual Verification 'Phase 2: Forms & Modal UI' (Protocol in workflow.md) [84d92fe]
 
-## Phase 3: Navbar Integration & Polish
+## Phase 3: Navbar Integration & Polish [checkpoint: d2e4c03]
 - [x] Task: Update the `Navbar` component to display a single "Login" button when the user is not authenticated (which opens the AuthModal). [bf96882]
 - [x] Task: Update the `Navbar` component to display the user profile icon when the user is authenticated. [bf96882]
 - [x] Task: Run full test suite and ensure all components meet the >80% coverage requirement. [bf96882]
-- [ ] Task: Conductor - User Manual Verification 'Phase 3: Navbar Integration & Polish' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 3: Navbar Integration & Polish' (Protocol in workflow.md) [d2e4c03]
