@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { SearchResultItem } from "@/lib/api/search";
-import { Music, User, Mic2 } from "lucide-react";
+import { Music, User, Mic2, Eye } from "lucide-react";
 
 export function ArtistCard({ artist }: { artist: SearchResultItem }) {
   return (
@@ -38,6 +38,13 @@ export function SongCard({ song, showSnippet = false }: { song: SearchResultItem
     );
   };
 
+  const formatViews = (views: number | undefined) => {
+    if (views === undefined) return null;
+    if (views >= 1000000) return `${(views / 1000000).toFixed(1)}M`;
+    if (views >= 1000) return `${(views / 1000).toFixed(1)}K`;
+    return views.toString();
+  };
+
   return (
     <Link href={`/song/${song.id}`} className="group block focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 rounded-xl">
       <div className="flex items-center p-4 bg-white/40 backdrop-blur-xl rounded-xl border border-white/60 hover:border-accent hover:bg-white/60 shadow-glass hover:shadow-lg transition-all duration-300">
@@ -50,13 +57,20 @@ export function SongCard({ song, showSnippet = false }: { song: SearchResultItem
             </div>
           )}
         </div>
-        <div className="flex-grow overflow-hidden">
+        <div className="flex-grow overflow-hidden pr-2">
           <h3 className="font-bold text-lg text-slate-800 group-hover:text-accent transition-colors truncate">
             {song.title}
           </h3>
           <p className="text-sm text-slate-600 truncate font-medium">{song.artist?.name || song.artist_name}</p>
           {renderLyricsSnippet()}
         </div>
+        
+        {song.views !== undefined && (
+          <div className="flex flex-col items-end flex-shrink-0 text-slate-400 ml-2">
+            <Eye size={16} className="mb-1" />
+            <span className="text-xs font-semibold">{formatViews(song.views)}</span>
+          </div>
+        )}
       </div>
     </Link>
   );

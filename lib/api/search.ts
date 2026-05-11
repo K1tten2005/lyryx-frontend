@@ -14,6 +14,7 @@ export const SearchResultItemSchema = z.object({
     name: z.string()
   }).optional(), // For songs from actual backend
   lyrics_snippet: z.string().optional(), // For lyrics
+  views: z.number().optional(), // For songs
 }).transform(val => ({
   ...val,
   // Ensure we always have an 'id' field for React keys and links, falling back to user_id
