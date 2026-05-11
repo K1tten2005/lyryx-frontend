@@ -50,15 +50,15 @@ describe("Navbar", () => {
     expect(screen.queryByTestId("auth-modal")).not.toBeInTheDocument();
   });
 
-  it("renders user profile icon when authenticated", () => {
-    (useAuth as any).mockReturnValue({ isAuthenticated: true, isInitialized: true, user: { username: 'testuser' }, logout: vi.fn() });
+  it("renders user profile dropdown when authenticated", () => {
+    (useAuth as any).mockReturnValue({ isAuthenticated: true, isInitialized: true, user: { username: 'testuser', reputation_score: 10 }, logout: vi.fn() });
     render(<Navbar />);
     
-    const userButton = screen.getByRole("button");
-    // Button shouldn't contain "Log In"
-    expect(userButton).not.toHaveTextContent(/log in/i);
-    // Since it's an icon button, we expect it to exist
-    expect(userButton).toBeInTheDocument();
+    // It should render the reputation score from UserDropdown
+    expect(screen.getByText('10 RS')).toBeInTheDocument();
+    
+    const loginButton = screen.queryByRole("button", { name: /log in/i });
+    expect(loginButton).not.toBeInTheDocument();
   });
 
   it("renders the nav container with indigo-950 background", () => {

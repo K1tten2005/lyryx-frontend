@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useAuth } from '@/contexts/AuthContext';
 import { useState } from 'react';
 import AuthModal from './AuthModal';
+import UserDropdown from './UserDropdown';
 
 export default function Navbar() {
   const { isAuthenticated, isInitialized } = useAuth();
@@ -25,9 +26,7 @@ export default function Navbar() {
 
         <div className="w-1/3 flex justify-end h-10">
           {!isInitialized ? null : isAuthenticated ? (
-            <button className="flex items-center justify-center p-2.5 rounded-full bg-indigo-900/50 text-zinc-300 hover:text-white hover:bg-indigo-800 transition-all border border-indigo-800/50 hover:border-indigo-700">
-              <User className="w-5 h-5" />
-            </button>
+            <UserDropdown />
           ) : (
             <button
               onClick={() => setIsAuthModalOpen(true)}
