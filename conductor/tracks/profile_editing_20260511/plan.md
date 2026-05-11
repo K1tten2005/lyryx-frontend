@@ -42,7 +42,7 @@
 - [x] Task: Conductor - User Manual Verification 'Phase 5: Profile Page Integration' (Protocol in workflow.md)
 
 ## Phase 6: Token Refresh & Auth Robustness
-- [x] Task: Implement Token Refresh Logic 7f36cfc
+- [x] Task: Implement Token Refresh Logic 662fced
     - [x] Add `refreshToken` to `lib/api/auth.ts`
     - [x] Update `AuthContext.tsx` to handle periodic refresh or on-demand refresh
     - [x] Update API calling logic to handle 401 Unauthorized by attempting refresh
