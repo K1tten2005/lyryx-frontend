@@ -13,13 +13,13 @@ export default function Navbar() {
 
   return (
     <>
-      <nav className="w-full flex items-center justify-between px-6 py-4 bg-indigo-950 sticky top-0 z-50 shadow-md border-b border-indigo-900">
+      <nav className="w-full flex items-center justify-between px-6 py-4 bg-gradient-to-b from-indigo-900 to-indigo-950 sticky top-0 z-50 border-b border-indigo-800 shadow-glass">
         <div className="w-1/3">
           {/* Placeholder for left-side navigation if needed */}
         </div>
 
         <div className="w-1/3 flex justify-center">
-          <Link href="/" className="text-2xl font-black tracking-tighter text-white hover:text-indigo-200 transition-colors">
+          <Link href="/" className="text-3xl font-bold tracking-tight text-white drop-shadow-md hover:text-indigo-200 transition-colors">
             LYRYX
           </Link>
         </div>
@@ -30,7 +30,7 @@ export default function Navbar() {
           ) : (
             <button
               onClick={() => setIsAuthModalOpen(true)}
-              className="px-5 py-2 rounded-full bg-white text-indigo-950 font-medium hover:bg-indigo-50 transition-colors shadow-sm"
+              className="btn-primary py-2"
             >
               Log In
             </button>

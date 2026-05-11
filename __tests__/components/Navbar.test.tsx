@@ -61,10 +61,10 @@ describe("Navbar", () => {
     expect(loginButton).not.toBeInTheDocument();
   });
 
-  it("renders the nav container with indigo-950 background", () => {
+  it("renders the nav container with surface background", () => {
     (useAuth as any).mockReturnValue({ isAuthenticated: false, isInitialized: true, user: null });
     render(<Navbar />);
     const navElement = screen.getByRole("navigation");
-    expect(navElement).toHaveClass("bg-indigo-950");
+    expect(navElement).toHaveClass("from-indigo-900");
   });
 });

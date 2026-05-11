@@ -4,14 +4,23 @@
 
 @layer base {
   body {
-    @apply bg-background text-foreground font-sans antialiased;
+    @apply bg-background bg-frutiger-gradient min-h-screen text-slate-800 font-sans antialiased bg-fixed;
   }
   
   h1, h2, h3, h4, h5, h6 {
-    @apply font-serif font-bold tracking-tight;
+    @apply font-bold text-slate-700 tracking-tight shadow-white drop-shadow-md;
   }
 
   ::selection {
     @apply bg-accent text-white;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply px-6 py-2.5 bg-accent text-white font-bold font-sans rounded-full bg-glossy-button shadow-glossy-btn border border-white/40 transition-all hover:bg-accent-hover hover:bg-glossy-button-hover active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed backdrop-blur-sm;
+  }
+  .input-primary {
+    @apply w-full px-4 py-2.5 bg-white/80 text-slate-700 font-sans border border-blue-200/50 rounded-2xl shadow-inset-heavy focus:outline-none focus:ring-4 focus:ring-accent/30 focus:border-accent transition-all backdrop-blur-sm;
   }
 }

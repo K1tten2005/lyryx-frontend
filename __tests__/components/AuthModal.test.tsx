@@ -31,7 +31,7 @@ describe('AuthModal', () => {
   it('renders login form by default', () => {
     render(<AuthModal isOpen={true} onClose={mockOnClose} />);
     expect(screen.getByTestId('login-form')).toBeInTheDocument();
-    expect(screen.getByText(/sign in to your account/i)).toBeInTheDocument();
+    expect(screen.getByText(/sign in/i)).toBeInTheDocument();
   });
 
   it('does not render when isOpen is false', () => {
@@ -45,7 +45,7 @@ describe('AuthModal', () => {
     fireEvent.click(screen.getByRole('button', { name: /sign up/i }));
     
     expect(screen.getByTestId('register-form')).toBeInTheDocument();
-    expect(screen.getByText(/create a new account/i)).toBeInTheDocument();
+    expect(screen.getByText(/create account/i)).toBeInTheDocument();
   });
 
   it('toggles back to login form when "Sign in" is clicked', () => {

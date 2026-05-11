@@ -1,11 +1,10 @@
 import type { Metadata } from 'next';
-import { Inter, Playfair_Display } from 'next/font/google';
+import { Nunito } from 'next/font/google';
 import './globals.css';
 import { AuthProvider } from '@/contexts/AuthContext';
 import { Toaster } from 'react-hot-toast';
 
-const inter = Inter({ subsets: ['latin', 'cyrillic'], variable: '--font-inter' });
-const playfair = Playfair_Display({ subsets: ['latin', 'cyrillic'], variable: '--font-playfair' });
+const nunito = Nunito({ subsets: ['latin', 'cyrillic'], variable: '--font-nunito' });
 
 export const metadata: Metadata = {
   title: 'Lyryx Frontend',
@@ -19,10 +18,25 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ru">
-      <body className={`${inter.variable} ${playfair.variable} font-sans`}>
+      <body className={`${nunito.variable} font-sans`}>
         <AuthProvider>
           {children}
-          <Toaster position="bottom-right" />
+          <Toaster 
+            position="bottom-right" 
+            toastOptions={{
+              className: '',
+              style: {
+                borderRadius: '9999px',
+                background: 'rgba(255, 255, 255, 0.8)',
+                backdropFilter: 'blur(10px)',
+                border: '1px solid rgba(255, 255, 255, 0.5)',
+                boxShadow: '0 8px 32px 0 rgba(0, 168, 255, 0.15), inset 0 1px 0 rgba(255,255,255,1)',
+                color: '#1e293b',
+                fontWeight: 'bold',
+                fontFamily: 'var(--font-nunito), sans-serif',
+              },
+            }}
+          />
         </AuthProvider>
       </body>
     </html>

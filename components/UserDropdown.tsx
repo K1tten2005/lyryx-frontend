@@ -32,28 +32,28 @@ export default function UserDropdown() {
     <div className="relative" ref={dropdownRef}>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className={`flex items-center gap-2 pl-1 pr-3 py-1 rounded-full transition-all border ${
+        className={`flex items-center gap-2 pl-1 pr-4 py-1 transition-all rounded-full border border-white/50 ${
           isOpen 
-            ? 'bg-indigo-900 border-indigo-700 text-white shadow-inner' 
-            : 'bg-indigo-900/40 border-indigo-800/40 text-zinc-300 hover:bg-indigo-900/80 hover:text-white hover:border-indigo-700/60 shadow-sm'
+            ? 'bg-white/80 shadow-inner-glow' 
+            : 'bg-surface shadow-glass hover:bg-white/90'
         }`}
         aria-expanded={isOpen}
         aria-haspopup="menu"
       >
-        <div className="w-8 h-8 rounded-full overflow-hidden flex items-center justify-center bg-indigo-950 shrink-0">
+        <div className="w-10 h-10 rounded-full overflow-hidden flex items-center justify-center bg-gradient-to-br from-accent to-accent-light shrink-0 border-2 border-white shadow-sm">
           {user.avatar_url ? (
             <Image 
               src={user.avatar_url} 
               alt={`${user.username} avatar`} 
-              width={32} 
-              height={32} 
+              width={40} 
+              height={40} 
               className="object-cover w-full h-full"
             />
           ) : (
-            <User className="w-5 h-5 text-indigo-400" />
+            <User className="w-5 h-5 text-white" />
           )}
         </div>
-        <span className="text-sm font-medium tracking-wide">
+        <span className="text-sm font-bold tracking-widest uppercase font-sans">
           {user.reputation_score} RS
         </span>
       </button>
@@ -61,13 +61,13 @@ export default function UserDropdown() {
       {isOpen && (
         <div 
           role="menu"
-          className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-xl py-1 border border-zinc-100 animate-in fade-in slide-in-from-top-2 duration-150 z-50"
+          className="absolute right-0 mt-2 w-56 bg-surface border-4 border-border shadow-brutal py-0 animate-in fade-in slide-in-from-top-2 duration-150 z-50 overflow-hidden"
         >
-          <div className="px-4 py-2 border-b border-zinc-100 mb-1">
-            <p className="text-sm font-semibold text-zinc-900 truncate">
+          <div className="px-4 py-4 border-b-4 border-border bg-accent text-white mb-0">
+            <p className="text-sm font-black truncate uppercase tracking-widest font-sans">
               {user.username}
             </p>
-            <p className="text-xs text-zinc-500 truncate">
+            <p className="text-xs text-white/80 truncate font-bold mt-1">
               {user.email}
             </p>
           </div>
@@ -75,12 +75,12 @@ export default function UserDropdown() {
           <Link
             href={`/user/${user.user_id}`}
             role="menuitem"
-            className="w-full flex items-center gap-2 px-4 py-2 text-sm text-zinc-700 hover:bg-indigo-50 hover:text-indigo-700 transition-colors"
+            className="w-full flex items-center gap-3 px-4 py-3 text-sm font-bold uppercase tracking-wider text-foreground hover:bg-accent hover:text-white transition-colors border-b-2 border-border"
             onClick={() => {
               setIsOpen(false);
             }}
           >
-            <UserCircle className="w-4 h-4" />
+            <UserCircle className="w-5 h-5" />
             Profile
           </Link>
           
@@ -90,9 +90,9 @@ export default function UserDropdown() {
               setIsOpen(false);
               logout();
             }}
-            className="w-full flex items-center gap-2 px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors"
+            className="w-full flex items-center gap-3 px-4 py-2.5 text-sm font-semibold text-red-600 hover:bg-red-500 hover:text-white transition-colors"
           >
-            <LogOut className="w-4 h-4" />
+            <LogOut className="w-5 h-5" />
             Logout
           </button>
         </div>

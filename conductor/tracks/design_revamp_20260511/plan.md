@@ -7,11 +7,11 @@
 - [x] Task: Conductor - User Manual Verification 'Phase 1: Foundational Styles & Typography' (Protocol in workflow.md)
 
 ## Phase 2: Core Component Library Redesign
-- [ ] Task: Redesign and implement Buttons and Inputs with a custom, non-generic look
-- [ ] Task: Redesign Modals and Popovers (AuthModal, EditProfileModal)
-- [ ] Task: Redesign SearchBar and UserDropdown components
-- [ ] Task: Redesign Cards and Skeletons (UserProfileSkeleton)
-- [ ] Task: Conductor - User Manual Verification 'Phase 2: Core Component Library Redesign' (Protocol in workflow.md)
+- [x] Task: Redesign and implement Buttons and Inputs with a custom, non-generic look
+- [x] Task: Redesign Modals and Popovers (AuthModal, EditProfileModal)
+- [x] Task: Redesign SearchBar and UserDropdown components
+- [x] Task: Redesign Cards and Skeletons (UserProfileSkeleton)
+- [~] Task: Conductor - User Manual Verification 'Phase 2: Core Component Library Redesign' (Protocol in workflow.md)
 
 ## Phase 3: Homepage & Navigation Revamp
 - [ ] Task: Redesign Navbar and Footer to reflect the new aesthetic

@@ -11,6 +11,6 @@ describe("SearchBar", () => {
   it("has a prominent shadow", () => {
     render(<SearchBar />);
     const input = screen.getByRole("textbox");
-    expect(input).toHaveClass("shadow-md");
+    expect(input).toHaveClass("shadow-glass");
   });
 });

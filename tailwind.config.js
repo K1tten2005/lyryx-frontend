@@ -7,26 +7,29 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['var(--font-inter)', 'sans-serif'],
-        serif: ['var(--font-playfair)', 'serif'],
+        sans: ['var(--font-nunito)', 'sans-serif'],
       },
       colors: {
-        background: '#FAF9F6', // Off-white pearl
-        foreground: '#111111', // Near black
-        surface: '#FFFFFF',
+        background: '#f3e8ff', // Light purple
+        surface: 'rgba(255, 255, 255, 0.7)', // Translucent white
         accent: {
-          DEFAULT: '#7C3AED', // Vibrant purple
-          hover: '#6D28D9',
-          light: '#DDD6FE',
-          dark: '#4C1D95',
+          DEFAULT: '#a855f7', // Vibrant Frutiger purple (fuchsia-500)
+          hover: '#9333ea',   // Darker purple (purple-600)
+          light: '#d8b4fe',   // Light purple
         },
-        border: '#111111', // Brutalist borders
-        muted: '#737373',
+        success: '#44bd32', // Vibrant green
+      },
+      backgroundImage: {
+        'frutiger-gradient': 'linear-gradient(180deg, #ffffff 0%, #f3e8ff 100%)',
+        'glossy-button': 'linear-gradient(180deg, rgba(255,255,255,0.7) 0%, rgba(255,255,255,0.2) 49%, rgba(255,255,255,0) 51%, rgba(0,0,0,0.05) 100%)',
+        'glossy-button-hover': 'linear-gradient(180deg, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0.3) 49%, rgba(255,255,255,0.1) 51%, rgba(0,0,0,0.1) 100%)',
+        'glass-panel': 'linear-gradient(135deg, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0.4) 100%)',
       },
       boxShadow: {
-        'brutal': '4px 4px 0px 0px rgba(17, 17, 17, 1)',
-        'brutal-lg': '8px 8px 0px 0px rgba(17, 17, 17, 1)',
-        'brutal-sm': '2px 2px 0px 0px rgba(17, 17, 17, 1)',
+        'glass': '0 8px 32px 0 rgba(168, 85, 247, 0.15), inset 0 1px 0 rgba(255,255,255,1)',
+        'glossy-btn': '0 4px 6px -1px rgba(168, 85, 247, 0.3), inset 0 1px 0 rgba(255,255,255,0.8), inset 0 -2px 4px rgba(0,0,0,0.2)',
+        'inner-glow': 'inset 0 2px 10px rgba(168, 85, 247, 0.2)',
+        'inset-heavy': 'inset 0 3px 6px rgba(0,0,0,0.1), 0 1px 0 rgba(255,255,255,1)',
       }
     },
   },

@@ -58,54 +58,54 @@ export default function RegisterForm({ onSuccess }: RegisterFormProps) {
       )}
       
       <div>
-        <label className="block text-sm font-medium text-zinc-700 mb-1">
+        <label className="block text-sm font-bold text-foreground mb-1 uppercase tracking-wider">
           Username
         </label>
         <input
           type="text"
           placeholder="yourusername"
           {...register('username')}
-          className="w-full px-4 py-2 border border-zinc-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-colors"
+          className="input-primary"
         />
         {errors.username && (
-          <p className="mt-1 text-sm text-red-500">{errors.username.message}</p>
+          <p className="mt-1 text-sm font-bold text-red-500">{errors.username.message}</p>
         )}
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-zinc-700 mb-1">
+        <label className="block text-sm font-bold text-foreground mb-1 uppercase tracking-wider">
           Email
         </label>
         <input
           type="email"
           placeholder="your@email.com"
           {...register('email')}
-          className="w-full px-4 py-2 border border-zinc-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-colors"
+          className="input-primary"
         />
         {errors.email && (
-          <p className="mt-1 text-sm text-red-500">{errors.email.message}</p>
+          <p className="mt-1 text-sm font-bold text-red-500">{errors.email.message}</p>
         )}
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-zinc-700 mb-1">
+        <label className="block text-sm font-bold text-foreground mb-1 uppercase tracking-wider">
           Password
         </label>
         <input
           type="password"
           placeholder="••••••••"
           {...register('password')}
-          className="w-full px-4 py-2 border border-zinc-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-colors"
+          className="input-primary"
         />
         {errors.password && (
-          <p className="mt-1 text-sm text-red-500">{errors.password.message}</p>
+          <p className="mt-1 text-sm font-bold text-red-500">{errors.password.message}</p>
         )}
       </div>
 
       <button
         type="submit"
         disabled={isSubmitting}
-        className="w-full py-2 px-4 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-md transition-colors disabled:opacity-50"
+        className="w-full btn-primary"
       >
         {isSubmitting ? 'Creating account...' : 'Create Account'}
       </button>

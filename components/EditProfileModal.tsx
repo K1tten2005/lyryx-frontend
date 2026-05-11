@@ -108,12 +108,12 @@ export default function EditProfileModal({ isOpen, onClose, user }: EditProfileM
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
-      <div className="relative w-full max-w-md bg-white rounded-xl shadow-xl overflow-hidden animate-in fade-in zoom-in duration-200">
-        <div className="flex items-center justify-between p-4 border-b border-zinc-100">
-          <h2 className="text-xl font-semibold text-zinc-900">Edit Profile</h2>
+      <div className="relative w-full max-w-md bg-surface bg-glass-panel backdrop-blur-md rounded-3xl border border-white/50 shadow-glass overflow-hidden animate-in fade-in zoom-in duration-200">
+        <div className="flex items-center justify-between p-4 border-b border-white/40">
+          <h2 className="text-2xl font-bold text-slate-800 tracking-tight drop-shadow-sm">Edit Profile</h2>
           <button
             onClick={onClose}
-            className="p-1 rounded-full text-zinc-400 hover:text-zinc-600 hover:bg-zinc-100 transition-colors"
+            className="p-1.5 rounded-full hover:bg-white/50 text-slate-500 transition-all shadow-inner-glow"
             aria-label="Close modal"
           >
             <X className="w-5 h-5" />
@@ -176,7 +176,7 @@ export default function EditProfileModal({ isOpen, onClose, user }: EditProfileM
                   {...register('username')}
                   id="username"
                   type="text"
-                  className="block w-full pl-10 pr-3 py-2 bg-zinc-50 border border-zinc-200 rounded-lg text-sm placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all"
+                  className="input-primary pl-10"
                   placeholder="Your name"
                 />
               </div>
@@ -197,7 +197,7 @@ export default function EditProfileModal({ isOpen, onClose, user }: EditProfileM
                   {...register('email')}
                   id="email"
                   type="email"
-                  className="block w-full pl-10 pr-3 py-2 bg-zinc-50 border border-zinc-200 rounded-lg text-sm placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all"
+                  className="input-primary pl-10"
                   placeholder="your@email.com"
                 />
               </div>
@@ -218,7 +218,7 @@ export default function EditProfileModal({ isOpen, onClose, user }: EditProfileM
                   {...register('bio')}
                   id="bio"
                   rows={3}
-                  className="block w-full pl-10 pr-3 py-2 bg-zinc-50 border border-zinc-200 rounded-lg text-sm placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all resize-none"
+                  className="input-primary pl-10 resize-none"
                   placeholder="Tell us about yourself"
                 />
               </div>
@@ -239,7 +239,7 @@ export default function EditProfileModal({ isOpen, onClose, user }: EditProfileM
                   {...register('password')}
                   id="password"
                   type="password"
-                  className="block w-full pl-10 pr-3 py-2 bg-zinc-50 border border-zinc-200 rounded-lg text-sm placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all"
+                  className="input-primary pl-10"
                   placeholder="••••••••"
                 />
               </div>
@@ -260,7 +260,7 @@ export default function EditProfileModal({ isOpen, onClose, user }: EditProfileM
                   {...register('confirmPassword')}
                   id="confirmPassword"
                   type="password"
-                  className="block w-full pl-10 pr-3 py-2 bg-zinc-50 border border-zinc-200 rounded-lg text-sm placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all"
+                  className="input-primary pl-10"
                   placeholder="••••••••"
                 />
               </div>
@@ -273,7 +273,7 @@ export default function EditProfileModal({ isOpen, onClose, user }: EditProfileM
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full flex items-center justify-center py-2 px-4 bg-indigo-600 hover:bg-indigo-700 disabled:bg-indigo-400 text-white font-medium rounded-lg shadow-sm transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                className="w-full flex items-center justify-center btn-primary"
               >
                 {isSubmitting ? (
                   <Loader2 className="w-5 h-5 animate-spin" />
