@@ -7,4 +7,10 @@ describe("SearchBar", () => {
     const searchInput = screen.getByRole("textbox");
     expect(searchInput).toBeInTheDocument();
   });
+
+  it("has a prominent shadow", () => {
+    render(<SearchBar />);
+    const input = screen.getByRole("textbox");
+    expect(input).toHaveClass("shadow-md");
+  });
 });
