@@ -6,6 +6,7 @@ export interface UserInfo {
   email: string;
   role: string;
   reputation_score: number;
+  bio?: string;
   avatar_url?: string;
 }
 
