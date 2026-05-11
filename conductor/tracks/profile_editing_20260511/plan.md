@@ -6,13 +6,13 @@
     - [x] Implement `updateUserProfile` (PATCH `/user/me`)
     - [x] Implement `updateUserAvatar` (PATCH `/user/me/avatar`) using `FormData`
     - [x] Ensure tests pass
-- [ ] Task: Conductor - User Manual Verification 'Phase 1: API Integration' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 1: API Integration' (Protocol in workflow.md)
 
 ## Phase 2: Form Validation Schema
-- [ ] Task: Create validation schemas
-    - [ ] Write unit tests for Zod validation schemas (Name, Bio, Email, Password)
-    - [ ] Implement Zod schema `profileEditSchema`
-    - [ ] Ensure tests pass
+- [x] Task: Create validation schemas f88041f
+    - [x] Write unit tests for Zod validation schemas (Name, Bio, Email, Password)
+    - [x] Implement Zod schema `profileEditSchema`
+    - [x] Ensure tests pass
 - [ ] Task: Conductor - User Manual Verification 'Phase 2: Form Validation Schema' (Protocol in workflow.md)
 
 ## Phase 3: Edit Profile Modal Component
