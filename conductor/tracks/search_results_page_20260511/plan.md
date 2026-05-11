@@ -20,10 +20,10 @@
 - [x] Task: Conductor - User Manual Verification 'Data Fetching & Core Logic' (Protocol in workflow.md)
 
 ## Phase 3: Categorized Results Layout
-- [ ] Task: Create `SearchCategory` component
+- [x] Task: Create `SearchCategory` component cf7d823
     - [ ] Write failing tests for category title and result listing
     - [ ] Implement component with "Top 3" slicing logic
-- [ ] Task: Implement specialized result cards (Artist, Song, User)
+- [~] Task: Implement specialized result cards (Artist, Song, User)
     - [ ] Write tests for individual card rendering
     - [ ] Implement glassmorphic card designs
 - [ ] Task: Assemble main results page layout
