@@ -12,10 +12,10 @@ interface UserProfileHeaderProps {
 }
 
 export default function UserProfileHeader({ user: initialUser }: UserProfileHeaderProps) {
-  const { user: currentUser } = useAuth();
+  const { user: currentUser, token } = useAuth();
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
-  const isOwner = currentUser?.user_id === initialUser.user_id;
+  const isOwner = !!token && currentUser?.user_id === initialUser.user_id;
   const user = isOwner ? (currentUser as UserProfile) || initialUser : initialUser;
 
   return (

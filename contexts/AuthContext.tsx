@@ -1,7 +1,7 @@
 'use client';
 
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { signIn, signUp, signOut, UserInfo } from '@/lib/api/auth';
+import { signIn, signUp, signOut, refreshToken, UserInfo } from '@/lib/api/auth';
 import { getUserMe } from '@/lib/api/user';
 
 interface AuthContextType {
@@ -13,6 +13,7 @@ interface AuthContextType {
   register: (...args: Parameters<typeof signUp>) => Promise<void>;
   logout: () => Promise<void>;
   updateUser: (user: UserInfo) => void;
+  refreshAuth: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -22,36 +23,53 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [token, setToken] = useState<string | null>(null);
   const [isInitialized, setIsInitialized] = useState(false);
 
-  useEffect(() => {
-    // Load auth state from local storage on mount
-    const storedToken = localStorage.getItem('access_token');
-    const storedUser = localStorage.getItem('user');
+  const refreshAuth = async () => {
+    try {
+      const { access_token } = await refreshToken();
+      setToken(access_token);
+      localStorage.setItem('access_token', access_token);
+      
+      const latestUser = await getUserMe(access_token);
+      setUser(latestUser);
+      localStorage.setItem('user', JSON.stringify(latestUser));
+      return access_token;
+    } catch (error) {
+      console.error('Refresh failed', error);
+      // If we had a session but refresh failed, it might mean the refresh token is also expired
+      if (token) {
+        logout();
+      }
+      throw error;
+    }
+  };
 
-    if (storedToken) {
-      setToken(storedToken);
-      if (storedUser) {
+  useEffect(() => {
+    const initAuth = async () => {
+      const storedToken = localStorage.getItem('access_token');
+      const storedUser = localStorage.getItem('user');
+
+      if (storedToken) {
+        setToken(storedToken);
+        if (storedUser) setUser(JSON.parse(storedUser));
+        
         try {
-          setUser(JSON.parse(storedUser));
-        } catch (e) {
-          console.error('Failed to parse stored user', e);
+          // Attempt refresh on mount to ensure we have a valid access token
+          await refreshAuth();
+        } catch (error) {
+          // refreshAuth handles logout on failure if token was present
+        }
+      } else {
+        // Try refreshing even if no stored token (cookie-based refresh)
+        try {
+          await refreshAuth();
+        } catch (error) {
+          // No session
         }
       }
-      
-      // Sync with backend to get latest info (like avatar)
-      getUserMe(storedToken)
-        .then((latestUser) => {
-          setUser(latestUser);
-          localStorage.setItem('user', JSON.stringify(latestUser));
-        })
-        .catch((err) => {
-          console.error('Failed to sync user profile', err);
-        })
-        .finally(() => {
-          setIsInitialized(true);
-        });
-    } else {
       setIsInitialized(true);
-    }
+    };
+
+    initAuth();
   }, []);
 
   const login = async (...args: Parameters<typeof signIn>) => {
@@ -78,11 +96,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         console.error('Failed to sign out from backend', error);
       }
     }
+    localStorage.removeItem('access_token');
+    localStorage.removeItem('user');
     // We intentionally do NOT call setToken(null) or setUser(null) here.
     // Doing so causes the UI to re-render in a "logged out" state for a split 
     // second before the window.location.reload() takes effect, creating a flicker.
-    localStorage.removeItem('access_token');
-    localStorage.removeItem('user');
     window.location.reload();
   };
 
@@ -100,6 +118,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     register,
     logout,
     updateUser,
+    refreshAuth: async () => { await refreshAuth(); },
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

@@ -8,6 +8,11 @@ vi.mock('@/lib/api/auth', () => ({
   signIn: vi.fn(),
   signUp: vi.fn(),
   signOut: vi.fn(),
+  refreshToken: vi.fn(),
+}));
+
+vi.mock('@/lib/api/user', () => ({
+  getUserMe: vi.fn(),
 }));
 
 const TestComponent = () => {

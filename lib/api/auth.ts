@@ -61,3 +61,17 @@ export async function signOut(token: string): Promise<boolean> {
   
   return true;
 }
+
+export async function refreshToken(): Promise<{ access_token: string }> {
+  const response = await fetch(`${API_URL}/auth/refresh`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json().catch(() => ({}));
+    throw new Error(errorData.message || 'Refresh failed');
+  }
+
+  return response.json();
+}

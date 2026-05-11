@@ -16,7 +16,7 @@ interface EditProfileModalProps {
 }
 
 export default function EditProfileModal({ isOpen, onClose, user }: EditProfileModalProps) {
-  const { token, updateUser } = useAuth();
+  const { token, updateUser, refreshAuth } = useAuth();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [avatarFile, setAvatarFile] = useState<File | null>(null);
@@ -55,7 +55,7 @@ export default function EditProfileModal({ isOpen, onClose, user }: EditProfileM
     setIsSubmitting(true);
     setError(null);
 
-    try {
+    const performUpdate = async (authToken: string) => {
       // 1. Handle Profile Info Update
       const submitData: any = {};
       if (data.username && data.username !== user.username) submitData.username = data.username;
@@ -65,18 +65,38 @@ export default function EditProfileModal({ isOpen, onClose, user }: EditProfileM
 
       let latestUser = user;
       if (Object.keys(submitData).length > 0) {
-        latestUser = await updateUserProfile(token, submitData);
+        latestUser = await updateUserProfile(authToken, submitData);
       }
 
       // 2. Handle Avatar Update
       if (avatarFile) {
-        const { avatar_url } = await updateUserAvatar(token, avatarFile);
+        const { avatar_url } = await updateUserAvatar(authToken, avatarFile);
         latestUser = { ...latestUser, avatar_url };
       }
 
-      updateUser(latestUser as any);
-      toast.success('Profile updated successfully');
-      onClose();
+      return latestUser;
+    };
+
+    try {
+      try {
+        const updatedUser = await performUpdate(token);
+        updateUser(updatedUser as any);
+        toast.success('Profile updated successfully');
+        onClose();
+      } catch (err: any) {
+        // If expired/unauthorized, try refreshing once
+        if (err.message.toLowerCase().includes('expired') || err.message.toLowerCase().includes('invalid')) {
+          const newToken = await refreshAuth();
+          if (newToken) {
+            const updatedUser = await performUpdate(newToken);
+            updateUser(updatedUser as any);
+            toast.success('Profile updated successfully');
+            onClose();
+            return;
+          }
+        }
+        throw err;
+      }
     } catch (err: any) {
       const msg = err.message || 'Failed to update profile';
       setError(msg);
