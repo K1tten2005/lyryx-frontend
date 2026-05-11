@@ -1,6 +1,6 @@
 # Implementation Plan: Profile Editing Functionality
 
-## Phase 1: API Integration
+## Phase 1: API Integration [checkpoint: 100d89f]
 - [x] Task: Add API functions to `lib/api/user.ts` c8aa116
     - [x] Write failing unit tests in `__tests__/lib/api/user.test.ts` for `updateUserProfile` and `updateUserAvatar`
     - [x] Implement `updateUserProfile` (PATCH `/user/me`)
