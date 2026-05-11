@@ -13,11 +13,11 @@
 - [x] Task: Redesign Cards and Skeletons (UserProfileSkeleton)
 - [x] Task: Conductor - User Manual Verification 'Phase 2: Core Component Library Redesign' (Protocol in workflow.md)
 
-## Phase 3: Homepage & Navigation Revamp
+## Phase 3: Homepage & Navigation Revamp [checkpoint: 90e3039]
 - [x] Task: Redesign Navbar and Footer to reflect the new aesthetic
 - [x] Task: Redesign the main Homepage layout and Hero section
 - [x] Task: Update the Search results display on the Homepage
-- [~] Task: Conductor - User Manual Verification 'Phase 3: Homepage & Navigation Revamp' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 3: Homepage & Navigation Revamp' (Protocol in workflow.md)
 
 ## Phase 4: Lyric & Annotation Page Revamp
 - [ ] Task: Redesign the Lyric display (Typography focus)
