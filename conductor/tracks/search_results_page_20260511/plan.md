@@ -26,10 +26,10 @@
 - [x] Task: Implement specialized result cards (Artist, Song, User) a92bd15
     - [ ] Write tests for individual card rendering
     - [ ] Implement glassmorphic card designs
-- [~] Task: Assemble main results page layout
+- [x] Task: Assemble main results page layout 29d65ef
     - [ ] Write test for correct category ordering (Artists first)
     - [ ] Implement vertical stack of categories
-- [ ] Task: Conductor - User Manual Verification 'Categorized Results Layout' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Categorized Results Layout' (Protocol in workflow.md)
 
 ## Phase 4: "See All" Modal & Infinite Scroll
 - [ ] Task: Create `SeeAllModal` component
