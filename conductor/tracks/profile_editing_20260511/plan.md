@@ -24,13 +24,13 @@
     - [x] Ensure tests pass
 - [x] Task: Conductor - User Manual Verification 'Phase 3: Edit Profile Modal Component' (Protocol in workflow.md)
 
-## Phase 4: Avatar Upload Integration
+## Phase 4: Avatar Upload Integration [checkpoint: b8683c7]
 - [x] Task: Add Avatar Upload to Modal 12c95f6
     - [x] Update component tests for avatar file selection
     - [x] Add file input and preview to `EditProfileModal`
     - [x] Implement upload logic calling `updateUserAvatar`
     - [x] Ensure tests pass
-- [ ] Task: Conductor - User Manual Verification 'Phase 4: Avatar Upload Integration' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 4: Avatar Upload Integration' (Protocol in workflow.md)
 
 ## Phase 5: Profile Page Integration
 - [ ] Task: Integrate Modal into Profile Header
