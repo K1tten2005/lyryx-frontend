@@ -13,8 +13,9 @@
 - [x] Task: Conductor - User Manual Verification 'Phase 2: User Profile Page Structure & Routing' (Protocol in workflow.md) b0f0522
 
 ## Phase 3: Profile UI Construction
-- [ ] Task: Create a `components/UserProfileHeader.tsx` component to display the user's avatar, username, bio, reputation score, and role. Write unit tests for this component.
-- [ ] Task: Create a `components/UserAnnotationsTab.tsx` component to render the list of annotations. This component should display the song context (cover, title, artist) and the annotation details (content, rating, date) for each item. Write unit tests for this component.
-- [ ] Task: Integrate `UserProfileHeader` and `UserAnnotationsTab` into `app/user/[id]/page.tsx`. Implement the tabbed layout logic (using state to switch between tabs, even if only "Annotations" exists initially).
+- [x] Task: Create a `components/UserProfileHeader.tsx` component to display the user's avatar, username, bio, reputation score, and role. Write unit tests for this component. 5108380
+- [x] Task: Create a `components/UserAnnotationsTab.tsx` component to render the list of annotations. This component should display the song context (cover, title, artist) and the annotation details (content, rating, date) for each item. Write unit tests for this component. 8c4d643
+- [~] Task: Integrate `UserProfileHeader` and `UserAnnotationsTab` into `app/user/[id]/page.tsx`. Implement the tabbed layout logic (using state to switch between tabs, even if only "Annotations" exists initially).
 - [ ] Task: Implement loading states (e.g., skeletons) for the user info and annotations while data is being fetched.
+
 - [ ] Task: Conductor - User Manual Verification 'Phase 3: Profile UI Construction' (Protocol in workflow.md)
