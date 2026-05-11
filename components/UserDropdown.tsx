@@ -32,28 +32,28 @@ export default function UserDropdown() {
     <div className="relative" ref={dropdownRef}>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className={`flex items-center gap-2 pl-1 pr-4 py-1 transition-all rounded-full border border-white/50 ${
+        className={`flex items-center gap-2 pl-1.5 pr-4 py-1.5 transition-all duration-300 rounded-full border ${
           isOpen 
-            ? 'bg-white/80 shadow-inner-glow' 
-            : 'bg-surface shadow-glass hover:bg-white/90'
-        }`}
+            ? 'bg-white/20 border-white/60 shadow-inner' 
+            : 'bg-white/10 border-white/30 hover:border-white/50 hover:bg-white/20 shadow-glass backdrop-blur-md'
+        } focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 focus:ring-offset-indigo-900`}
         aria-expanded={isOpen}
         aria-haspopup="menu"
       >
-        <div className="w-10 h-10 rounded-full overflow-hidden flex items-center justify-center bg-gradient-to-br from-accent to-accent-light shrink-0 border-2 border-white shadow-sm">
+        <div className="w-8 h-8 rounded-full overflow-hidden flex items-center justify-center bg-gradient-to-br from-indigo-400 to-accent-light shrink-0 shadow-sm relative group-hover:shadow-md transition-shadow">
           {user.avatar_url ? (
             <Image 
               src={user.avatar_url} 
               alt={`${user.username} avatar`} 
-              width={40} 
-              height={40} 
+              width={32} 
+              height={32} 
               className="object-cover w-full h-full"
             />
           ) : (
-            <User className="w-5 h-5 text-white" />
+            <User className="w-4 h-4 text-white" />
           )}
         </div>
-        <span className="text-sm font-bold tracking-widest uppercase font-sans">
+        <span className="text-sm font-bold text-white tracking-wide">
           {user.reputation_score} RS
         </span>
       </button>
@@ -61,13 +61,13 @@ export default function UserDropdown() {
       {isOpen && (
         <div 
           role="menu"
-          className="absolute right-0 mt-2 w-56 bg-surface border-4 border-border shadow-brutal py-0 animate-in fade-in slide-in-from-top-2 duration-150 z-50 overflow-hidden"
+          className="absolute right-0 mt-3 w-64 bg-white/95 backdrop-blur-xl border border-white/60 shadow-2xl rounded-2xl py-2 animate-in fade-in zoom-in-95 duration-200 z-50 overflow-hidden origin-top-right"
         >
-          <div className="px-4 py-4 border-b-4 border-border bg-accent text-white mb-0">
-            <p className="text-sm font-black truncate uppercase tracking-widest font-sans">
+          <div className="px-4 py-3 mb-2 border-b border-slate-200/60 bg-gradient-to-br from-indigo-50/50 to-sky-50/50">
+            <p className="text-sm font-bold text-slate-800 truncate">
               {user.username}
             </p>
-            <p className="text-xs text-white/80 truncate font-bold mt-1">
+            <p className="text-xs text-slate-500 font-medium truncate mt-0.5">
               {user.email}
             </p>
           </div>
@@ -75,12 +75,12 @@ export default function UserDropdown() {
           <Link
             href={`/user/${user.user_id}`}
             role="menuitem"
-            className="w-full flex items-center gap-3 px-4 py-3 text-sm font-bold uppercase tracking-wider text-foreground hover:bg-accent hover:text-white transition-colors border-b-2 border-border"
+            className="w-full flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-slate-700 hover:bg-indigo-50 hover:text-indigo-700 transition-colors"
             onClick={() => {
               setIsOpen(false);
             }}
           >
-            <UserCircle className="w-5 h-5" />
+            <UserCircle className="w-5 h-5 text-indigo-400" />
             Profile
           </Link>
           
@@ -90,9 +90,9 @@ export default function UserDropdown() {
               setIsOpen(false);
               logout();
             }}
-            className="w-full flex items-center gap-3 px-4 py-2.5 text-sm font-semibold text-red-600 hover:bg-red-500 hover:text-white transition-colors"
+            className="w-full flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-red-600 hover:bg-red-50 hover:text-red-700 transition-colors"
           >
-            <LogOut className="w-5 h-5" />
+            <LogOut className="w-5 h-5 text-red-400" />
             Logout
           </button>
         </div>
