@@ -1,14 +1,17 @@
 'use client';
 
 import { useSearchParams } from 'next/navigation';
-import { Suspense } from 'react';
+import { Suspense, useState, useEffect } from 'react';
 import useSWR from 'swr';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
-import { fetchSearchResults } from '@/lib/api/search';
-import { Loader2, Music2, AlertCircle } from 'lucide-react';
+import { fetchSearchResults, SearchResultItem } from '@/lib/api/search';
+import { Loader2, Music2, AlertCircle, Search } from 'lucide-react';
 import SearchCategory from '@/components/search/SearchCategory';
 import { ArtistCard, SongCard, UserCard } from '@/components/search/ResultCards';
+import SeeAllModal from '@/components/search/SeeAllModal';
+
+type CategoryType = 'artists' | 'songs' | 'lyrics_matched_songs' | 'users' | null;
 
 function SearchResults() {
   const searchParams = useSearchParams();
@@ -18,6 +21,65 @@ function SearchResults() {
     query ? ['search', query] : null,
     ([, q]) => fetchSearchResults(q)
   );
+
+  // Modal State
+  const [activeCategory, setActiveCategory] = useState<CategoryType>(null);
+  const [modalItems, setModalItems] = useState<SearchResultItem[]>([]);
+  const [modalOffset, setModalOffset] = useState(0);
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
+  const [hasMore, setHasMore] = useState(true);
+
+  // Reset modal state when query changes
+  useEffect(() => {
+    setActiveCategory(null);
+  }, [query]);
+
+  // Handle opening the modal and initializing its data
+  const handleOpenModal = (category: CategoryType) => {
+    setActiveCategory(category);
+    setModalOffset(0);
+    setHasMore(true);
+    
+    // We already have the first 20 items from the initial fetch
+    if (results && category) {
+      setModalItems(results[category]);
+      // If we got exactly 20 items, there might be more. If less, we know there aren't.
+      setHasMore(results[category].length === 20);
+    }
+  };
+
+  const handleCloseModal = () => {
+    setActiveCategory(null);
+  };
+
+  const handleLoadMore = async () => {
+    if (!query || !activeCategory || isLoadingMore || !hasMore) return;
+    
+    setIsLoadingMore(true);
+    try {
+      const limit = 20;
+      const nextOffset = modalOffset + limit;
+      
+      // We pass the new limit to our fetch function to simulate pagination 
+      const moreResults = await fetchSearchResults(query, nextOffset + limit);
+      
+      const newItems = moreResults[activeCategory] || [];
+      
+      if (newItems.length > modalItems.length) {
+         setModalItems(newItems);
+         setModalOffset(nextOffset);
+         setHasMore(newItems.length >= nextOffset + limit);
+      } else {
+         setHasMore(false);
+      }
+      
+    } catch (err) {
+      console.error("Failed to load more results", err);
+      setHasMore(false);
+    } finally {
+      setIsLoadingMore(false);
+    }
+  };
 
   if (!query) {
     return (
@@ -76,33 +138,55 @@ function SearchResults() {
             title="Artists" 
             items={results?.artists || []} 
             renderItem={(artist) => <ArtistCard key={artist.id} artist={artist} />} 
+            onSeeAll={() => handleOpenModal('artists')}
           />
           
           <SearchCategory 
             title="Songs" 
             items={results?.songs || []} 
             renderItem={(song) => <SongCard key={song.id} song={song} />} 
+            onSeeAll={() => handleOpenModal('songs')}
           />
 
           <SearchCategory 
             title="Lyrics Matches" 
             items={results?.lyrics_matched_songs || []} 
             renderItem={(song) => <SongCard key={`lyric-${song.id}`} song={song} />} 
+            onSeeAll={() => handleOpenModal('lyrics_matched_songs')}
           />
           
           <SearchCategory 
             title="Users" 
             items={results?.users || []} 
             renderItem={(user) => <UserCard key={user.id} user={user} />} 
+            onSeeAll={() => handleOpenModal('users')}
           />
         </div>
       )}
+
+      <SeeAllModal
+        isOpen={activeCategory !== null}
+        onClose={handleCloseModal}
+        title={
+          activeCategory === 'artists' ? 'Artists' :
+          activeCategory === 'songs' ? 'Songs' :
+          activeCategory === 'lyrics_matched_songs' ? 'Lyrics Matches' :
+          activeCategory === 'users' ? 'Users' : ''
+        }
+        items={modalItems}
+        renderItem={(item, index) => {
+          if (activeCategory === 'artists') return <ArtistCard key={`modal-${item.id}-${index}`} artist={item} />;
+          if (activeCategory === 'songs' || activeCategory === 'lyrics_matched_songs') return <SongCard key={`modal-${item.id}-${index}`} song={item} />;
+          if (activeCategory === 'users') return <UserCard key={`modal-${item.id}-${index}`} user={item} />;
+          return <div key={`empty-${index}`} />;
+        }}
+        isLoadingMore={isLoadingMore}
+        hasMore={hasMore}
+        onLoadMore={handleLoadMore}
+      />
     </main>
   );
 }
-
-// Need to import Search icon for the empty state
-import { Search } from 'lucide-react';
 
 export default function SearchPage() {
   return (
