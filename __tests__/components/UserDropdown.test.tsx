@@ -107,4 +107,20 @@ describe('UserDropdown', () => {
     
     expect(mockLogout).toHaveBeenCalledTimes(1);
   });
+
+  it('renders Profile button as a link to user profile', () => {
+    (useAuth as any).mockReturnValue({
+      user: { user_id: 123, username: 'testuser', reputation_score: 10 },
+      logout: mockLogout,
+    });
+
+    render(<UserDropdown />);
+    
+    // Open menu
+    fireEvent.click(screen.getByRole('button'));
+    
+    const profileLink = screen.getByRole('menuitem', { name: /profile/i });
+    expect(profileLink).toHaveAttribute('href', '/user/123');
+    expect(profileLink.tagName).toBe('A');
+  });
 });

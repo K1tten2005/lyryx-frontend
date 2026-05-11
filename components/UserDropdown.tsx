@@ -4,6 +4,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { User, LogOut, UserCircle } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import Image from 'next/image';
+import Link from 'next/link';
 
 export default function UserDropdown() {
   const { user, logout } = useAuth();
@@ -71,17 +72,17 @@ export default function UserDropdown() {
             </p>
           </div>
           
-          <button
+          <Link
+            href={`/user/${user.user_id}`}
             role="menuitem"
             className="w-full flex items-center gap-2 px-4 py-2 text-sm text-zinc-700 hover:bg-indigo-50 hover:text-indigo-700 transition-colors"
             onClick={() => {
-              // Profile action is currently a no-op per spec
               setIsOpen(false);
             }}
           >
             <UserCircle className="w-4 h-4" />
             Profile
-          </button>
+          </Link>
           
           <button
             role="menuitem"
