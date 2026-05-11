@@ -6,6 +6,7 @@ export interface UserInfo {
   email: string;
   role: string;
   reputation_score: number;
+  avatar_url?: string;
 }
 
 export interface AuthResponse {
