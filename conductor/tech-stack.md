@@ -10,6 +10,9 @@
 ## Styling
 - **Tailwind CSS:** Utility-first CSS framework for rapid and consistent UI development.
 
+## Data Fetching
+- **SWR:** React Hooks for data fetching, supporting caching, revalidation, and infinite scroll scenarios.
+
 ## Form Handling & Validation
 - **React Hook Form:** Performant, flexible, and extensible forms with easy-to-use validation.
 - **Zod:** TypeScript-first schema declaration and validation.

@@ -12,7 +12,7 @@ A frontend skeleton on Next.js for a Genius analogue.
 - **User Authentication:** JWT-based secure user registration and login system.
 - **User Profiles:** Dedicated pages showcasing user information (avatar, bio, role, reputation) with editing capabilities and a list of their annotated lyrics with song context.
 - **Lyrics Annotation:** Interactive highlight and explain functionality for lyrics.
-- **Advanced Search:** Search by artist, album, lyric snippets, or user.
+- **Advanced Search:** Categorized search results (Artists, Songs, Lyrics Matches, Users) with dedicated result cards and infinite scrolling capabilities via 'See All' modal views.
 
 ## Primary Goal
 **Community Engagement:** Focus on user interaction, annotations, and discussions.
