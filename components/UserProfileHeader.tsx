@@ -10,9 +10,6 @@ interface UserProfileHeaderProps {
 export default function UserProfileHeader({ user }: UserProfileHeaderProps) {
   return (
     <div className="bg-white rounded-2xl p-8 shadow-lg border border-indigo-50 mb-8 overflow-hidden relative group transition-all hover:shadow-xl hover:border-indigo-100">
-      {/* Decorative background element */}
-      <div className="absolute top-0 right-0 -mt-8 -mr-8 w-32 h-32 bg-indigo-50 rounded-full opacity-50 group-hover:scale-110 transition-transform duration-500"></div>
-      
       <div className="flex flex-col md:flex-row items-center md:items-start gap-8 relative z-10">
         <div className="relative group/avatar">
           <div className="w-32 h-32 rounded-2xl overflow-hidden shadow-md border-4 border-white transition-transform duration-300 group-hover/avatar:scale-105 bg-indigo-600 flex items-center justify-center">
