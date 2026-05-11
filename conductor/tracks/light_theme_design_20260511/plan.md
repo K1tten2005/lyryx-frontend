@@ -23,7 +23,7 @@
 
 ## Phase 4: Enhancing Visual Hierarchy
 - [x] Task: Update `components/Navbar.tsx` to use `bg-indigo-950` and white text/icons. Adjust hover states for the dark background. [830826f]
-- [ ] Task: Update `components/Footer.tsx` to use `bg-indigo-950` and light text. Ensure it matches the Navbar's aesthetic.
+- [x] Task: Update `components/Footer.tsx` to use `bg-indigo-950` and light text. Ensure it matches the Navbar's aesthetic. [c57b18c]
 - [ ] Task: Refine `components/SearchBar.tsx` to increase its visual prominence on the light background (e.g., stronger shadow or subtle border).
 - [ ] Task: Run unit tests for updated components.
 - [ ] Task: Conductor - User Manual Verification 'Phase 4: Enhancing Visual Hierarchy' (Protocol in workflow.md)
