@@ -1,10 +1,10 @@
 # Implementation Plan: Design Revamp
 
 ## Phase 1: Foundational Styles & Typography
-- [ ] Task: Set up "Elegant Serif" (e.g., Playfair Display) and Sans-serif (e.g., Inter) fonts in Next.js
-- [ ] Task: Refine global Tailwind configuration with the new "Premium/Brutalist" color palette and spacing
-- [ ] Task: Update global CSS for consistent background and base text styles
-- [ ] Task: Conductor - User Manual Verification 'Phase 1: Foundational Styles & Typography' (Protocol in workflow.md)
+- [x] Task: Set up "Elegant Serif" (e.g., Playfair Display) and Sans-serif (e.g., Inter) fonts in Next.js
+- [x] Task: Refine global Tailwind configuration with the new "Premium/Brutalist" color palette and spacing
+- [x] Task: Update global CSS for consistent background and base text styles
+- [~] Task: Conductor - User Manual Verification 'Phase 1: Foundational Styles & Typography' (Protocol in workflow.md)
 
 ## Phase 2: Core Component Library Redesign
 - [ ] Task: Redesign and implement Buttons and Inputs with a custom, non-generic look

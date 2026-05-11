@@ -1,6 +1,6 @@
 'use client';
 
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import React, { createContext, useContext, useState, useEffect, ReactNode, useRef } from 'react';
 import { signIn, signUp, signOut, refreshToken, UserInfo } from '@/lib/api/auth';
 import { getUserMe } from '@/lib/api/user';
 
@@ -13,7 +13,7 @@ interface AuthContextType {
   register: (...args: Parameters<typeof signUp>) => Promise<void>;
   logout: () => Promise<void>;
   updateUser: (user: UserInfo) => void;
-  refreshAuth: () => Promise<void>;
+  refreshAuth: () => Promise<string | undefined>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -22,25 +22,42 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<UserInfo | null>(null);
   const [token, setToken] = useState<string | null>(null);
   const [isInitialized, setIsInitialized] = useState(false);
+  
+  // Use a ref to track and deduplicate concurrent refresh calls
+  const refreshPromise = useRef<Promise<string | undefined> | null>(null);
 
-  const refreshAuth = async () => {
-    try {
-      const { access_token } = await refreshToken();
-      setToken(access_token);
-      localStorage.setItem('access_token', access_token);
-      
-      const latestUser = await getUserMe(access_token);
-      setUser(latestUser);
-      localStorage.setItem('user', JSON.stringify(latestUser));
-      return access_token;
-    } catch (error) {
-      console.error('Refresh failed', error);
-      // If we had a session but refresh failed, it might mean the refresh token is also expired
-      if (token) {
-        logout();
-      }
-      throw error;
+  const refreshAuth = async (): Promise<string | undefined> => {
+    // If a refresh is already in progress, return the existing promise
+    if (refreshPromise.current) {
+      return refreshPromise.current;
     }
+
+    refreshPromise.current = (async () => {
+      try {
+        const { access_token } = await refreshToken();
+        setToken(access_token);
+        localStorage.setItem('access_token', access_token);
+        
+        const latestUser = await getUserMe(access_token);
+        setUser(latestUser);
+        localStorage.setItem('user', JSON.stringify(latestUser));
+        return access_token;
+      } catch (error: any) {
+        console.error('Refresh failed', error);
+        
+        if (error.message.toLowerCase().includes('unauthorized') || error.message.toLowerCase().includes('failed to fetch')) {
+          localStorage.removeItem('access_token');
+          localStorage.removeItem('user');
+          setToken(null);
+          setUser(null);
+        }
+        throw error;
+      } finally {
+        refreshPromise.current = null;
+      }
+    })();
+
+    return refreshPromise.current;
   };
 
   useEffect(() => {
@@ -50,38 +67,46 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
       if (storedToken) {
         setToken(storedToken);
-        if (storedUser) setUser(JSON.parse(storedUser));
+        if (storedUser) {
+          try {
+            setUser(JSON.parse(storedUser));
+          } catch (e) {
+            console.error('Failed to parse stored user', e);
+          }
+        }
         
         try {
-          // Attempt refresh on mount to ensure we have a valid access token
-          await refreshAuth();
-        } catch (error) {
-          // refreshAuth handles logout on failure if token was present
-        }
-      } else {
-        // Try refreshing even if no stored token (cookie-based refresh)
-        try {
-          await refreshAuth();
-        } catch (error) {
-          // No session
+          // Confirm current token validity
+          const latestUser = await getUserMe(storedToken);
+          setUser(latestUser);
+          localStorage.setItem('user', JSON.stringify(latestUser));
+        } catch (error: any) {
+          if (error.message.toLowerCase().includes('expired') || error.message.toLowerCase().includes('unauthorized')) {
+            try {
+              await refreshAuth();
+            } catch (refreshError) {
+              // Handled in refreshAuth
+            }
+          }
         }
       }
+      
       setIsInitialized(true);
     };
 
     initAuth();
   }, []);
 
-  const login = async (...args: Parameters<typeof signIn>) => {
-    const { access_token, user } = await signIn(...args);
+  const login = async (email: string, password: string) => {
+    const { access_token, user } = await signIn(email, password);
     setToken(access_token);
     setUser(user);
     localStorage.setItem('access_token', access_token);
     localStorage.setItem('user', JSON.stringify(user));
   };
 
-  const register = async (...args: Parameters<typeof signUp>) => {
-    const { access_token, user } = await signUp(...args);
+  const register = async (username: string, email: string, password: string) => {
+    const { access_token, user } = await signUp(username, email, password);
     setToken(access_token);
     setUser(user);
     localStorage.setItem('access_token', access_token);
@@ -89,19 +114,19 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   const logout = async () => {
-    if (token) {
+    const currentToken = token;
+    if (currentToken) {
       try {
-        await signOut(token);
+        await signOut(currentToken);
       } catch (error) {
         console.error('Failed to sign out from backend', error);
       }
     }
     localStorage.removeItem('access_token');
     localStorage.removeItem('user');
-    // We intentionally do NOT call setToken(null) or setUser(null) here.
-    // Doing so causes the UI to re-render in a "logged out" state for a split 
-    // second before the window.location.reload() takes effect, creating a flicker.
-    window.location.reload();
+    if (currentToken) {
+      window.location.reload();
+    }
   };
 
   const updateUser = (updatedUser: UserInfo) => {

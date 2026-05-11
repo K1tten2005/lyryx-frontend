@@ -44,7 +44,7 @@ export default function UserProfileHeader({ user: initialUser }: UserProfileHead
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4">
               <div>
                 <div className="flex items-center justify-center md:justify-start gap-4 mb-1">
-                  <h1 className="text-4xl font-black text-zinc-900 tracking-tight">{user.username}</h1>
+                  <h1 className="text-4xl font-black font-sans text-zinc-900 tracking-tight">{user.username}</h1>
                   {isOwner && (
                     <button
                       onClick={() => setIsEditModalOpen(true)}

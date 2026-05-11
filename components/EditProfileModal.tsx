@@ -229,7 +229,7 @@ export default function EditProfileModal({ isOpen, onClose, user }: EditProfileM
 
             <div>
               <label htmlFor="password" className="block text-sm font-medium text-zinc-700 mb-1">
-                New Password (optional)
+                New Password
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-zinc-400">

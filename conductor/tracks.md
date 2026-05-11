@@ -8,5 +8,5 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 ---
 
-- [ ] **Track: Design Revamp**
+- [~] **Track: Design Revamp**
 *Link: [./tracks/design_revamp_20260511/](./tracks/design_revamp_20260511/)*

@@ -24,8 +24,8 @@ export async function signIn(email: string, password: string): Promise<AuthRespo
   });
   
   if (!response.ok) {
-    const errorData = await response.json();
-    throw new Error(errorData.message || 'Login failed');
+    const errorData = await response.json().catch(() => ({}));
+    throw new Error(errorData.message || errorData.error || 'Login failed');
   }
   
   return response.json();
@@ -40,8 +40,8 @@ export async function signUp(username: string, email: string, password: string):
   });
   
   if (!response.ok) {
-    const errorData = await response.json();
-    throw new Error(errorData.message || 'Registration failed');
+    const errorData = await response.json().catch(() => ({}));
+    throw new Error(errorData.message || errorData.error || 'Registration failed');
   }
   
   return response.json();
@@ -59,7 +59,7 @@ export async function signOut(token: string): Promise<boolean> {
   
   if (!response.ok) {
     const errorData = await response.json().catch(() => ({}));
-    throw new Error(errorData.message || 'Sign out failed');
+    throw new Error(errorData.message || errorData.error || 'Sign out failed');
   }
   
   return true;
@@ -74,7 +74,7 @@ export async function refreshToken(): Promise<{ access_token: string }> {
 
   if (!response.ok) {
     const errorData = await response.json().catch(() => ({}));
-    throw new Error(errorData.message || 'Refresh failed');
+    throw new Error(errorData.message || errorData.error || 'Refresh failed');
   }
 
   return response.json();

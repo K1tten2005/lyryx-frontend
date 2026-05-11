@@ -20,6 +20,7 @@ describe('Auth API client', () => {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email: 'test@example.com', password: 'password123' }),
+        credentials: 'include',
       });
       expect(result).toEqual(mockResponse);
     });
@@ -48,6 +49,7 @@ describe('Auth API client', () => {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username: 'testuser', email: 'test@example.com', password: 'password123' }),
+        credentials: 'include',
       });
       expect(result).toEqual(mockResponse);
     });
@@ -67,6 +69,7 @@ describe('Auth API client', () => {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer test-token'
         },
+        credentials: 'include',
       });
     });
   });
