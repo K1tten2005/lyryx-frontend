@@ -27,6 +27,17 @@ export function ArtistCard({ artist }: { artist: SearchResultItem }) {
 }
 
 export function SongCard({ song }: { song: SearchResultItem }) {
+  // If lyrics snippet contains HTML (like <mark>), we need to render it safely
+  const renderLyricsSnippet = () => {
+    if (!song.lyrics_snippet) return null;
+    return (
+      <div 
+        className="text-sm text-slate-500 italic mt-1 line-clamp-2"
+        dangerouslySetInnerHTML={{ __html: `"...${song.lyrics_snippet}..."` }}
+      />
+    );
+  };
+
   return (
     <Link href={`/song/${song.id}`} className="group block">
       <div className="flex items-center p-4 bg-white/60 backdrop-blur-sm rounded-xl border border-transparent hover:border-indigo-200 shadow-sm hover:shadow-md transition-all">
@@ -39,11 +50,12 @@ export function SongCard({ song }: { song: SearchResultItem }) {
             </div>
           )}
         </div>
-        <div>
-          <h3 className="font-bold text-lg text-slate-800 group-hover:text-indigo-600 transition-colors">
+        <div className="flex-grow overflow-hidden">
+          <h3 className="font-bold text-lg text-slate-800 group-hover:text-indigo-600 transition-colors truncate">
             {song.title}
           </h3>
-          <p className="text-sm text-slate-600">{song.artist_name}</p>
+          <p className="text-sm text-slate-600 truncate">{song.artist?.name || song.artist_name}</p>
+          {renderLyricsSnippet()}
         </div>
       </div>
     </Link>

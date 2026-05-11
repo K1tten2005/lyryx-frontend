@@ -1,7 +1,8 @@
 import { z } from 'zod';
 
 export const SearchResultItemSchema = z.object({
-  id: z.number(),
+  id: z.number().optional(),
+  user_id: z.number().optional(),
   title: z.string().optional(), // For songs
   name: z.string().optional(), // For artists/users
   username: z.string().optional(), // For users
@@ -13,7 +14,11 @@ export const SearchResultItemSchema = z.object({
     name: z.string()
   }).optional(), // For songs from actual backend
   lyrics_snippet: z.string().optional(), // For lyrics
-});
+}).transform(val => ({
+  ...val,
+  // Ensure we always have an 'id' field for React keys and links, falling back to user_id
+  id: val.id ?? val.user_id ?? 0,
+}));
 
 export const SearchResponseSchema = z.object({
   artists: z.array(SearchResultItemSchema).optional().default([]),
