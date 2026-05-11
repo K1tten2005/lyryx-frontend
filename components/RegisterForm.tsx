@@ -41,7 +41,11 @@ export default function RegisterForm({ onSuccess }: RegisterFormProps) {
       toast.success('Account created successfully!');
       onSuccess();
     } catch (err: any) {
-      setGlobalError(err.message || 'An error occurred during registration.');
+      if (err.message === 'Failed to fetch') {
+        setGlobalError('Unable to connect to the server. Please try again later.');
+      } else {
+        setGlobalError(err.message || 'An error occurred during registration.');
+      }
     }
   };
 

@@ -37,7 +37,11 @@ export default function LoginForm({ onSuccess }: LoginFormProps) {
       toast.success('Successfully logged in!');
       onSuccess();
     } catch (err: any) {
-      setGlobalError(err.message || 'An error occurred during login.');
+      if (err.message === 'Failed to fetch') {
+        setGlobalError('Unable to connect to the server. Please try again later.');
+      } else {
+        setGlobalError(err.message || 'An error occurred during login.');
+      }
     }
   };
 
