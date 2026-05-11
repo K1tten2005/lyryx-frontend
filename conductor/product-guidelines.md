@@ -6,8 +6,8 @@
 - **Seamless Annotations:** Reading and contributing annotations should feel integrated with the lyrics, not like a separate, intrusive feature.
 
 ## UI & Design
-- **Typography:** Prioritize legibility. Use clean, modern sans-serif fonts with high contrast for lyrics to ensure easy reading.
-- **Layout:** Adopt a clean, minimalist structure (Modern & Sleek) that puts the lyrics front and center, minimizing unnecessary distractions.
+- **Typography:** Prioritize a soft, nostalgic feel. Use rounded humanist sans-serif fonts (like Nunito) that align with the Frutiger Aero aesthetic while maintaining legibility.
+- **Layout:** Adopt a stylized Frutiger Aero structure featuring glassmorphic panels and vibrant backgrounds, ensuring the design feels "original" and distinct from standard minimalist interfaces.
 - **Interactive Elements:** Use subtle visual cues (e.g., underlining or slight background highlights) to indicate actionable, annotated lyrics.
 
 ## Accessibility
