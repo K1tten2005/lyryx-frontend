@@ -26,10 +26,10 @@ export function ArtistCard({ artist }: { artist: SearchResultItem }) {
   );
 }
 
-export function SongCard({ song }: { song: SearchResultItem }) {
+export function SongCard({ song, showSnippet = false }: { song: SearchResultItem, showSnippet?: boolean }) {
   // If lyrics snippet contains HTML (like <mark>), we need to render it safely
   const renderLyricsSnippet = () => {
-    if (!song.lyrics_snippet) return null;
+    if (!showSnippet || !song.lyrics_snippet) return null;
     return (
       <div 
         className="text-sm text-slate-500 italic mt-1 line-clamp-2"

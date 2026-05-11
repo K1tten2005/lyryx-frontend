@@ -151,7 +151,7 @@ function SearchResults() {
           <SearchCategory 
             title="Lyrics Matches" 
             items={results?.lyrics_matched_songs || []} 
-            renderItem={(song) => <SongCard key={`lyric-${song.id}`} song={song} />} 
+            renderItem={(song) => <SongCard key={`lyric-${song.id}`} song={song} showSnippet={true} />} 
             onSeeAll={() => handleOpenModal('lyrics_matched_songs')}
           />
           
@@ -176,7 +176,8 @@ function SearchResults() {
         items={modalItems}
         renderItem={(item, index) => {
           if (activeCategory === 'artists') return <ArtistCard key={`modal-${item.id}-${index}`} artist={item} />;
-          if (activeCategory === 'songs' || activeCategory === 'lyrics_matched_songs') return <SongCard key={`modal-${item.id}-${index}`} song={item} />;
+          if (activeCategory === 'songs') return <SongCard key={`modal-${item.id}-${index}`} song={item} />;
+          if (activeCategory === 'lyrics_matched_songs') return <SongCard key={`modal-${item.id}-${index}`} song={item} showSnippet={true} />;
           if (activeCategory === 'users') return <UserCard key={`modal-${item.id}-${index}`} user={item} />;
           return <div key={`empty-${index}`} />;
         }}
