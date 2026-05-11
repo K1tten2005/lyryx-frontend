@@ -3,6 +3,11 @@ import UserProfilePage from "@/app/user/[id]/page";
 import { vi } from "vitest";
 import { getUserProfile, getUserAnnotations } from "@/lib/api/user";
 
+vi.mock("next/navigation", () => ({
+  useRouter: vi.fn().mockReturnValue({ push: vi.fn() }),
+  usePathname: vi.fn().mockReturnValue('/user/1'),
+}));
+
 vi.mock("@/lib/api/user", () => ({
   getUserProfile: vi.fn(),
   getUserAnnotations: vi.fn(),

@@ -7,6 +7,8 @@ import { fetchSearchResults } from "@/lib/api/search";
 
 vi.mock("next/navigation", () => ({
   useSearchParams: vi.fn(),
+  useRouter: vi.fn().mockReturnValue({ push: vi.fn() }),
+  usePathname: vi.fn().mockReturnValue('/search'),
 }));
 
 vi.mock("@/contexts/AuthContext", () => ({

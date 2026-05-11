@@ -2,6 +2,11 @@ import { render, screen } from "@testing-library/react";
 import HomePage from "@/app/page";
 import { vi } from "vitest";
 
+vi.mock("next/navigation", () => ({
+  useRouter: vi.fn().mockReturnValue({ push: vi.fn() }),
+  usePathname: vi.fn().mockReturnValue('/'),
+}));
+
 vi.mock("@/contexts/AuthContext", () => ({
   useAuth: vi.fn().mockReturnValue({ isAuthenticated: false, isInitialized: true, user: null }),
 }));

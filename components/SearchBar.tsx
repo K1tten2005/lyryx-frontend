@@ -4,7 +4,11 @@ import { Search } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
-export default function SearchBar() {
+interface SearchBarProps {
+  variant?: 'hero' | 'nav';
+}
+
+export default function SearchBar({ variant = 'hero' }: SearchBarProps) {
   const router = useRouter();
   const [query, setQuery] = useState('');
 
@@ -14,6 +18,25 @@ export default function SearchBar() {
       router.push(`/search?q=${encodeURIComponent(query.trim())}`);
     }
   };
+
+  if (variant === 'nav') {
+    return (
+      <form onSubmit={handleSubmit} className="w-full max-w-sm">
+        <div className="relative group">
+          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+            <Search className="h-4 w-4 text-indigo-300 group-focus-within:text-white transition-colors" />
+          </div>
+          <input
+            type="text"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            className="block w-full pl-10 pr-4 py-2 bg-indigo-950/50 border border-indigo-700/50 rounded-full text-sm text-white placeholder-indigo-300/70 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:bg-indigo-900/80 transition-all backdrop-blur-sm"
+            placeholder="Search..."
+          />
+        </div>
+      </form>
+    );
+  }
 
   return (
     <form onSubmit={handleSubmit} className="w-full max-w-3xl mx-auto mt-0 mb-12">
@@ -32,3 +55,4 @@ export default function SearchBar() {
     </form>
   );
 }
+

@@ -4,18 +4,27 @@ import { User } from 'lucide-react';
 import Link from 'next/link';
 import { useAuth } from '@/contexts/AuthContext';
 import { useState } from 'react';
+import { usePathname } from 'next/navigation';
 import AuthModal from './AuthModal';
 import UserDropdown from './UserDropdown';
+import SearchBar from './SearchBar';
 
 export default function Navbar() {
   const { isAuthenticated, isInitialized } = useAuth();
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+  const pathname = usePathname();
+  
+  const isHomePage = pathname === '/';
 
   return (
     <>
       <nav className="w-full flex items-center justify-between px-6 py-4 bg-gradient-to-b from-indigo-900 to-indigo-950 sticky top-0 z-50 border-b border-indigo-800 shadow-lg">
-        <div className="w-1/3">
-          {/* Placeholder for left-side navigation if needed */}
+        <div className="w-1/3 flex items-center">
+          {!isHomePage && (
+            <div className="hidden md:block w-full">
+              <SearchBar variant="nav" />
+            </div>
+          )}
         </div>
 
         <div className="w-1/3 flex justify-center">
@@ -38,6 +47,13 @@ export default function Navbar() {
         </div>
       </nav>
 
+      {/* Mobile search bar for non-home pages */}
+      {!isHomePage && (
+        <div className="md:hidden px-4 py-3 bg-indigo-950 border-b border-indigo-900">
+           <SearchBar variant="nav" />
+        </div>
+      )}
+
       <AuthModal
         isOpen={isAuthModalOpen}
         onClose={() => setIsAuthModalOpen(false)}
@@ -45,3 +61,4 @@ export default function Navbar() {
     </>
   );
 }
+

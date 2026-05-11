@@ -8,6 +8,11 @@ vi.mock("@/contexts/AuthContext", () => ({
   useAuth: vi.fn(),
 }));
 
+vi.mock("next/navigation", () => ({
+  useRouter: vi.fn().mockReturnValue({ push: vi.fn() }),
+  usePathname: vi.fn().mockReturnValue('/'),
+}));
+
 // Mock AuthModal to avoid rendering its complex logic in Navbar tests
 vi.mock("@/components/AuthModal", () => {
   return {
