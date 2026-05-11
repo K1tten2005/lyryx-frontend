@@ -4,7 +4,7 @@
 - [x] Task: Create search results page at `/app/search/page.tsx` 2c441e1
     - [ ] Write failing test for basic page rendering
     - [ ] Implement skeleton component with "Search Results" title
-- [ ] Task: Update `SearchBar` to navigate to `/search?q={query}`
+- [x] Task: Update `SearchBar` to navigate to `/search?q={query}` d7ff37a
     - [ ] Write failing test for search bar submission
     - [ ] Implement navigation logic in `SearchBar` component
 - [ ] Task: Conductor - User Manual Verification 'Routing & Basic Scaffolding' (Protocol in workflow.md)
