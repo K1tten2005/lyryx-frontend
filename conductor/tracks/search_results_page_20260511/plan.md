@@ -19,7 +19,7 @@
     - [ ] Implement `useEffect` or React Query/SWR hook for data fetching
 - [x] Task: Conductor - User Manual Verification 'Data Fetching & Core Logic' (Protocol in workflow.md)
 
-## Phase 3: Categorized Results Layout
+## Phase 3: Categorized Results Layout [checkpoint: 1e0bfc6]
 - [x] Task: Create `SearchCategory` component cf7d823
     - [ ] Write failing tests for category title and result listing
     - [ ] Implement component with "Top 3" slicing logic
