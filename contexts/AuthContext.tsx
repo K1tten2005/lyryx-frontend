@@ -118,7 +118,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     register,
     logout,
     updateUser,
-    refreshAuth: async () => { await refreshAuth(); },
+    refreshAuth: async () => { 
+      return await refreshAuth(); 
+    },
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

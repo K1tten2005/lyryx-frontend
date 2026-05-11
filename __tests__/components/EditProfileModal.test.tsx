@@ -3,6 +3,7 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import EditProfileModal from '@/components/EditProfileModal';
 import { updateUserProfile, updateUserAvatar } from '@/lib/api/user';
+import { useAuth } from '@/contexts/AuthContext';
 
 vi.mock('@/lib/api/user', () => ({
   updateUserProfile: vi.fn(),
@@ -10,11 +11,12 @@ vi.mock('@/lib/api/user', () => ({
 }));
 
 vi.mock('@/contexts/AuthContext', () => ({
-  useAuth: () => ({
+  useAuth: vi.fn(() => ({
     token: 'test-token',
     user: { user_id: 1, username: 'testuser', email: 'test@example.com', bio: 'old bio' },
     updateUser: vi.fn(),
-  }),
+    refreshAuth: vi.fn(),
+  })),
 }));
 
 describe('EditProfileModal', () => {
@@ -23,6 +25,12 @@ describe('EditProfileModal', () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
+    vi.mocked(useAuth).mockReturnValue({
+      token: 'test-token',
+      user: initialUser,
+      updateUser: vi.fn(),
+      refreshAuth: vi.fn(),
+    } as any);
   });
 
   it('renders correctly with initial values', () => {
@@ -74,6 +82,33 @@ describe('EditProfileModal', () => {
     });
     
     expect(updateUserProfile).not.toHaveBeenCalled();
+  });
+
+  it('retries update with new token if original token is expired', async () => {
+    const mockRefreshAuth = vi.fn().mockResolvedValue('new-token');
+    vi.mocked(useAuth).mockReturnValue({
+      token: 'old-token',
+      user: initialUser,
+      updateUser: vi.fn(),
+      refreshAuth: mockRefreshAuth,
+    } as any);
+
+    (updateUserProfile as any)
+      .mockRejectedValueOnce(new Error('invalid or expired jwt'))
+      .mockResolvedValueOnce({ ...initialUser, username: 'newname' });
+
+    render(<EditProfileModal isOpen={true} onClose={mockOnClose} user={initialUser} />);
+    
+    fireEvent.change(screen.getByLabelText(/name/i), { target: { value: 'newname' } });
+    fireEvent.submit(screen.getByRole('button', { name: /save changes/i }));
+
+    await waitFor(() => {
+      expect(mockRefreshAuth).toHaveBeenCalled();
+      expect(updateUserProfile).toHaveBeenCalledTimes(2);
+      expect(updateUserProfile).toHaveBeenLastCalledWith('new-token', expect.any(Object));
+    });
+    
+    expect(mockOnClose).toHaveBeenCalled();
   });
 
   it('handles avatar file selection and upload', async () => {

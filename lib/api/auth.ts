@@ -20,6 +20,7 @@ export async function signIn(email: string, password: string): Promise<AuthRespo
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ email, password }),
+    credentials: 'include',
   });
   
   if (!response.ok) {
@@ -35,6 +36,7 @@ export async function signUp(username: string, email: string, password: string):
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ username, email, password }),
+    credentials: 'include',
   });
   
   if (!response.ok) {
@@ -52,6 +54,7 @@ export async function signOut(token: string): Promise<boolean> {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${token}`
     },
+    credentials: 'include',
   });
   
   if (!response.ok) {
@@ -66,6 +69,7 @@ export async function refreshToken(): Promise<{ access_token: string }> {
   const response = await fetch(`${API_URL}/auth/refresh`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
+    credentials: 'include',
   });
 
   if (!response.ok) {
