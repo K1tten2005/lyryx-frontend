@@ -1,9 +1,9 @@
 # Implementation Plan: User Authentication & Registration
 
-## Phase 1: State Management & API Integration
+## Phase 1: State Management & API Integration [checkpoint: 8e7f459]
 - [x] Task: Create API client functions to communicate with the Go backend (`/v1/auth/sign-in`, `/v1/auth/sign-up`, `/v1/auth/sign-out`). [8e00070]
 - [x] Task: Implement `AuthContext` to manage the authentication state (token, current user info) and provide login, register, and logout actions. [8e00070]
-- [ ] Task: Conductor - User Manual Verification 'Phase 1: State Management & API Integration' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 1: State Management & API Integration' (Protocol in workflow.md) [8e7f459]
 
 ## Phase 2: Forms & Modal UI
 - [ ] Task: Implement the Login form using React Hook Form and Zod for validation, including Toast/Global error feedback.
