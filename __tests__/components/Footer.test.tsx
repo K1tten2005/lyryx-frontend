@@ -13,7 +13,7 @@ describe("Footer", () => {
   it("has the correct background and text colors", () => {
     const { container } = render(<Footer />);
     const footer = container.querySelector("footer");
-    expect(footer).toHaveClass("bg-indigo-950");
-    expect(footer).toHaveClass("text-zinc-300");
+    expect(footer).toHaveClass("from-indigo-900");
+    expect(footer).toHaveClass("text-white");
   });
 });

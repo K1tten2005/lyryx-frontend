@@ -13,7 +13,7 @@ export default function Navbar() {
 
   return (
     <>
-      <nav className="w-full flex items-center justify-between px-6 py-4 bg-gradient-to-b from-indigo-900 to-indigo-950 sticky top-0 z-50 border-b border-indigo-800 shadow-glass">
+      <nav className="w-full flex items-center justify-between px-6 py-4 bg-gradient-to-b from-indigo-900 to-indigo-950 sticky top-0 z-50 border-b border-indigo-800 shadow-lg">
         <div className="w-1/3">
           {/* Placeholder for left-side navigation if needed */}
         </div>
