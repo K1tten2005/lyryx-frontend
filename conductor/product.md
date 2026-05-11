@@ -10,7 +10,7 @@ A frontend skeleton on Next.js for a Genius analogue.
 
 ## Core Features
 - **User Authentication:** JWT-based secure user registration and login system.
-- **User Profiles:** Authenticated users have avatars and reputation scores.
+- **User Profiles:** Dedicated pages showcasing user information (avatar, bio, role, reputation) and a list of their annotated lyrics with song context.
 - **Lyrics Annotation:** Interactive highlight and explain functionality for lyrics.
 - **Advanced Search:** Search by artist, album, lyric snippets, or user.
 
