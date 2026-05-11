@@ -22,7 +22,9 @@ export type SearchResultItem = z.infer<typeof SearchResultItemSchema>;
 export type SearchResponse = z.infer<typeof SearchResponseSchema>;
 
 export async function fetchSearchResults(query: string, limit: number = 20): Promise<SearchResponse> {
-  const response = await fetch(`/api/v1/search?q=${encodeURIComponent(query)}&limit=${limit}`, {
+  const API_URL = 'http://localhost:8080/v1';
+  
+  const response = await fetch(`${API_URL}/search?q=${encodeURIComponent(query)}&limit=${limit}`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',

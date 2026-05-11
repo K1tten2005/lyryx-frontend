@@ -23,7 +23,7 @@ describe("fetchSearchResults", () => {
     });
 
     const results = await fetchSearchResults("Queen");
-    expect(global.fetch).toHaveBeenCalledWith("/api/v1/search?q=Queen&limit=20", expect.any(Object));
+    expect(global.fetch).toHaveBeenCalledWith("http://localhost:8080/v1/search?q=Queen&limit=20", expect.any(Object));
     expect(results).toEqual(mockResponse);
   });
 
