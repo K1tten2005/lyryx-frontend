@@ -6,7 +6,7 @@
 - [x] Task: Conductor - User Manual Verification 'Phase 1: State Management & API Integration' (Protocol in workflow.md) [8e7f459]
 
 ## Phase 2: Forms & Modal UI
-- [ ] Task: Implement the Login form using React Hook Form and Zod for validation, including Toast/Global error feedback.
+- [~] Task: Implement the Login form using React Hook Form and Zod for validation, including Toast/Global error feedback.
 - [ ] Task: Implement the Registration form using React Hook Form and Zod for validation, handling API error feedback.
 - [ ] Task: Implement the `AuthModal` component to host the forms, manage the toggle state between Login and Registration, and handle modal visibility.
 - [ ] Task: Conductor - User Manual Verification 'Phase 2: Forms & Modal UI' (Protocol in workflow.md)
