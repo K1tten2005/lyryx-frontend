@@ -49,3 +49,11 @@
     - [x] Improve `isOwner` check to consider token validity
     - [x] Ensure tests pass
 - [x] Task: Conductor - User Manual Verification 'Phase 6: Token Refresh & Auth Robustness' (Protocol in workflow.md)
+
+## Phase 7: UX Refinements
+- [x] Task: Refine Edit Profile Form & Bio Display 3527273
+    - [x] Add `confirmPassword` field to `profileEditSchema` and add validation logic
+    - [x] Update `EditProfileModal.tsx` UI with Password Confirmation field
+    - [x] Remove quotes and italics from bio display in `UserProfileHeader.tsx`
+    - [x] Ensure tests pass
+- [x] Task: Conductor - User Manual Verification 'Phase 7: UX Refinements' (Protocol in workflow.md)
