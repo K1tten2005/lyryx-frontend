@@ -63,6 +63,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setUser(null);
     localStorage.removeItem('access_token');
     localStorage.removeItem('user');
+    window.location.reload();
   };
 
   const value = {

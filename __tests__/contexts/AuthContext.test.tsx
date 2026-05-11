@@ -62,13 +62,18 @@ describe('AuthContext', () => {
     });
   });
 
-  it('logs out successfully and clears state', async () => {
+  it('logs out successfully, clears state and reloads page', async () => {
     // Set initial state
     const mockUser = { user_id: 1, email: 'test@example.com', username: 'testuser', role: 'user', reputation_score: 0 };
     localStorage.setItem('access_token', 'fake-token');
     localStorage.setItem('user', JSON.stringify(mockUser));
 
     vi.mocked(authApi.signOut).mockResolvedValueOnce(true);
+
+    const originalLocation = window.location;
+    // @ts-ignore
+    delete window.location;
+    window.location = { ...originalLocation, reload: vi.fn() };
 
     render(
       <AuthProvider>
@@ -86,7 +91,10 @@ describe('AuthContext', () => {
       expect(screen.getByTestId('auth-status')).toHaveTextContent('logged-out');
       expect(localStorage.getItem('access_token')).toBeNull();
       expect(localStorage.getItem('user')).toBeNull();
+      expect(window.location.reload).toHaveBeenCalled();
     });
+
+    window.location = originalLocation;
   });
   
   it('loads state from local storage on mount', () => {
