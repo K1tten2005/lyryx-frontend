@@ -21,6 +21,14 @@ describe('profileEditSchema', () => {
     expect(result.success).toBe(true);
   });
 
+  it('should allow empty password', () => {
+    const validData = {
+      password: '',
+    };
+    const result = profileEditSchema.safeParse(validData);
+    expect(result.success).toBe(true);
+  });
+
   it('should fail on invalid email', () => {
     const invalidData = {
       email: 'not-an-email',
