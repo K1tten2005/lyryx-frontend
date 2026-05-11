@@ -1,7 +1,7 @@
 # Implementation Plan: User Authentication & Registration
 
 ## Phase 1: State Management & API Integration
-- [ ] Task: Create API client functions to communicate with the Go backend (`/v1/auth/sign-in`, `/v1/auth/sign-up`, `/v1/auth/sign-out`).
+- [~] Task: Create API client functions to communicate with the Go backend (`/v1/auth/sign-in`, `/v1/auth/sign-up`, `/v1/auth/sign-out`).
 - [ ] Task: Implement `AuthContext` to manage the authentication state (token, current user info) and provide login, register, and logout actions.
 - [ ] Task: Conductor - User Manual Verification 'Phase 1: State Management & API Integration' (Protocol in workflow.md)
 
