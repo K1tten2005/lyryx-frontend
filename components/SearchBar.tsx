@@ -21,7 +21,7 @@ export default function SearchBar({ variant = 'hero' }: SearchBarProps) {
 
   if (variant === 'nav') {
     return (
-      <form onSubmit={handleSubmit} className="w-full max-w-sm">
+      <form onSubmit={handleSubmit} className="w-full max-w-xs">
         <div className="relative group">
           <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
             <Search className="h-5 w-5 text-indigo-400 group-focus-within:text-accent transition-colors drop-shadow-sm" />
