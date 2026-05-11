@@ -34,7 +34,7 @@ describe('RegisterForm', () => {
     await waitFor(() => {
       expect(screen.getByText(/username must be at least 3 characters/i)).toBeInTheDocument();
       expect(screen.getByText(/invalid email/i)).toBeInTheDocument();
-      expect(screen.getByText(/password must be at least 6 characters/i)).toBeInTheDocument();
+      expect(screen.getByText(/password must be at least 8 characters/i)).toBeInTheDocument();
     });
     expect(mockRegister).not.toHaveBeenCalled();
   });

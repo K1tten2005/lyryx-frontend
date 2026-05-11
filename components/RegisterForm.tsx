@@ -8,9 +8,12 @@ import { useAuth } from '@/contexts/AuthContext';
 import { toast } from 'react-hot-toast';
 
 const registerSchema = z.object({
-  username: z.string().min(3, 'Username must be at least 3 characters').max(30, 'Username must be less than 30 characters'),
-  email: z.string().email('Invalid email address'),
-  password: z.string().min(6, 'Password must be at least 6 characters'),
+  username: z.string()
+    .min(3, 'Username must be at least 3 characters')
+    .max(30, 'Username must be less than 30 characters')
+    .regex(/^[a-zA-Z0-9_.]{3,30}$/, 'Username can only contain letters, numbers, underscores, and dots'),
+  email: z.string().email('Invalid email address').max(254, 'Email too long'),
+  password: z.string().min(8, 'Password must be at least 8 characters').max(72, 'Password must be less than 72 characters'),
 });
 
 type RegisterFormData = z.infer<typeof registerSchema>;
@@ -43,7 +46,7 @@ export default function RegisterForm({ onSuccess }: RegisterFormProps) {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4" noValidate>
       {globalError && (
         <div className="p-3 text-sm text-red-500 bg-red-50 rounded-md">
           {globalError}
