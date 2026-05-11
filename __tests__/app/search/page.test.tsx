@@ -43,7 +43,7 @@ describe("SearchPage", () => {
     
     await waitFor(() => {
         expect(screen.getByRole("heading", { name: /Search Results/i })).toBeInTheDocument();
-        expect(screen.getByText(/No results found for/i)).toBeInTheDocument(); // It will show empty state because arrays are empty
+        expect(screen.getByText("No results found")).toBeInTheDocument(); // Updated assertion for new empty state UI
     });
   });
 
@@ -74,7 +74,7 @@ describe("SearchPage", () => {
     render(<SearchPage />);
 
     await waitFor(() => {
-      expect(screen.getByText(/No results found for/i)).toBeInTheDocument();
+      expect(screen.getByText("No results found")).toBeInTheDocument(); // Updated assertion
       expect(screen.getByText("NonexistentQuery")).toBeInTheDocument();
     });
   });
