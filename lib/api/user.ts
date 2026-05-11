@@ -1,3 +1,5 @@
+const API_URL = 'http://localhost:8080/v1';
+
 export interface UserProfile {
   user_id: number;
   username: string;
@@ -39,4 +41,37 @@ export interface GetUserAnnotationsOut {
   has_more: boolean;
 }
 
-// Re-exporting common types if needed, or keeping it clean
+export async function getUserProfile(userId: number): Promise<UserProfile> {
+  const response = await fetch(`${API_URL}/user/${userId}`, {
+    method: 'GET',
+    headers: { 'Content-Type': 'application/json' },
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json().catch(() => ({}));
+    throw new Error(errorData.message || 'Failed to fetch user profile');
+  }
+
+  return response.json();
+}
+
+export async function getUserAnnotations(
+  userId: number,
+  limit: number = 20,
+  offset: number = 0
+): Promise<GetUserAnnotationsOut> {
+  const response = await fetch(
+    `${API_URL}/user/${userId}/annotations?limit=${limit}&offset=${offset}`,
+    {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' },
+    }
+  );
+
+  if (!response.ok) {
+    const errorData = await response.json().catch(() => ({}));
+    throw new Error(errorData.message || 'Failed to fetch user annotations');
+  }
+
+  return response.json();
+}
