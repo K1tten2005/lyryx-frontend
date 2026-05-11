@@ -5,3 +5,8 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 - [x] **Track: Implement User Profile Dropdown**
 *Link: [./tracks/user_profile_dropdown_20260511/](./tracks/user_profile_dropdown_20260511/)*
+
+---
+
+- [ ] **Track: Design Revamp**
+*Link: [./tracks/design_revamp_20260511/](./tracks/design_revamp_20260511/)*
