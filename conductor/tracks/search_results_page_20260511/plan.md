@@ -31,14 +31,14 @@
     - [ ] Implement vertical stack of categories
 - [x] Task: Conductor - User Manual Verification 'Categorized Results Layout' (Protocol in workflow.md)
 
-## Phase 4: "See All" Modal & Infinite Scroll
+## Phase 4: "See All" Modal & Infinite Scroll [checkpoint: e25adc6]
 - [x] Task: Create `SeeAllModal` component 5a42f08
     - [ ] Write failing tests for modal open/close and dynamic content
     - [ ] Implement modal using a portal or headless UI
 - [x] Task: Implement Infinite Scroll in Modal a3b7485
     - [ ] Write failing test for loading more items on scroll
     - [ ] Implement Intersection Observer or scroll event listener for pagination
-- [ ] Task: Conductor - User Manual Verification 'See All" Modal & Infinite Scroll' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'See All" Modal & Infinite Scroll' (Protocol in workflow.md)
 
 ## Phase 5: Final Polish & Design
 - [ ] Task: Apply Frutiger Aero aesthetic
