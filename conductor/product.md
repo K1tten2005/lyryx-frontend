@@ -9,6 +9,7 @@ A frontend skeleton on Next.js for a Genius analogue.
 - **Content Creators:** Contributors adding and annotating lyrics.
 
 ## Core Features
+- **User Authentication:** JWT-based secure user registration and login system.
 - **Lyrics Annotation:** Interactive highlight and explain functionality for lyrics.
 - **Advanced Search:** Search by artist, album, lyric snippets, or user.
 

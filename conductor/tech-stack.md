@@ -10,6 +10,10 @@
 ## Styling
 - **Tailwind CSS:** Utility-first CSS framework for rapid and consistent UI development.
 
+## Form Handling & Validation
+- **React Hook Form:** Performant, flexible, and extensible forms with easy-to-use validation.
+- **Zod:** TypeScript-first schema declaration and validation.
+
 ## Testing
 - **Vitest:** Blazing fast unit test framework.
 - **React Testing Library:** For testing React components in a user-centric way.
