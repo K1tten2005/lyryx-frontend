@@ -41,7 +41,7 @@ function SearchResults() {
       {isLoading ? (
         <div className="flex flex-col items-center justify-center py-20" data-testid="loading-spinner">
           <Loader2 className="h-12 w-12 text-accent animate-spin mb-4" />
-          <p className="text-lg text-slate-600 animate-pulse">Searching for "{query}"...</p>
+          <p className="text-lg text-slate-600 animate-pulse">Searching for &quot;{query}&quot;...</p>
         </div>
       ) : error ? (
         <div className="bg-white/60 backdrop-blur-md rounded-2xl p-8 border border-red-200 shadow-xl">
