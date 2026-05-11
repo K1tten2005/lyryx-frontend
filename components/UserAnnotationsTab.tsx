@@ -32,8 +32,8 @@ export default function UserAnnotationsTab({ annotations }: UserAnnotationsTabPr
         >
           <div className="flex flex-col sm:flex-row">
             {/* Song Context Panel */}
-            <div className="sm:w-1/3 bg-zinc-50 p-4 flex sm:flex-col gap-4 border-b sm:border-b-0 sm:border-r border-zinc-100 transition-colors group-hover:bg-indigo-50/30">
-              <div className="w-20 h-20 sm:w-full sm:aspect-square rounded-lg overflow-hidden shadow-sm border-2 border-white relative">
+            <div className="sm:w-64 bg-zinc-50 p-5 flex flex-row sm:flex-col gap-4 border-b sm:border-b-0 sm:border-r border-zinc-100 transition-colors group-hover:bg-indigo-50/30 shrink-0">
+              <div className="w-16 h-16 sm:w-24 sm:h-24 mx-auto rounded-xl overflow-hidden shadow-sm border-2 border-white relative shrink-0">
                 <Image 
                   src={annotation.song.cover_url} 
                   alt={`${annotation.song.title} cover`}
@@ -41,11 +41,11 @@ export default function UserAnnotationsTab({ annotations }: UserAnnotationsTabPr
                   className="object-cover"
                 />
               </div>
-              <div className="flex flex-col justify-center sm:justify-start">
-                <Link href={`/song/${annotation.song.id}`} className="text-sm font-black text-zinc-900 line-clamp-1 hover:text-indigo-600 transition-colors tracking-tight">
+              <div className="flex flex-col justify-center sm:text-center min-w-0">
+                <Link href={`/song/${annotation.song.id}`} className="text-sm font-black text-zinc-900 truncate hover:text-indigo-600 transition-colors tracking-tight">
                   {annotation.song.title}
                 </Link>
-                <Link href={`/artist/${annotation.song.artist.id}`} className="text-xs font-bold text-zinc-500 line-clamp-1 hover:text-indigo-500 transition-colors uppercase tracking-widest mt-0.5">
+                <Link href={`/artist/${annotation.song.artist.id}`} className="text-[10px] font-black text-zinc-400 truncate hover:text-indigo-500 transition-colors uppercase tracking-widest mt-0.5">
                   {annotation.song.artist.name}
                 </Link>
               </div>

@@ -12,6 +12,7 @@ export default function UserProfilePage({ params }: { params: { id: string } }) 
   const [user, setUser] = useState<UserProfile | null>(null);
   const [annotations, setAnnotations] = useState<GetUserAnnotationsOut | null>(null);
   const [loading, setLoading] = useState(true);
+  const [loadingMore, setLoadingMore] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<'annotations'>('annotations');
 
@@ -34,6 +35,27 @@ export default function UserProfilePage({ params }: { params: { id: string } }) 
 
     fetchData();
   }, [params.id]);
+
+  const handleLoadMore = async () => {
+    if (!annotations || !annotations.has_more || loadingMore) return;
+
+    try {
+      setLoadingMore(true);
+      const nextData = await getUserAnnotations(
+        parseInt(params.id),
+        20,
+        annotations.annotations.length
+      );
+      setAnnotations({
+        ...nextData,
+        annotations: [...annotations.annotations, ...nextData.annotations]
+      });
+    } catch (err: any) {
+      console.error('Failed to load more annotations', err);
+    } finally {
+      setLoadingMore(false);
+    }
+  };
 
   if (loading) {
     return (
@@ -87,7 +109,21 @@ export default function UserProfilePage({ params }: { params: { id: string } }) 
 
             <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
               {activeTab === 'annotations' && annotations && (
-                <UserAnnotationsTab annotations={annotations.annotations} />
+                <>
+                  <UserAnnotationsTab annotations={annotations.annotations} />
+                  
+                  {annotations.has_more && (
+                    <div className="mt-12 flex justify-center">
+                      <button
+                        onClick={handleLoadMore}
+                        disabled={loadingMore}
+                        className="px-8 py-4 bg-white border-2 border-indigo-600 text-indigo-600 font-black uppercase tracking-widest rounded-full hover:bg-indigo-600 hover:text-white transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-md hover:shadow-lg active:scale-95"
+                      >
+                        {loadingMore ? 'Loading...' : 'Load More Annotations'}
+                      </button>
+                    </div>
+                  )}
+                </>
               )}
             </div>
           </div>
