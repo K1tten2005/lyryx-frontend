@@ -14,7 +14,7 @@ describe('LoginForm', () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
-    (useAuth as jest.Mock).mockReturnValue({
+    (useAuth as any).mockReturnValue({
       login: mockLogin,
     });
   });

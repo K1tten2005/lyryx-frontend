@@ -14,7 +14,7 @@ describe('RegisterForm', () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
-    (useAuth as jest.Mock).mockReturnValue({
+    (useAuth as any).mockReturnValue({
       register: mockRegister,
     });
   });
