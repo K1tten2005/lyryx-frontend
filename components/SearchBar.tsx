@@ -23,14 +23,14 @@ export default function SearchBar({ variant = 'hero' }: SearchBarProps) {
     return (
       <form onSubmit={handleSubmit} className="w-full max-w-xs">
         <div className="relative group">
-          <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-            <Search className="h-5 w-5 text-indigo-400 group-focus-within:text-accent transition-colors drop-shadow-sm" />
+          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+            <Search className="h-4 w-4 text-indigo-400 group-focus-within:text-accent transition-colors drop-shadow-sm" />
           </div>
           <input
             type="text"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            className="block w-full pl-12 pr-4 py-2.5 bg-white/10 border-2 border-indigo-400/50 hover:border-indigo-300 rounded-full text-base text-white placeholder-indigo-200 focus:outline-none focus:ring-4 focus:ring-accent/40 focus:border-accent focus:bg-white/20 transition-all shadow-md backdrop-blur-md"
+            className="block w-full pl-10 pr-4 py-1.5 bg-white/10 border-2 border-indigo-400/50 hover:border-indigo-300 rounded-full text-sm text-white placeholder-indigo-200 focus:outline-none focus:ring-4 focus:ring-accent/40 focus:border-accent focus:bg-white/20 transition-all shadow-md backdrop-blur-md"
             placeholder="Search Lyryx..."
           />
         </div>
