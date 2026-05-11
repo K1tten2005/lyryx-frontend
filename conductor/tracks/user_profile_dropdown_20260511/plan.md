@@ -1,8 +1,8 @@
 # Implementation Plan: User Profile Dropdown & Navbar Refinement
 
 ## Phase 1: Context & State Updates
-- [ ] Task: Update the `UserInfo` interface in `lib/api/auth.ts` to include `avatar_url?: string`. Ensure related mock data in tests is updated if necessary.
-- [ ] Task: Update the `logout` function in `contexts/AuthContext.tsx` to trigger a full page reload (`window.location.reload()`) upon successful sign-out.
+- [x] Task: Update the `UserInfo` interface in `lib/api/auth.ts` to include `avatar_url?: string`. Ensure related mock data in tests is updated if necessary. [fc2805a]
+- [x] Task: Update the `logout` function in `contexts/AuthContext.tsx` to trigger a full page reload (`window.location.reload()`) upon successful sign-out. [3ec0378]
 - [ ] Task: Conductor - User Manual Verification 'Phase 1: Context & State Updates' (Protocol in workflow.md)
 
 ## Phase 2: UI Implementation
