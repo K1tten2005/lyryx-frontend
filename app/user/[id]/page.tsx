@@ -6,6 +6,7 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import UserProfileHeader from '@/components/UserProfileHeader';
 import UserAnnotationsTab from '@/components/UserAnnotationsTab';
+import UserProfileSkeleton from '@/components/UserProfileSkeleton';
 
 export default function UserProfilePage({ params }: { params: { id: string } }) {
   const [user, setUser] = useState<UserProfile | null>(null);
@@ -38,8 +39,8 @@ export default function UserProfilePage({ params }: { params: { id: string } }) 
     return (
       <div className="min-h-screen flex flex-col bg-white">
         <Navbar />
-        <main className="flex-grow flex items-center justify-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600"></div>
+        <main className="flex-grow container mx-auto px-4 py-12">
+          <UserProfileSkeleton />
         </main>
         <Footer />
       </div>
