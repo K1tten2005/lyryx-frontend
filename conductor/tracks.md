@@ -6,7 +6,3 @@ This file tracks all major tracks for the project. Each track has its own detail
 - [x] **Track: Implement User Profile Dropdown**
 *Link: [./tracks/user_profile_dropdown_20260511/](./tracks/user_profile_dropdown_20260511/)*
 
----
-
-- [x] **Track: Create search results page with categorized results**
-*Link: [./tracks/search_results_page_20260511/](./tracks/search_results_page_20260511/)*
