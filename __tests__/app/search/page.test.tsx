@@ -34,7 +34,7 @@ describe("SearchPage", () => {
   it("renders search results heading with query", async () => {
     (useSearchParams as any).mockReturnValue(new URLSearchParams("q=Bohemian Rhapsody"));
     (SWR.default as any).mockReturnValue({
-      data: { artists: [], songs: [], lyrics: [], users: [] },
+      data: { artists: [], songs: [], lyrics_matched_songs: [], users: [] },
       error: null,
       isLoading: false,
     });
@@ -66,7 +66,7 @@ describe("SearchPage", () => {
   it("renders empty state if no results found", async () => {
     (useSearchParams as any).mockReturnValue(new URLSearchParams("q=NonexistentQuery"));
     (SWR.default as any).mockReturnValue({
-      data: { artists: [], songs: [], lyrics: [], users: [] },
+      data: { artists: [], songs: [], lyrics_matched_songs: [], users: [] },
       error: null,
       isLoading: false,
     });

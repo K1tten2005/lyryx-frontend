@@ -7,14 +7,18 @@ export const SearchResultItemSchema = z.object({
   username: z.string().optional(), // For users
   cover_url: z.string().optional(), // For songs/artists
   avatar_url: z.string().optional(), // For users
-  artist_name: z.string().optional(), // For songs
+  artist_name: z.string().optional(), // For songs (compatibility)
+  artist: z.object({
+    id: z.number(),
+    name: z.string()
+  }).optional(), // For songs from actual backend
   lyrics_snippet: z.string().optional(), // For lyrics
 });
 
 export const SearchResponseSchema = z.object({
   artists: z.array(SearchResultItemSchema).optional().default([]),
   songs: z.array(SearchResultItemSchema).optional().default([]),
-  lyrics: z.array(SearchResultItemSchema).optional().default([]),
+  lyrics_matched_songs: z.array(SearchResultItemSchema).optional().default([]),
   users: z.array(SearchResultItemSchema).optional().default([]),
 });
 

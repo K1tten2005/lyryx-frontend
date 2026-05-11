@@ -36,7 +36,7 @@ function SearchResults() {
   const isEmpty = results && 
     results.artists.length === 0 && 
     results.songs.length === 0 && 
-    results.lyrics.length === 0 && 
+    results.lyrics_matched_songs.length === 0 && 
     results.users.length === 0;
 
   return (
@@ -86,7 +86,7 @@ function SearchResults() {
 
           <SearchCategory 
             title="Lyrics Matches" 
-            items={results?.lyrics || []} 
+            items={results?.lyrics_matched_songs || []} 
             renderItem={(song) => <SongCard key={`lyric-${song.id}`} song={song} />} 
           />
           

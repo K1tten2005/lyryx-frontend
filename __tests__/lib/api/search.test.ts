@@ -13,7 +13,7 @@ describe("fetchSearchResults", () => {
     const mockResponse = {
       artists: [],
       songs: [],
-      lyrics: [],
+      lyrics_matched_songs: [],
       users: [],
     };
 
