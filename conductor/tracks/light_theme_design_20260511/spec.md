@@ -7,8 +7,15 @@ This track aims to redesign the Lyryx frontend application by replacing the exis
 - **Theme Replacement:** The application must exclusively use a light theme. The existing dark theme will be completely removed.
 - **Accent Color:** All primary interactive elements (e.g., focused inputs, links, buttons) that currently use yellow must be updated to use "Deep Indigo" (a sophisticated purple).
 - **Backgrounds & Text:** Global backgrounds must be updated to light colors (e.g., white or light gray), and text colors must be updated to dark colors (e.g., black or dark gray) to ensure high contrast and readability.
-- **Component Updates:** All existing components (`Navbar`, `SearchBar`, `Footer`, etc.) must be styled to match the new light theme, ensuring proper contrast and visual hierarchy.
+- **Component Updates:** All existing components (`Navbar`, `SearchBar`, `Footer`, etc.) must be styled to match the new light theme, ensuring proper contrast and visual hierarchy. Specifically, the Navbar and Footer will use a dark, high-contrast background (Deep Indigo) to anchor the design.
 - **Minor UI Tweaks:** Shadows, borders, and minor spacing adjustments can be made to enhance the light theme aesthetic.
+
+## Phase 4: Visual Hierarchy Refinement (Additive)
+Based on user feedback, the initial light theme was "too white," leading to reduced readability. 
+- **Dark Contrast Navbar & Footer:** The Navbar and Footer will be updated to a dark background (`bg-indigo-950`) with light text and icons.
+- **Improved Anchoring:** The dark elements will provide a clear frame for the light-themed content area.
+- **SearchBar Polish:** The SearchBar will be refined to ensure it pops against the light background, possibly with a stronger shadow or subtle border adjustment.
+
 - **Gradients & Effects:** Existing visual effects, such as the background gradient on the home page and text gradients, must be adjusted or replaced to complement the light theme.
 
 ## Non-Functional Requirements
