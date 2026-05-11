@@ -15,6 +15,11 @@ const nextConfig = {
         port: '9000',
         pathname: '/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'images.genius.com',
+        pathname: '/**',
+      },
     ],
   },
 };
