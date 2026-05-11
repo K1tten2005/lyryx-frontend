@@ -1,6 +1,7 @@
 import { useEffect, ReactNode } from "react";
 import { X, Loader2 } from "lucide-react";
 import { createPortal } from "react-dom";
+import { useInView } from "react-intersection-observer";
 
 interface SeeAllModalProps<T> {
   isOpen: boolean;
@@ -23,6 +24,17 @@ export default function SeeAllModal<T>({
   hasMore = false,
   onLoadMore,
 }: SeeAllModalProps<T>) {
+  const { ref, inView } = useInView({
+    threshold: 0,
+    rootMargin: "100px",
+  });
+
+  useEffect(() => {
+    if (inView && hasMore && !isLoadingMore && onLoadMore) {
+      onLoadMore();
+    }
+  }, [inView, hasMore, isLoadingMore, onLoadMore]);
+
   // Prevent body scrolling when modal is open
   useEffect(() => {
     if (isOpen) {
@@ -67,19 +79,14 @@ export default function SeeAllModal<T>({
         <div className="flex-grow overflow-y-auto p-6 space-y-4 custom-scrollbar">
           {items.map((item, index) => renderItem(item, index))}
           
+          {hasMore && (
+            <div ref={ref} className="w-full h-4" data-testid="scroll-sentinel" />
+          )}
+
           {isLoadingMore && (
-            <div className="flex justify-center py-6">
+            <div className="flex justify-center py-6" data-testid="modal-loading-spinner">
               <Loader2 className="h-8 w-8 text-accent animate-spin" />
             </div>
-          )}
-          
-          {!isLoadingMore && hasMore && (
-            <button
-              onClick={onLoadMore}
-              className="w-full py-4 mt-4 rounded-xl border-2 border-dashed border-slate-300 text-slate-500 hover:border-accent hover:text-accent hover:bg-accent/5 font-medium transition-all"
-            >
-              Load More
-            </button>
           )}
         </div>
       </div>

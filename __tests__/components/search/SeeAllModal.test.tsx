@@ -1,5 +1,15 @@
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import SeeAllModal from "@/components/search/SeeAllModal";
+import { vi } from "vitest";
+
+// Mock intersection observer
+const mockIntersectionObserver = vi.fn();
+mockIntersectionObserver.mockReturnValue({
+  observe: () => null,
+  unobserve: () => null,
+  disconnect: () => null
+});
+window.IntersectionObserver = mockIntersectionObserver;
 
 describe("SeeAllModal", () => {
   const defaultProps = {
@@ -12,6 +22,10 @@ describe("SeeAllModal", () => {
     hasMore: false,
     onLoadMore: vi.fn(),
   };
+
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
 
   it("renders nothing when isOpen is false", () => {
     const { container } = render(<SeeAllModal {...defaultProps} isOpen={false} />);
@@ -30,4 +44,15 @@ describe("SeeAllModal", () => {
     fireEvent.click(screen.getByRole("button", { name: /close/i }));
     expect(defaultProps.onClose).toHaveBeenCalled();
   });
+
+  it("renders loading spinner when isLoadingMore is true", () => {
+    render(<SeeAllModal {...defaultProps} isLoadingMore={true} hasMore={true} />);
+    expect(screen.getByTestId("modal-loading-spinner")).toBeInTheDocument();
+  });
+  
+  it("renders intersection observer sentinel when hasMore is true", () => {
+    render(<SeeAllModal {...defaultProps} hasMore={true} />);
+    expect(screen.getByTestId("scroll-sentinel")).toBeInTheDocument();
+  });
 });
+
