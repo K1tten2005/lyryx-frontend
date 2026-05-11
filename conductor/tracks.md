@@ -5,4 +5,4 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 - [x] **Track: Implement User Profile Dropdown**
 *Link: [./tracks/user_profile_dropdown_20260511/](./tracks/user_profile_dropdown_20260511/)*
-\n---\n\n- [ ] **Track: Profile Editing Functionality**\n*Link: [./tracks/profile_editing_20260511/](./tracks/profile_editing_20260511/)*
+\n---\n\n- [x] **Track: Profile Editing Functionality**\n*Link: [./tracks/profile_editing_20260511/](./tracks/profile_editing_20260511/)*
