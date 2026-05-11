@@ -27,7 +27,7 @@ export default function SearchCategory<T>({ title, items, renderItem, onSeeAll }
       {hasMore && (
         <button
           onClick={onSeeAll}
-          className="mt-4 flex items-center justify-center w-full py-3 rounded-xl bg-slate-100 hover:bg-accent/10 text-accent font-semibold transition-all border border-transparent hover:border-accent/30 group"
+          className="mt-4 flex items-center justify-center w-full py-3 rounded-xl bg-slate-100 hover:bg-accent/10 text-accent font-semibold transition-all border border-transparent hover:border-accent/30 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 group"
         >
           See All {title}
           <ChevronRight className="ml-1 h-5 w-5 group-hover:translate-x-1 transition-transform" />

@@ -4,7 +4,7 @@ import { Music, User, Mic2 } from "lucide-react";
 
 export function ArtistCard({ artist }: { artist: SearchResultItem }) {
   return (
-    <Link href={`/artist/${artist.id}`} className="group block">
+    <Link href={`/artist/${artist.id}`} className="group block focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 rounded-xl">
       <div className="flex items-center p-4 bg-white/40 backdrop-blur-xl rounded-xl border border-white/60 hover:border-accent hover:bg-white/60 shadow-glass hover:shadow-lg transition-all duration-300">
         <div className="w-16 h-16 rounded-full overflow-hidden flex-shrink-0 bg-slate-200 mr-4 shadow-inner relative group-hover:shadow-lg transition-shadow">
           {artist.cover_url ? (
@@ -39,7 +39,7 @@ export function SongCard({ song, showSnippet = false }: { song: SearchResultItem
   };
 
   return (
-    <Link href={`/song/${song.id}`} className="group block">
+    <Link href={`/song/${song.id}`} className="group block focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 rounded-xl">
       <div className="flex items-center p-4 bg-white/40 backdrop-blur-xl rounded-xl border border-white/60 hover:border-accent hover:bg-white/60 shadow-glass hover:shadow-lg transition-all duration-300">
         <div className="w-16 h-16 rounded-lg overflow-hidden flex-shrink-0 bg-slate-200 mr-4 shadow-inner relative group-hover:shadow-lg transition-shadow">
           {song.cover_url ? (
@@ -64,7 +64,7 @@ export function SongCard({ song, showSnippet = false }: { song: SearchResultItem
 
 export function UserCard({ user }: { user: SearchResultItem }) {
   return (
-    <Link href={`/user/${user.id}`} className="group block">
+    <Link href={`/user/${user.id}`} className="group block focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 rounded-xl">
       <div className="flex items-center p-4 bg-white/40 backdrop-blur-xl rounded-xl border border-white/60 hover:border-accent hover:bg-white/60 shadow-glass hover:shadow-lg transition-all duration-300">
         <div className="w-12 h-12 rounded-full overflow-hidden flex-shrink-0 bg-slate-200 mr-4 shadow-inner relative group-hover:shadow-lg transition-shadow">
           {user.avatar_url ? (
