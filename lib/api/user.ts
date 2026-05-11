@@ -93,3 +93,47 @@ export async function getUserAnnotations(
 
   return response.json();
 }
+
+export async function updateUserProfile(
+  token: string,
+  data: Partial<UserProfile & { password?: string }>
+): Promise<UserProfile> {
+  const response = await fetch(`${API_URL}/user/me`, {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`,
+    },
+    body: JSON.stringify(data),
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json().catch(() => ({}));
+    throw new Error(errorData.message || 'Failed to update user profile');
+  }
+
+  return response.json();
+}
+
+export async function updateUserAvatar(
+  token: string,
+  file: File
+): Promise<{ avatar_url: string }> {
+  const formData = new FormData();
+  formData.append('avatar', file);
+
+  const response = await fetch(`${API_URL}/user/me/avatar`, {
+    method: 'PATCH',
+    headers: {
+      'Authorization': `Bearer ${token}`,
+    },
+    body: formData,
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json().catch(() => ({}));
+    throw new Error(errorData.message || 'Failed to update user avatar');
+  }
+
+  return response.json();
+}
