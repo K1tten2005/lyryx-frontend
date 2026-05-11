@@ -6,11 +6,13 @@ import { getUserMe } from '@/lib/api/user';
 
 interface AuthContextType {
   user: UserInfo | null;
+  token: string | null;
   isAuthenticated: boolean;
   isInitialized: boolean;
   login: (...args: Parameters<typeof signIn>) => Promise<void>;
   register: (...args: Parameters<typeof signUp>) => Promise<void>;
   logout: () => Promise<void>;
+  updateUser: (user: UserInfo) => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -84,13 +86,20 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     window.location.reload();
   };
 
+  const updateUser = (updatedUser: UserInfo) => {
+    setUser(updatedUser);
+    localStorage.setItem('user', JSON.stringify(updatedUser));
+  };
+
   const value = {
     user,
+    token,
     isAuthenticated: !!token,
     isInitialized,
     login,
     register,
     logout,
+    updateUser,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
