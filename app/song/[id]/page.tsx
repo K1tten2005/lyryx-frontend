@@ -84,12 +84,12 @@ export default function SongPage({ params }: { params: { id: string } }) {
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
-      <main className="flex-grow px-8 py-12">
-        <div className="max-w-full">
+      <main className="flex-grow py-12">
+        <div className="max-w-7xl mx-auto px-4 md:px-12">
           {/* Header Section */}
-          <div className="flex flex-col md:flex-row gap-8 mb-12 animate-in fade-in slide-in-from-top-4 duration-700">
+          <div className="flex flex-col md:flex-row gap-10 mb-16 animate-in fade-in slide-in-from-top-4 duration-700">
             {/* Cover Image */}
-            <div className="relative w-full md:w-64 h-64 rounded-3xl overflow-hidden shadow-glass border-4 border-white/80 group flex-shrink-0">
+            <div className="relative w-64 h-64 md:w-72 md:h-72 rounded-3xl overflow-hidden shadow-glass border-4 border-white/80 group flex-shrink-0">
               {song.cover_url ? (
                 <Image
                   src={song.cover_url}
@@ -106,51 +106,51 @@ export default function SongPage({ params }: { params: { id: string } }) {
             </div>
 
             {/* Song Info */}
-            <div className="flex-grow flex flex-col justify-end py-2 max-w-2xl">
-              <h1 className="text-4xl md:text-5xl font-black text-slate-800 mb-4 leading-tight">
+            <div className="flex-grow flex flex-col justify-end py-2">
+              <h1 className="text-4xl md:text-6xl font-black text-slate-800 mb-6 leading-tight drop-shadow-sm">
                 {song.title}
               </h1>
               <div className="flex flex-wrap gap-6 items-center text-slate-600 font-bold">
                 <Link 
                   href={`/artist/${song.artist.id}`}
-                  className="text-xl text-accent hover:text-accent-hover transition-colors drop-shadow-sm"
+                  className="text-2xl text-accent hover:text-accent-hover transition-colors drop-shadow-sm"
                 >
                   {song.artist.name}
                 </Link>
                 
-                <div className="flex items-center gap-2 bg-white/40 backdrop-blur-sm px-3 py-1 rounded-full border border-white/20">
-                  <Calendar className="w-4 h-4" />
-                  <span data-testid="release-date">{formatDate(song.release_date)}</span>
+                <div className="flex items-center gap-2 bg-white/40 backdrop-blur-sm px-4 py-2 rounded-full border border-white/20 shadow-sm">
+                  <Calendar className="w-4 h-4 text-accent" />
+                  <span data-testid="release-date" className="text-sm uppercase tracking-wider">{formatDate(song.release_date)}</span>
                 </div>
 
-                <div className="flex items-center gap-2 bg-white/40 backdrop-blur-sm px-3 py-1 rounded-full border border-white/20">
-                  <Eye className="w-4 h-4" />
-                  <span>{song.views?.toLocaleString() || '0'}</span>
+                <div className="flex items-center gap-2 bg-white/40 backdrop-blur-sm px-4 py-2 rounded-full border border-white/20 shadow-sm">
+                  <Eye className="w-4 h-4 text-accent" />
+                  <span className="text-sm uppercase tracking-wider">{song.views?.toLocaleString() || '0'}</span>
                 </div>
               </div>
             </div>
           </div>
 
           {/* Lyrics and Annotations Section */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 animate-in fade-in slide-in-from-bottom-8 duration-1000 delay-200">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 animate-in fade-in slide-in-from-bottom-8 duration-1000 delay-200">
             {/* Left Column (Lyrics) */}
-            <div className="lg:col-span-8 xl:col-span-7">
-              <h2 className="text-2xl font-black uppercase tracking-widest text-accent mb-6 flex items-center gap-2">
-                <span className="w-8 h-1 bg-accent rounded-full"></span>
+            <div className="lg:col-span-8">
+              <h2 className="text-2xl font-black uppercase tracking-widest text-accent mb-8 flex items-center gap-3">
+                <span className="w-10 h-1.5 bg-accent rounded-full"></span>
                 Lyrics
               </h2>
-              <div className="bg-white/70 backdrop-blur-xl p-8 md:p-10 rounded-[2rem] border border-white/50 shadow-glass relative overflow-hidden w-fit min-w-[60%]">
+              <div className="bg-white/70 backdrop-blur-xl p-10 md:p-14 rounded-[2.5rem] border border-white/50 shadow-glass relative overflow-hidden w-fit min-w-[70%]">
                 {/* Glossy overlay */}
                 <div className="absolute top-0 left-0 right-0 h-1/2 bg-gradient-to-b from-white/20 to-transparent pointer-events-none"></div>
 
-                <pre className="text-xl md:text-2xl leading-relaxed text-slate-700 font-medium whitespace-pre font-sans relative z-10">
+                <pre className="text-xl md:text-2xl leading-[1.6] text-slate-700 font-semibold whitespace-pre font-sans relative z-10 tracking-tight">
                   {song.lyrics}
                 </pre>
               </div>
             </div>
 
             {/* Right Column (Placeholder for Annotations) */}
-            <div className="lg:col-span-4 xl:col-span-5 hidden lg:block">
+            <div className="lg:col-span-4 hidden lg:block">
               {/* This space is reserved for annotations */}
             </div>
           </div>
