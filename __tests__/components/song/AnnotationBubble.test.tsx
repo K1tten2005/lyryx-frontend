@@ -28,7 +28,7 @@ describe("AnnotationBubble", () => {
     
     expect(screen.getByText("This is a test annotation")).toBeInTheDocument();
     expect(screen.getByText("tester")).toBeInTheDocument();
-    expect(screen.getByText("100")).toBeInTheDocument();
+    expect(screen.getByText(/100\s+RS/i)).toBeInTheDocument();
   });
 
   it("should apply Frutiger Aero design classes", () => {
@@ -36,5 +36,19 @@ describe("AnnotationBubble", () => {
     // Checking for glassmorphism classes typical of Frutiger Aero
     expect(container.firstChild).toHaveClass("bg-white/60");
     expect(container.firstChild).toHaveClass("backdrop-blur-xl");
+  });
+
+  it("should render create mode with textarea and submit button", () => {
+    render(
+      <AnnotationBubble 
+        annotation={null} 
+        isCreateMode={true} 
+        onClose={() => {}} 
+        onSubmit={async () => {}} 
+      />
+    );
+    
+    expect(screen.getByPlaceholderText(/Explain these lyrics/i)).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /save annotation/i })).toBeInTheDocument();
   });
 });

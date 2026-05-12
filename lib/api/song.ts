@@ -110,13 +110,14 @@ export async function createAnnotation(
   content: string,
   startIndex: number,
   endIndex: number,
-  token: string
+  token?: string
 ): Promise<Annotation> {
+  const authToken = token || localStorage.getItem('access_token');
   const response = await fetch(`${API_URL}/song/${songId}/annotation`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`,
+      Authorization: `Bearer ${authToken}`,
     },
     body: JSON.stringify({
       songID: songId,
