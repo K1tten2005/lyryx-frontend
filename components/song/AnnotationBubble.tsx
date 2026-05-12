@@ -1,18 +1,27 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Annotation } from '@/lib/api/song';
+import { Annotation, updateAnnotation, deleteAnnotation, voteAnnotation, deleteVote } from '@/lib/api/song';
 import Link from 'next/link';
+import { useAuth } from '@/contexts/AuthContext';
+import { ThumbsUp, ThumbsDown, Edit2, Trash2 } from 'lucide-react';
+import toast from 'react-hot-toast';
 
 interface AnnotationBubbleProps {
   annotation: Annotation | null;
   isCreateMode?: boolean;
   onClose: () => void;
   onSubmit?: (content: string) => Promise<void>;
+  onDeleted?: () => void;
+  onUpdated?: () => void;
 }
 
-export function AnnotationBubble({ annotation, isCreateMode = false, onClose, onSubmit }: AnnotationBubbleProps) {
+export function AnnotationBubble({ annotation, isCreateMode = false, onClose, onSubmit, onDeleted, onUpdated }: AnnotationBubbleProps) {
   const bubbleRef = useRef<HTMLDivElement>(null);
   const [content, setContent] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+  const [editContent, setEditContent] = useState('');
+  
+  const { user, token } = useAuth();
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -38,6 +47,13 @@ export function AnnotationBubble({ annotation, isCreateMode = false, onClose, on
     };
   }, [onClose]);
 
+  useEffect(() => {
+    if (annotation && !isCreateMode) {
+      setEditContent(annotation.content || '');
+      setIsEditing(false);
+    }
+  }, [annotation, isCreateMode]);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!onSubmit || !content.trim()) return;
@@ -52,7 +68,61 @@ export function AnnotationBubble({ annotation, isCreateMode = false, onClose, on
     }
   };
 
+  const handleEditSubmit = async () => {
+    if (!annotation || !editContent.trim()) return;
+    try {
+      setIsSubmitting(true);
+      await updateAnnotation(annotation.id, editContent, token || undefined);
+      toast.success('Annotation updated successfully');
+      setIsEditing(false);
+      if (onUpdated) onUpdated();
+    } catch (error: any) {
+      toast.error(error.message || 'Failed to update annotation');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleDelete = async () => {
+    if (!annotation) return;
+    if (window.confirm('Are you sure you want to delete this annotation?')) {
+      try {
+        await deleteAnnotation(annotation.id, token || undefined);
+        toast.success('Annotation deleted');
+        if (onDeleted) onDeleted();
+        onClose();
+      } catch (error: any) {
+        toast.error(error.message || 'Failed to delete annotation');
+      }
+    }
+  };
+
+  const handleVote = async (value: number) => {
+    if (!user) {
+      toast.error('Please log in to vote');
+      return;
+    }
+    if (!annotation) return;
+
+    try {
+      if (annotation.my_vote === value) {
+        // Toggle off
+        await deleteVote(annotation.id, token || undefined);
+      } else {
+        await voteAnnotation(annotation.id, value, token || undefined);
+      }
+      if (onUpdated) onUpdated(); // trigger re-fetch
+    } catch (error: any) {
+      toast.error(error.message || 'Failed to submit vote');
+    }
+  };
+
   if (!annotation && !isCreateMode) return null;
+
+  const isAuthor = user && annotation?.user?.user_id === user.user_id;
+  const isModerator = user && (user.role === 'moderator' || user.role === 'admin');
+  const canEdit = isAuthor;
+  const canDelete = isAuthor || isModerator;
 
   return (
     <div 
@@ -87,8 +157,8 @@ export function AnnotationBubble({ annotation, isCreateMode = false, onClose, on
           </form>
         ) : annotation && (
           <>
-            {/* User Info at Top */}
-            <div className="flex items-center gap-4 mb-6">
+            {/* User Info & Actions at Top */}
+            <div className="flex items-center justify-between gap-4 mb-6">
               <Link 
                 href={annotation.user?.user_id ? `/user/${annotation.user.user_id}` : '#'}
                 className="flex items-center gap-3 group"
@@ -113,18 +183,73 @@ export function AnnotationBubble({ annotation, isCreateMode = false, onClose, on
                   </span>
                 </div>
               </Link>
+              
+              {/* Action Buttons */}
+              <div className="flex gap-2">
+                {canEdit && !isEditing && (
+                  <button onClick={() => setIsEditing(true)} className="p-2 text-slate-400 hover:text-accent transition-colors" title="Edit">
+                    <Edit2 size={18} />
+                  </button>
+                )}
+                {canDelete && !isEditing && (
+                  <button onClick={handleDelete} className="p-2 text-slate-400 hover:text-red-500 transition-colors" title="Delete">
+                    <Trash2 size={18} />
+                  </button>
+                )}
+              </div>
             </div>
 
             {/* Content */}
-            <div className="text-base md:text-lg font-bold leading-relaxed text-slate-700 whitespace-pre-wrap break-words mb-4 flex-grow">
-              {annotation.content}
-            </div>
+            {isEditing ? (
+              <div className="flex flex-col flex-grow mb-4">
+                <textarea
+                  autoFocus
+                  className="w-full bg-white/60 border-2 border-white/80 rounded-2xl p-4 text-slate-800 font-bold placeholder-slate-400 focus:outline-none focus:ring-4 focus:ring-accent/30 min-h-[160px] transition-all resize-none mb-4 shadow-inset-heavy"
+                  value={editContent}
+                  onChange={(e) => setEditContent(e.target.value)}
+                />
+                <div className="flex gap-2">
+                  <button
+                    onClick={handleEditSubmit}
+                    disabled={isSubmitting || !editContent.trim()}
+                    className="flex-1 py-2 bg-accent text-white font-bold rounded-full hover:bg-accent-hover transition-all disabled:opacity-50"
+                  >
+                    {isSubmitting ? 'Saving...' : 'Save'}
+                  </button>
+                  <button
+                    onClick={() => { setIsEditing(false); setEditContent(annotation.content || ''); }}
+                    className="flex-1 py-2 bg-white/50 text-slate-600 font-bold rounded-full hover:bg-white/80 transition-all border border-slate-200"
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <div className="text-base md:text-lg font-bold leading-relaxed text-slate-700 whitespace-pre-wrap break-words mb-4 flex-grow">
+                {annotation.content}
+              </div>
+            )}
 
-            {/* Rating After Content */}
-            <div className="flex items-center gap-2 bg-accent/10 w-fit px-3 py-1.5 rounded-xl border border-accent/20">
-              <span className="text-accent text-base">★</span>
-              <span className="text-sm font-black text-accent">{annotation.rating || 0}</span>
-            </div>
+            {/* Voting Component */}
+            {!isEditing && (
+              <div className="flex items-center gap-1 bg-white/40 w-fit px-2 py-1 rounded-full border border-white/60 shadow-sm mt-auto">
+                <button 
+                  onClick={() => handleVote(1)}
+                  className={`p-1.5 rounded-full transition-colors ${annotation.my_vote === 1 ? 'bg-accent text-white' : 'text-slate-500 hover:bg-accent/20 hover:text-accent'}`}
+                >
+                  <ThumbsUp size={16} />
+                </button>
+                <span className={`text-sm font-black px-2 ${annotation.rating > 0 ? 'text-accent' : annotation.rating < 0 ? 'text-red-500' : 'text-slate-500'}`}>
+                  {annotation.rating || 0}
+                </span>
+                <button 
+                  onClick={() => handleVote(-1)}
+                  className={`p-1.5 rounded-full transition-colors ${annotation.my_vote === -1 ? 'bg-red-500 text-white' : 'text-slate-500 hover:bg-red-500/20 hover:text-red-500'}`}
+                >
+                  <ThumbsDown size={16} />
+                </button>
+              </div>
+            )}
           </>
         )}
       </div>

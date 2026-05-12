@@ -310,6 +310,8 @@ export default function SongPage({ params }: { params: { id: string } }) {
                     isCreateMode={isCreateMode}
                     onClose={() => { setActiveAnnotationId(null); setIsCreateMode(false); }} 
                     onSubmit={handleAnnotationSubmit}
+                    onUpdated={fetchAnnotations}
+                    onDeleted={() => { setActiveAnnotationId(null); fetchAnnotations(); }}
                   />
                 )}
               </div>

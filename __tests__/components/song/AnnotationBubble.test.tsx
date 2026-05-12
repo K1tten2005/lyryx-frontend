@@ -1,6 +1,24 @@
-import { render, screen } from "@testing-library/react";
-import { describe, it, expect } from "vitest";
+import { render, screen, fireEvent } from "@testing-library/react";
+import { describe, it, expect, vi, beforeEach } from "vitest";
 import { AnnotationBubble } from "@/components/song/AnnotationBubble";
+
+vi.mock("@/contexts/AuthContext", () => ({
+  useAuth: vi.fn(),
+}));
+
+import { useAuth } from "@/contexts/AuthContext";
+import * as api from "@/lib/api/song";
+
+vi.mock("@/lib/api/song", async () => {
+  const actual = await vi.importActual("@/lib/api/song");
+  return {
+    ...actual,
+    updateAnnotation: vi.fn(),
+    deleteAnnotation: vi.fn(),
+    voteAnnotation: vi.fn(),
+    deleteVote: vi.fn(),
+  };
+});
 
 describe("AnnotationBubble", () => {
   const mockAnnotation = {
@@ -9,6 +27,7 @@ describe("AnnotationBubble", () => {
     start_index: 0,
     end_index: 10,
     rating: 5,
+    my_vote: null,
     created_at: "2026-05-12T12:00:00Z",
     user: {
       user_id: 1,
@@ -18,7 +37,17 @@ describe("AnnotationBubble", () => {
     }
   };
 
-  it("should render nothing if annotation is null", () => {
+  beforeEach(() => {
+    vi.resetAllMocks();
+    (useAuth as any).mockReturnValue({
+      user: null,
+      token: null,
+    });
+    // Mock window.confirm
+    vi.spyOn(window, "confirm").mockImplementation(() => true);
+  });
+
+  it("should render nothing if annotation is null and not create mode", () => {
     const { container } = render(<AnnotationBubble annotation={null} onClose={() => {}} />);
     expect(container).toBeEmptyDOMElement();
   });
@@ -33,7 +62,6 @@ describe("AnnotationBubble", () => {
 
   it("should apply Frutiger Aero design classes", () => {
     const { container } = render(<AnnotationBubble annotation={mockAnnotation} onClose={() => {}} />);
-    // Checking for glassmorphism classes typical of Frutiger Aero
     expect(container.firstChild).toHaveClass("bg-white/60");
     expect(container.firstChild).toHaveClass("backdrop-blur-xl");
   });
@@ -51,4 +79,32 @@ describe("AnnotationBubble", () => {
     expect(screen.getByPlaceholderText(/Explain these lyrics/i)).toBeInTheDocument();
     expect(screen.getByRole("button", { name: /save annotation/i })).toBeInTheDocument();
   });
+
+  it("should not show edit and delete buttons for non-authors", () => {
+    (useAuth as any).mockReturnValue({
+      user: { user_id: 2, role: "user" },
+    });
+    render(<AnnotationBubble annotation={mockAnnotation} onClose={() => {}} />);
+    expect(screen.queryByTitle("Edit")).not.toBeInTheDocument();
+    expect(screen.queryByTitle("Delete")).not.toBeInTheDocument();
+  });
+
+  it("should show edit and delete buttons for the author", () => {
+    (useAuth as any).mockReturnValue({
+      user: { user_id: 1, role: "user" },
+    });
+    render(<AnnotationBubble annotation={mockAnnotation} onClose={() => {}} />);
+    expect(screen.getByTitle("Edit")).toBeInTheDocument();
+    expect(screen.getByTitle("Delete")).toBeInTheDocument();
+  });
+
+  it("should show delete button for moderators even if not author", () => {
+    (useAuth as any).mockReturnValue({
+      user: { user_id: 99, role: "moderator" },
+    });
+    render(<AnnotationBubble annotation={mockAnnotation} onClose={() => {}} />);
+    expect(screen.queryByTitle("Edit")).not.toBeInTheDocument();
+    expect(screen.getByTitle("Delete")).toBeInTheDocument();
+  });
 });
+
