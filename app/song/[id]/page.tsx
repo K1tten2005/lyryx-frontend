@@ -31,7 +31,7 @@ export default function SongPage({ params }: { params: { id: string } }) {
   const fetchAnnotations = useCallback(async () => {
     try {
       const songId = parseInt(params.id);
-      const annotationsData = await getSongAnnotations(songId).catch((e) => {
+      const annotationsData = await getSongAnnotations(songId, token || undefined).catch((e) => {
         console.error("Failed to fetch annotations:", e);
         return [];
       });
@@ -39,7 +39,7 @@ export default function SongPage({ params }: { params: { id: string } }) {
     } catch (err) {
       console.error("Error refreshing annotations:", err);
     }
-  }, [params.id]);
+  }, [params.id, token]);
 
   useEffect(() => {
     const fetchData = async () => {

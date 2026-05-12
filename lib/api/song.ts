@@ -86,14 +86,22 @@ export async function getSongById(id: number): Promise<Song | null> {
 /**
  * Fetches all annotations for a given song.
  * @param songId The song ID.
+ * @param token The user's authentication token (optional, for getting my_vote).
  * @returns A list of annotations.
  */
-export async function getSongAnnotations(songId: number): Promise<Annotation[]> {
+export async function getSongAnnotations(songId: number, token?: string): Promise<Annotation[]> {
+  const authToken = token || (typeof window !== 'undefined' ? localStorage.getItem('access_token') : null);
+  const headers: Record<string, string> = {
+    'Content-Type': 'application/json',
+  };
+  
+  if (authToken) {
+    headers['Authorization'] = `Bearer ${authToken}`;
+  }
+
   const response = await fetch(`${API_URL}/song/${songId}/annotations`, {
     method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-    },
+    headers,
   });
 
   if (!response.ok) {

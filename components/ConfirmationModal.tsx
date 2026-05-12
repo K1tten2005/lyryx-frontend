@@ -1,7 +1,7 @@
 'use client';
 
-import React from 'react';
-import { X } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
+import { createPortal } from 'react-dom';
 
 interface ConfirmationModalProps {
   isOpen: boolean;
@@ -26,25 +26,23 @@ export default function ConfirmationModal({
   isDestructive = true,
   isLoading = false
 }: ConfirmationModalProps) {
-  if (!isOpen) return null;
+  const [mounted, setMounted] = useState(false);
 
-  return (
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!isOpen || !mounted) return null;
+
+  return createPortal(
     <div 
-      className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm"
+      className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm"
       onClick={!isLoading ? onClose : undefined}
     >
       <div 
         className="relative w-full max-w-md bg-surface bg-glass-panel backdrop-blur-md rounded-3xl border border-white/50 shadow-glass overflow-hidden animate-in fade-in zoom-in duration-200 p-6"
         onClick={(e) => e.stopPropagation()}
       >
-        <button
-          onClick={onClose}
-          disabled={isLoading}
-          className="absolute top-4 right-4 p-2 text-slate-400 hover:text-slate-600 transition-colors disabled:opacity-50"
-        >
-          <X size={20} />
-        </button>
-
         <h2 className="text-xl font-bold text-slate-800 mb-2">{title}</h2>
         <p className="text-slate-600 mb-8">{message}</p>
 
@@ -71,6 +69,8 @@ export default function ConfirmationModal({
           </button>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }
+
