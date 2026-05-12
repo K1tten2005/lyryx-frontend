@@ -38,6 +38,11 @@ export default function SongPage({ params }: { params: { id: string } }) {
     fetchData();
   }, [params.id]);
 
+  const formatDate = (dateString?: string) => {
+    if (!dateString) return 'Unknown';
+    return dateString.split('T')[0];
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen flex flex-col">
