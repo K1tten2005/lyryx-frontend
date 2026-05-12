@@ -255,7 +255,7 @@ export default function SongPage({ params }: { params: { id: string } }) {
               )}
               <div className="absolute inset-0 bg-glossy-button opacity-30 pointer-events-none"></div>
             </div>
-            <div className="flex-grow flex flex-col justify-end py-2">
+            <div className="flex-grow flex flex-col justify-start py-2">
               <h1 className="text-4xl md:text-6xl font-black text-slate-800 mb-6 drop-shadow-sm">{song.title}</h1>
               <div className="flex flex-wrap gap-6 items-center text-slate-600 font-bold">
                 <Link href={`/artist/${song.artist.id}`} className="text-2xl text-accent hover:text-accent-hover transition-colors">{song.artist.name}</Link>
