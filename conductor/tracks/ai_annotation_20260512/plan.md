@@ -1,8 +1,8 @@
 # AI Annotation Feature Implementation Plan
 
 ## Phase 1: API Client Implementation
-- [ ] Task: Write failing test for `getAiAnnotation` API call in `__tests__/lib/api/song.test.ts`
-- [ ] Task: Implement `getAiAnnotation` function and schemas in `lib/api/song.ts` to pass tests
+- [x] Task: Write failing test for `getAiAnnotation` API call in `__tests__/lib/api/song.test.ts` 51b90ff
+- [x] Task: Implement `getAiAnnotation` function and schemas in `lib/api/song.ts` to pass tests 51b90ff
 - [ ] Task: Conductor - User Manual Verification 'Phase 1: API Client Implementation' (Protocol in workflow.md)
 
 ## Phase 2: UI Components (Prompt and Bubble)
