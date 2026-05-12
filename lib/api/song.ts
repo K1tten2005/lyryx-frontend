@@ -55,6 +55,12 @@ export const VoteAnnotationResponseSchema = z.object({
 
 export type VoteAnnotationResponse = z.infer<typeof VoteAnnotationResponseSchema>;
 
+export const AiAnnotationResponseSchema = z.object({
+  response: z.string(),
+});
+
+export type AiAnnotationResponse = z.infer<typeof AiAnnotationResponseSchema>;
+
 const API_URL = 'http://localhost:8080/v1';
 
 /**
@@ -262,5 +268,40 @@ export async function deleteVote(annotationId: number, token?: string): Promise<
   if (!response.ok) {
     throw new Error(`Failed to remove vote: ${response.status} ${response.statusText}`);
   }
+}
+
+/**
+ * Fetches an AI-generated annotation (explanation) for a specific lyrics segment.
+ * @param songId The song ID.
+ * @param question The user's question about the lyrics.
+ * @param startIndex The start index of the selected lyrics.
+ * @param endIndex The end index of the selected lyrics.
+ * @returns The AI's response.
+ */
+export async function getAiAnnotation(
+  songId: number,
+  question: string,
+  startIndex: number,
+  endIndex: number
+): Promise<AiAnnotationResponse> {
+  const params = new URLSearchParams({
+    question,
+    start_index: startIndex.toString(),
+    end_index: endIndex.toString(),
+  });
+
+  const response = await fetch(`${API_URL}/song/${songId}/ai-annotation?${params.toString()}`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error(`Failed to fetch AI annotation: ${response.status} ${response.statusText}`);
+  }
+
+  const data = await response.json();
+  return AiAnnotationResponseSchema.parse(data);
 }
 

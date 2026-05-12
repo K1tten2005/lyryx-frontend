@@ -1,4 +1,4 @@
-import { getSongById, getSongAnnotations, createAnnotation, updateAnnotation, deleteAnnotation, voteAnnotation, deleteVote } from "@/lib/api/song";
+import { getSongById, getSongAnnotations, createAnnotation, updateAnnotation, deleteAnnotation, voteAnnotation, deleteVote, getAiAnnotation } from "@/lib/api/song";
 import { vi, describe, beforeEach, it, expect } from "vitest";
 
 // Mock the global fetch
@@ -310,5 +310,38 @@ describe("deleteVote", () => {
     });
 
     await expect(deleteVote(102, "token")).rejects.toThrow("Failed to remove vote");
+  });
+});
+
+describe("getAiAnnotation", () => {
+  beforeEach(() => {
+    vi.resetAllMocks();
+  });
+
+  it("should fetch AI annotation successfully", async () => {
+    const mockResponse = {
+      response: "This is an AI generated explanation of the lyrics.",
+    };
+
+    (global.fetch as any).mockResolvedValue({
+      ok: true,
+      json: async () => mockResponse,
+    });
+
+    const result = await getAiAnnotation(1, "What does this mean?", 0, 10);
+    expect(global.fetch).toHaveBeenCalledWith(
+      "http://localhost:8080/v1/song/1/ai-annotation?question=What+does+this+mean%3F&start_index=0&end_index=10",
+      expect.any(Object)
+    );
+    expect(result).toEqual(mockResponse);
+  });
+
+  it("should throw an error if fetch fails", async () => {
+    (global.fetch as any).mockResolvedValue({
+      ok: false,
+      status: 500,
+    });
+
+    await expect(getAiAnnotation(1, "test", 0, 5)).rejects.toThrow("Failed to fetch AI annotation");
   });
 });
