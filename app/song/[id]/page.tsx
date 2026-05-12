@@ -122,18 +122,26 @@ export default function SongPage({ params }: { params: { id: string } }) {
           </div>
 
           {/* Lyrics Section */}
-          <div className="animate-in fade-in slide-in-from-bottom-8 duration-1000 delay-200">
-            <h2 className="text-2xl font-black uppercase tracking-widest text-accent mb-6 flex items-center gap-2">
-              <span className="w-8 h-1 bg-accent rounded-full"></span>
-              Lyrics
-            </h2>
-            <div className="bg-white/70 backdrop-blur-xl p-8 md:p-12 rounded-[2rem] border border-white/50 shadow-glass relative overflow-hidden">
-              {/* Glossy overlay */}
-              <div className="absolute top-0 left-0 right-0 h-1/2 bg-gradient-to-b from-white/20 to-transparent pointer-events-none"></div>
-              
-              <pre className="text-xl md:text-2xl leading-relaxed text-slate-700 font-medium whitespace-pre-wrap font-sans relative z-10">
-                {song.lyrics}
-              </pre>
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-12 animate-in fade-in slide-in-from-bottom-8 duration-1000 delay-200">
+            {/* Left Column (Placeholder for Annotations) */}
+            <div className="md:col-span-4 hidden md:block">
+              {/* This space is reserved for annotations */}
+            </div>
+
+            {/* Right Column (Lyrics) */}
+            <div className="md:col-span-8">
+              <h2 className="text-2xl font-black uppercase tracking-widest text-accent mb-6 flex items-center gap-2">
+                <span className="w-8 h-1 bg-accent rounded-full"></span>
+                Lyrics
+              </h2>
+              <div className="bg-white/70 backdrop-blur-xl p-8 md:p-12 rounded-[2rem] border border-white/50 shadow-glass relative overflow-hidden">
+                {/* Glossy overlay */}
+                <div className="absolute top-0 left-0 right-0 h-1/2 bg-gradient-to-b from-white/20 to-transparent pointer-events-none"></div>
+                
+                <pre className="text-xl md:text-2xl leading-relaxed text-slate-700 font-medium whitespace-pre-wrap font-sans relative z-10">
+                  {song.lyrics}
+                </pre>
+              </div>
             </div>
           </div>
         </div>
