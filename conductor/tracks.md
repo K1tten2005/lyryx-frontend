@@ -8,5 +8,5 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 ---
 
-- [ ] **Track: Annotation Management & Voting**
+- [x] **Track: Annotation Management & Voting**
 *Link: [./tracks/annotation_management_20260512/](./tracks/annotation_management_20260512/)*
