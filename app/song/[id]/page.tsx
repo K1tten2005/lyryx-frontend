@@ -143,7 +143,7 @@ export default function SongPage({ params }: { params: { id: string } }) {
                 {/* Glossy overlay */}
                 <div className="absolute top-0 left-0 right-0 h-1/2 bg-gradient-to-b from-white/20 to-transparent pointer-events-none"></div>
 
-                <pre className="text-xl md:text-2xl leading-[1.6] text-slate-700 font-semibold whitespace-pre font-sans relative z-10 tracking-tight">
+                <pre className="text-base md:text-lg leading-relaxed text-slate-700 font-semibold whitespace-pre font-sans relative z-10 tracking-tight">
                   {song.lyrics}
                 </pre>
               </div>
