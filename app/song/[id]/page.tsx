@@ -121,15 +121,10 @@ export default function SongPage({ params }: { params: { id: string } }) {
             </div>
           </div>
 
-          {/* Lyrics Section */}
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-12 animate-in fade-in slide-in-from-bottom-8 duration-1000 delay-200">
-            {/* Left Column (Placeholder for Annotations) */}
-            <div className="md:col-span-4 hidden md:block">
-              {/* This space is reserved for annotations */}
-            </div>
-
-            {/* Right Column (Lyrics) */}
-            <div className="md:col-span-8">
+          {/* Lyrics and Annotations Section */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 animate-in fade-in slide-in-from-bottom-8 duration-1000 delay-200">
+            {/* Left Column (Lyrics) */}
+            <div className="lg:col-span-8">
               <h2 className="text-2xl font-black uppercase tracking-widest text-accent mb-6 flex items-center gap-2">
                 <span className="w-8 h-1 bg-accent rounded-full"></span>
                 Lyrics
@@ -142,6 +137,11 @@ export default function SongPage({ params }: { params: { id: string } }) {
                   {song.lyrics}
                 </pre>
               </div>
+            </div>
+
+            {/* Right Column (Placeholder for Annotations) */}
+            <div className="lg:col-span-4 hidden lg:block">
+              {/* This space is reserved for annotations */}
             </div>
           </div>
         </div>
