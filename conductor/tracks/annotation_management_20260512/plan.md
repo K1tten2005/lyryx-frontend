@@ -4,7 +4,7 @@
 - [x] Task: Define TypeScript interfaces for voting and updated annotation responses in `lib/api/song.ts` or a new `lib/api/annotation.ts`. bb6ccc9
 - [x] Task: Implement `updateAnnotation`, `deleteAnnotation`, `voteAnnotation`, and `deleteVote` API functions in `lib/api/song.ts`. bb6ccc9
 - [x] Task: Write unit tests for the new API functions in `__tests__/lib/api/song.test.ts`. bb6ccc9
-- [ ] Task: Conductor - User Manual Verification 'Phase 1: API Integration' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 1: API Integration' (Protocol in workflow.md) [checkpoint: 619795a]
 
 ## Phase 2: UI Components (AnnotationBubble Updates)
 - [ ] Task: Update `AnnotationBubble.tsx` to include Thumbs Up/Down icons and rating counter.
