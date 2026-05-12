@@ -9,6 +9,10 @@
 
 ## Styling
 - **Tailwind CSS:** Utility-first CSS framework for rapid and consistent UI development.
+- **tailwindcss-animate:** Tailwind CSS plugin for easy implementation of entrance and exit animations.
+
+## Notifications
+- **react-hot-toast:** Lightweight, customizable toast notifications for React.
 
 ## Data Fetching
 - **SWR:** React Hooks for data fetching, supporting caching, revalidation, and infinite scroll scenarios.
