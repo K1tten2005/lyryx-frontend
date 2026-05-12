@@ -11,6 +11,7 @@ A frontend skeleton on Next.js for a Genius analogue.
 ## Core Features
 - **User Authentication:** JWT-based secure user registration and login system.
 - **User Profiles:** Dedicated pages showcasing user information (avatar, bio, role, reputation) with editing capabilities and a list of their annotated lyrics with song context.
+- **Song Pages:** Dedicated pages for viewing song details, including title, artist, release date, views, and lyrics, styled with the project's unique Frutiger Aero aesthetic.
 - **Lyrics Annotation:** Interactive highlight and explain functionality for lyrics.
 - **Advanced Search:** Categorized search results (Artists, Songs, Lyrics Matches, Users) with dedicated result cards and infinite scrolling capabilities via 'See All' modal views.
 
