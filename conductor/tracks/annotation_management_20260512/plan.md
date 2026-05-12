@@ -7,16 +7,16 @@
 - [x] Task: Conductor - User Manual Verification 'Phase 1: API Integration' (Protocol in workflow.md) [checkpoint: 619795a]
 
 ## Phase 2: UI Components (AnnotationBubble Updates)
-- [ ] Task: Update `AnnotationBubble.tsx` to include Thumbs Up/Down icons and rating counter.
-- [ ] Task: Implement "Edit" and "Delete" buttons in `AnnotationBubble.tsx` with visibility logic (author/moderator only).
-- [ ] Task: Create a `ConfirmationModal` or use a standard browser `confirm()` for deletion.
-- [ ] Task: Implement the inline editing state in `AnnotationBubble.tsx`.
-- [ ] Task: Write unit tests for `AnnotationBubble` updates in `__tests__/components/song/AnnotationBubble.test.tsx`.
+- [x] Task: Update `AnnotationBubble.tsx` to include Thumbs Up/Down icons and rating counter. 08cf2ff
+- [x] Task: Implement "Edit" and "Delete" buttons in `AnnotationBubble.tsx` with visibility logic (author/moderator only). 08cf2ff
+- [x] Task: Create a `ConfirmationModal` or use a standard browser `confirm()` for deletion. 08cf2ff
+- [x] Task: Implement the inline editing state in `AnnotationBubble.tsx`. 08cf2ff
+- [x] Task: Write unit tests for `AnnotationBubble` updates in `__tests__/components/song/AnnotationBubble.test.tsx`. 08cf2ff
 - [ ] Task: Conductor - User Manual Verification 'Phase 2: UI Components' (Protocol in workflow.md)
 
 ## Phase 3: Logic & State Management
-- [ ] Task: Implement voting logic (optimistic updates or SWR revalidation) in `AnnotationBubble`.
-- [ ] Task: Implement edit submission logic and error handling.
-- [ ] Task: Implement delete logic and redirect/UI cleanup.
-- [ ] Task: Verify overall flow and edge cases (unauthenticated voting, session expiry).
+- [x] Task: Implement voting logic (optimistic updates or SWR revalidation) in `AnnotationBubble`. 08cf2ff
+- [x] Task: Implement edit submission logic and error handling. 08cf2ff
+- [x] Task: Implement delete logic and redirect/UI cleanup. 08cf2ff
+- [x] Task: Verify overall flow and edge cases (unauthenticated voting, session expiry). 08cf2ff
 - [ ] Task: Conductor - User Manual Verification 'Phase 3: Logic & State Management' (Protocol in workflow.md)
