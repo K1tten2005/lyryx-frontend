@@ -1,16 +1,20 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { getSongById, Song } from '@/lib/api/song';
+import { useEffect, useState, useMemo, Fragment } from 'react';
+import { getSongById, getSongAnnotations, Song, Annotation } from '@/lib/api/song';
 import { notFound } from 'next/navigation';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Calendar, Eye, Music } from 'lucide-react';
+import { AnnotationHighlight } from '@/components/song/AnnotationHighlight';
+import { AnnotationBubble } from '@/components/song/AnnotationBubble';
 
 export default function SongPage({ params }: { params: { id: string } }) {
   const [song, setSong] = useState<Song | null>(null);
+  const [annotations, setAnnotations] = useState<Annotation[]>([]);
+  const [activeAnnotationId, setActiveAnnotationId] = useState<number | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -18,12 +22,19 @@ export default function SongPage({ params }: { params: { id: string } }) {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const data = await getSongById(parseInt(params.id));
-        if (!data) {
+        const songId = parseInt(params.id);
+        const [songData, annotationsData] = await Promise.all([
+          getSongById(songId),
+          getSongAnnotations(songId).catch(() => []) // Fallback to empty array if annotations fail
+        ]);
+        
+        if (!songData) {
           notFound();
           return;
         }
-        setSong(data);
+        
+        setSong(songData);
+        setAnnotations(annotationsData);
       } catch (err: any) {
         if (err.message === 'NEXT_NOT_FOUND') {
           notFound();
@@ -37,6 +48,65 @@ export default function SongPage({ params }: { params: { id: string } }) {
 
     fetchData();
   }, [params.id]);
+
+  const activeAnnotation = useMemo(() => {
+    return annotations.find(a => a.id === activeAnnotationId) || null;
+  }, [annotations, activeAnnotationId]);
+
+  const handleAnnotationClick = (id: number) => {
+    setActiveAnnotationId(prevId => prevId === id ? null : id);
+  };
+
+  const renderLyricsWithAnnotations = () => {
+    if (!song) return null;
+
+    if (annotations.length === 0) {
+      return song.lyrics;
+    }
+
+    // Sort annotations by start_index
+    const sortedAnnotations = [...annotations].sort((a, b) => a.start_index - b.start_index);
+    const elements: React.ReactNode[] = [];
+    let currentIndex = 0;
+
+    sortedAnnotations.forEach((annotation) => {
+      // Add text before the annotation
+      if (currentIndex < annotation.start_index) {
+        elements.push(
+          <Fragment key={`text-${currentIndex}`}>
+            {song.lyrics.slice(currentIndex, annotation.start_index)}
+          </Fragment>
+        );
+      }
+
+      // Add the annotated text
+      if (annotation.start_index < song.lyrics.length) {
+        const endIndex = Math.min(annotation.end_index, song.lyrics.length);
+        elements.push(
+          <AnnotationHighlight
+            key={`annotation-${annotation.id}`}
+            id={annotation.id}
+            isActive={activeAnnotationId === annotation.id}
+            onClick={handleAnnotationClick}
+          >
+            {song.lyrics.slice(annotation.start_index, endIndex)}
+          </AnnotationHighlight>
+        );
+        currentIndex = endIndex;
+      }
+    });
+
+    // Add remaining text
+    if (currentIndex < song.lyrics.length) {
+      elements.push(
+        <Fragment key={`text-${currentIndex}`}>
+          {song.lyrics.slice(currentIndex)}
+        </Fragment>
+      );
+    }
+
+    return elements;
+  };
 
   const formatDate = (dateString?: string) => {
     if (!dateString) return 'Unknown';
@@ -143,15 +213,22 @@ export default function SongPage({ params }: { params: { id: string } }) {
                 {/* Glossy overlay */}
                 <div className="absolute top-0 left-0 right-0 h-1/2 bg-gradient-to-b from-white/20 to-transparent pointer-events-none"></div>
 
-                <pre className="text-lg md:text-xl leading-relaxed text-slate-700 font-semibold whitespace-pre font-sans relative z-10 tracking-tight">
-                  {song.lyrics}
+                <pre className="text-lg md:text-xl leading-relaxed text-slate-700 font-semibold whitespace-pre-wrap font-sans relative z-10 tracking-tight">
+                  {renderLyricsWithAnnotations()}
                 </pre>
               </div>
             </div>
 
-            {/* Right Column (Placeholder for Annotations) */}
-            <div className="lg:col-span-4 hidden lg:block">
-              {/* This space is reserved for annotations */}
+            {/* Right Column (Annotations) */}
+            <div className="lg:col-span-4 relative mt-16 lg:mt-0">
+              <div className="sticky top-24">
+                {activeAnnotation && (
+                  <AnnotationBubble 
+                    annotation={activeAnnotation} 
+                    onClose={() => setActiveAnnotationId(null)} 
+                  />
+                )}
+              </div>
             </div>
           </div>
         </div>
