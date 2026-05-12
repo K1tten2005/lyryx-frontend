@@ -84,18 +84,18 @@ export default function SongPage({ params }: { params: { id: string } }) {
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
-      <main className="flex-grow container mx-auto px-4 py-12">
-        <div className="max-w-4xl mx-auto">
+      <main className="flex-grow px-8 py-12">
+        <div className="max-w-full">
           {/* Header Section */}
           <div className="flex flex-col md:flex-row gap-8 mb-12 animate-in fade-in slide-in-from-top-4 duration-700">
             {/* Cover Image */}
-            <div className="relative w-full md:w-72 h-72 rounded-3xl overflow-hidden shadow-glass border-4 border-white/80 group">
+            <div className="relative w-full md:w-64 h-64 rounded-3xl overflow-hidden shadow-glass border-4 border-white/80 group flex-shrink-0">
               {song.cover_url ? (
                 <Image
                   src={song.cover_url}
                   alt={`${song.title} cover`}
                   fill
-                  className="object-cover transition-transform duration-500 group-hover:scale-110"
+                  className="object-cover transition-transform duration-500"
                 />
               ) : (
                 <div className="w-full h-full bg-accent/20 flex items-center justify-center">
@@ -106,14 +106,14 @@ export default function SongPage({ params }: { params: { id: string } }) {
             </div>
 
             {/* Song Info */}
-            <div className="flex-grow flex flex-col justify-end py-2">
-              <h1 className="text-4xl md:text-6xl font-black text-slate-800 mb-4 leading-tight">
+            <div className="flex-grow flex flex-col justify-end py-2 max-w-2xl">
+              <h1 className="text-4xl md:text-5xl font-black text-slate-800 mb-4 leading-tight">
                 {song.title}
               </h1>
               <div className="flex flex-wrap gap-6 items-center text-slate-600 font-bold">
                 <Link 
                   href={`/artist/${song.artist.id}`}
-                  className="text-2xl text-accent hover:text-accent-hover transition-colors drop-shadow-sm"
+                  className="text-xl text-accent hover:text-accent-hover transition-colors drop-shadow-sm"
                 >
                   {song.artist.name}
                 </Link>
@@ -134,12 +134,12 @@ export default function SongPage({ params }: { params: { id: string } }) {
           {/* Lyrics and Annotations Section */}
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 animate-in fade-in slide-in-from-bottom-8 duration-1000 delay-200">
             {/* Left Column (Lyrics) */}
-            <div className="lg:col-span-9">
+            <div className="lg:col-span-8 xl:col-span-7">
               <h2 className="text-2xl font-black uppercase tracking-widest text-accent mb-6 flex items-center gap-2">
                 <span className="w-8 h-1 bg-accent rounded-full"></span>
                 Lyrics
               </h2>
-              <div className="bg-white/70 backdrop-blur-xl p-8 md:p-12 rounded-[2rem] border border-white/50 shadow-glass relative overflow-hidden w-fit min-w-[50%]">
+              <div className="bg-white/70 backdrop-blur-xl p-8 md:p-10 rounded-[2rem] border border-white/50 shadow-glass relative overflow-hidden w-fit min-w-[60%]">
                 {/* Glossy overlay */}
                 <div className="absolute top-0 left-0 right-0 h-1/2 bg-gradient-to-b from-white/20 to-transparent pointer-events-none"></div>
 
@@ -150,7 +150,7 @@ export default function SongPage({ params }: { params: { id: string } }) {
             </div>
 
             {/* Right Column (Placeholder for Annotations) */}
-            <div className="lg:col-span-4 hidden lg:block">
+            <div className="lg:col-span-4 xl:col-span-5 hidden lg:block">
               {/* This space is reserved for annotations */}
             </div>
           </div>
