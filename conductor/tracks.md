@@ -8,3 +8,4 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 ---
 
+- [ ] **Track: Create AI Annotation feature**\n*Link: [./tracks/ai_annotation_20260512/](./tracks/ai_annotation_20260512/)*\n\n---
