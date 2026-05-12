@@ -38,6 +38,23 @@ export const AnnotationSchema = z.object({
 
 export type Annotation = z.infer<typeof AnnotationSchema>;
 
+export const UpdateAnnotationResponseSchema = z.object({
+  id: z.number(),
+  content: z.string(),
+  rating: z.number(),
+  updated_at: z.string().optional(),
+});
+
+export type UpdateAnnotationResponse = z.infer<typeof UpdateAnnotationResponseSchema>;
+
+export const VoteAnnotationResponseSchema = z.object({
+  annotation_id: z.number(),
+  my_vote: z.number(),
+  new_rating: z.number(),
+});
+
+export type VoteAnnotationResponse = z.infer<typeof VoteAnnotationResponseSchema>;
+
 const API_URL = 'http://localhost:8080/v1';
 
 /**
@@ -134,3 +151,108 @@ export async function createAnnotation(
   const data = await response.json();
   return AnnotationSchema.parse(data);
 }
+
+/**
+ * Updates an annotation's content.
+ * @param annotationId The annotation ID.
+ * @param content The new content.
+ * @param token The user's authentication token.
+ * @returns The updated annotation response.
+ */
+export async function updateAnnotation(
+  annotationId: number,
+  content: string,
+  token?: string
+): Promise<UpdateAnnotationResponse> {
+  const authToken = token || localStorage.getItem('access_token');
+  const response = await fetch(`${API_URL}/annotation/${annotationId}`, {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${authToken}`,
+    },
+    body: JSON.stringify({
+      annotationID: annotationId,
+      content,
+    }),
+  });
+
+  if (!response.ok) {
+    throw new Error('Failed to update annotation');
+  }
+
+  const data = await response.json();
+  return UpdateAnnotationResponseSchema.parse(data);
+}
+
+/**
+ * Deletes an annotation.
+ * @param annotationId The annotation ID.
+ * @param token The user's authentication token.
+ */
+export async function deleteAnnotation(annotationId: number, token?: string): Promise<void> {
+  const authToken = token || localStorage.getItem('access_token');
+  const response = await fetch(`${API_URL}/annotation/${annotationId}`, {
+    method: 'DELETE',
+    headers: {
+      Authorization: `Bearer ${authToken}`,
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error('Failed to delete annotation');
+  }
+}
+
+/**
+ * Votes for an annotation (+1 or -1).
+ * @param annotationId The annotation ID.
+ * @param value The vote value (1 or -1).
+ * @param token The user's authentication token.
+ * @returns The new vote state.
+ */
+export async function voteAnnotation(
+  annotationId: number,
+  value: number,
+  token?: string
+): Promise<VoteAnnotationResponse> {
+  const authToken = token || localStorage.getItem('access_token');
+  const response = await fetch(`${API_URL}/annotation/${annotationId}/vote`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${authToken}`,
+    },
+    body: JSON.stringify({
+      annotationID: annotationId,
+      value,
+    }),
+  });
+
+  if (!response.ok) {
+    throw new Error('Failed to vote for annotation');
+  }
+
+  const data = await response.json();
+  return VoteAnnotationResponseSchema.parse(data);
+}
+
+/**
+ * Removes a user's vote for an annotation.
+ * @param annotationId The annotation ID.
+ * @param token The user's authentication token.
+ */
+export async function deleteVote(annotationId: number, token?: string): Promise<void> {
+  const authToken = token || localStorage.getItem('access_token');
+  const response = await fetch(`${API_URL}/annotation/${annotationId}/vote`, {
+    method: 'DELETE',
+    headers: {
+      Authorization: `Bearer ${authToken}`,
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error('Failed to remove vote');
+  }
+}
+

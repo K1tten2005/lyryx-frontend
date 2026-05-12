@@ -1,4 +1,4 @@
-import { getSongById, getSongAnnotations, createAnnotation } from "@/lib/api/song";
+import { getSongById, getSongAnnotations, createAnnotation, updateAnnotation, deleteAnnotation, voteAnnotation, deleteVote } from "@/lib/api/song";
 import { vi, describe, beforeEach, it, expect } from "vitest";
 
 // Mock the global fetch
@@ -153,5 +153,162 @@ describe("createAnnotation", () => {
     });
 
     await expect(createAnnotation(1, "Fail", 0, 5, "token")).rejects.toThrow("Failed to create annotation");
+  });
+});
+
+describe("updateAnnotation", () => {
+  beforeEach(() => {
+    vi.resetAllMocks();
+  });
+
+  it("should update annotation successfully", async () => {
+    const mockResponse = {
+      id: 102,
+      content: "Updated content",
+      rating: 0,
+      updated_at: "2026-05-12T12:10:00Z",
+    };
+
+    (global.fetch as any).mockResolvedValue({
+      ok: true,
+      status: 200,
+      json: async () => mockResponse,
+    });
+
+    const result = await updateAnnotation(102, "Updated content", "mock-token");
+    expect(global.fetch).toHaveBeenCalledWith(
+      "http://localhost:8080/v1/annotation/102",
+      expect.objectContaining({
+        method: "PATCH",
+        headers: expect.objectContaining({
+          Authorization: "Bearer mock-token",
+        }),
+        body: JSON.stringify({
+          annotationID: 102,
+          content: "Updated content",
+        }),
+      })
+    );
+    expect(result).toEqual(mockResponse);
+  });
+
+  it("should throw an error if update fails", async () => {
+    (global.fetch as any).mockResolvedValue({
+      ok: false,
+      status: 400,
+    });
+
+    await expect(updateAnnotation(102, "Fail", "token")).rejects.toThrow("Failed to update annotation");
+  });
+});
+
+describe("deleteAnnotation", () => {
+  beforeEach(() => {
+    vi.resetAllMocks();
+  });
+
+  it("should delete annotation successfully", async () => {
+    (global.fetch as any).mockResolvedValue({
+      ok: true,
+      status: 204,
+    });
+
+    await deleteAnnotation(102, "mock-token");
+    expect(global.fetch).toHaveBeenCalledWith(
+      "http://localhost:8080/v1/annotation/102",
+      expect.objectContaining({
+        method: "DELETE",
+        headers: expect.objectContaining({
+          Authorization: "Bearer mock-token",
+        }),
+      })
+    );
+  });
+
+  it("should throw an error if deletion fails", async () => {
+    (global.fetch as any).mockResolvedValue({
+      ok: false,
+      status: 404,
+    });
+
+    await expect(deleteAnnotation(102, "token")).rejects.toThrow("Failed to delete annotation");
+  });
+});
+
+describe("voteAnnotation", () => {
+  beforeEach(() => {
+    vi.resetAllMocks();
+  });
+
+  it("should cast vote successfully", async () => {
+    const mockResponse = {
+      annotation_id: 102,
+      my_vote: 1,
+      new_rating: 1,
+    };
+
+    (global.fetch as any).mockResolvedValue({
+      ok: true,
+      status: 200,
+      json: async () => mockResponse,
+    });
+
+    const result = await voteAnnotation(102, 1, "mock-token");
+    expect(global.fetch).toHaveBeenCalledWith(
+      "http://localhost:8080/v1/annotation/102/vote",
+      expect.objectContaining({
+        method: "POST",
+        headers: expect.objectContaining({
+          Authorization: "Bearer mock-token",
+        }),
+        body: JSON.stringify({
+          annotationID: 102,
+          value: 1,
+        }),
+      })
+    );
+    expect(result).toEqual(mockResponse);
+  });
+
+  it("should throw an error if voting fails", async () => {
+    (global.fetch as any).mockResolvedValue({
+      ok: false,
+      status: 400,
+    });
+
+    await expect(voteAnnotation(102, 1, "token")).rejects.toThrow("Failed to vote for annotation");
+  });
+});
+
+describe("deleteVote", () => {
+  beforeEach(() => {
+    vi.resetAllMocks();
+  });
+
+  it("should delete vote successfully", async () => {
+    (global.fetch as any).mockResolvedValue({
+      ok: true,
+      status: 204,
+    });
+
+    await deleteVote(102, "mock-token");
+    expect(global.fetch).toHaveBeenCalledWith(
+      "http://localhost:8080/v1/annotation/102/vote",
+      expect.objectContaining({
+        method: "DELETE",
+        headers: expect.objectContaining({
+          Authorization: "Bearer mock-token",
+        }),
+      })
+    );
+  });
+
+  it("should throw an error if deleting vote fails", async () => {
+    (global.fetch as any).mockResolvedValue({
+      ok: false,
+      status: 404,
+    });
+
+    await expect(deleteVote(102, "token")).rejects.toThrow("Failed to remove vote");
   });
 });
