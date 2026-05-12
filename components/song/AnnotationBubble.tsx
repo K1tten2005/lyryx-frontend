@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useAuth } from '@/contexts/AuthContext';
 import { ThumbsUp, ThumbsDown, Edit2, Trash2 } from 'lucide-react';
 import toast from 'react-hot-toast';
+import ConfirmationModal from '@/components/ConfirmationModal';
 
 interface AnnotationBubbleProps {
   annotation: Annotation | null;
@@ -20,6 +21,7 @@ export function AnnotationBubble({ annotation, isCreateMode = false, onClose, on
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [editContent, setEditContent] = useState('');
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   
   const { user, token } = useAuth();
 
@@ -31,6 +33,11 @@ export function AnnotationBubble({ annotation, isCreateMode = false, onClose, on
         return;
       }
       
+      // Also don't close if a modal is open
+      if (document.querySelector('[data-confirmation-modal]')) {
+        return;
+      }
+
       if (bubbleRef.current && !bubbleRef.current.contains(event.target as Node)) {
         onClose();
       }
@@ -85,15 +92,17 @@ export function AnnotationBubble({ annotation, isCreateMode = false, onClose, on
 
   const handleDelete = async () => {
     if (!annotation) return;
-    if (window.confirm('Are you sure you want to delete this annotation?')) {
-      try {
-        await deleteAnnotation(annotation.id, token || undefined);
-        toast.success('Annotation deleted');
-        if (onDeleted) onDeleted();
-        onClose();
-      } catch (error: any) {
-        toast.error(error.message || 'Failed to delete annotation');
-      }
+    try {
+      setIsSubmitting(true);
+      await deleteAnnotation(annotation.id, token || undefined);
+      toast.success('Annotation deleted');
+      setIsDeleteModalOpen(false);
+      if (onDeleted) onDeleted();
+      onClose();
+    } catch (error: any) {
+      toast.error(error.message || 'Failed to delete annotation');
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -192,7 +201,7 @@ export function AnnotationBubble({ annotation, isCreateMode = false, onClose, on
                   </button>
                 )}
                 {canDelete && !isEditing && (
-                  <button onClick={handleDelete} className="p-2 text-slate-400 hover:text-red-500 transition-colors" title="Delete">
+                  <button onClick={() => setIsDeleteModalOpen(true)} className="p-2 text-slate-400 hover:text-red-500 transition-colors" title="Delete">
                     <Trash2 size={18} />
                   </button>
                 )}
@@ -256,6 +265,20 @@ export function AnnotationBubble({ annotation, isCreateMode = false, onClose, on
 
       {/* Frutiger Aero Glossy Overlay */}
       <div className="absolute top-0 left-0 right-0 h-1/3 bg-gradient-to-b from-white/30 to-transparent rounded-t-[2.5rem] pointer-events-none"></div>
+      
+      <div data-confirmation-modal>
+        <ConfirmationModal
+          isOpen={isDeleteModalOpen}
+          onClose={() => setIsDeleteModalOpen(false)}
+          onConfirm={handleDelete}
+          title="Delete Annotation"
+          message="Are you sure you want to delete this annotation? This action cannot be undone."
+          confirmText="Delete"
+          cancelText="Cancel"
+          isDestructive={true}
+          isLoading={isSubmitting}
+        />
+      </div>
     </div>
   );
 }
