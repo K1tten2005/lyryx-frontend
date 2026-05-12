@@ -7,5 +7,3 @@ This file tracks all major tracks for the project. Each track has its own detail
 *Link: [./tracks/user_profile_dropdown_20260511/](./tracks/user_profile_dropdown_20260511/)*
 
 ---
-
-- [x] **Track: Create AI Annotation feature**\n*Link: [./tracks/ai_annotation_20260512/](./tracks/ai_annotation_20260512/)*\n\n---
