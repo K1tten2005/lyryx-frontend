@@ -6,6 +6,6 @@
 - [x] Task: Conductor - User Manual Verification 'Phase 1: API Client' (Protocol in workflow.md) (0e5025d)
 
 ## Phase 2: Song Page Component
-- [ ] Task: Create test file `__tests__/app/song/[id]/page.test.tsx` with failing tests for rendering the song page, including header elements and lyrics, and handling the 404 state (Red Phase).
+- [x] Task: Create test file `__tests__/app/song/[id]/page.test.tsx` with failing tests for rendering the song page, including header elements and lyrics, and handling the 404 state (Red Phase). (a20a150)
 - [ ] Task: Implement `app/song/[id]/page.tsx` displaying the song header (cover, title, artist link, release date, view count) and raw lyrics, styled with Tailwind CSS to match the "Frutiger Aero" aesthetic. Ensure proper handling of loading states and the standard Next.js 404 (Green Phase).
 - [ ] Task: Conductor - User Manual Verification 'Phase 2: Song Page Component' (Protocol in workflow.md)
