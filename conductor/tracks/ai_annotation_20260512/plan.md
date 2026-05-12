@@ -5,12 +5,12 @@
 - [x] Task: Implement `getAiAnnotation` function and schemas in `lib/api/song.ts` to pass tests 51b90ff
 - [x] Task: Conductor - User Manual Verification 'Phase 1: API Client Implementation' (Protocol in workflow.md) 049bc33
 
-## Phase 2: UI Components (Prompt and Bubble)
-- [ ] Task: Write failing tests for new `AskAIPrompt` component
-- [ ] Task: Implement `AskAIPrompt` component (similar to `CreateAnnotationPrompt`)
-- [ ] Task: Write failing tests for new `AIBubble` component (handles input, loading, and result states)
-- [ ] Task: Implement `AIBubble` component with Frutiger Aero styling
-- [ ] Task: Conductor - User Manual Verification 'Phase 2: UI Components (Prompt and Bubble)' (Protocol in workflow.md)
+## Phase 2: UI Components (Prompt and Bubble) [checkpoint: 1689b7c]
+- [x] Task: Write failing tests for new `AskAIPrompt` component 06be7b8
+- [x] Task: Implement `AskAIPrompt` component (similar to `CreateAnnotationPrompt`) 06be7b8
+- [x] Task: Write failing tests for new `AIBubble` component (handles input, loading, and result states) fc0c8f8
+- [x] Task: Implement `AIBubble` component with Frutiger Aero styling fc0c8f8
+- [x] Task: Conductor - User Manual Verification 'Phase 2: UI Components (Prompt and Bubble)' (Protocol in workflow.md) 1689b7c
 
 ## Phase 3: Integration in Song Page
 - [ ] Task: Write failing tests for rendering `AskAIPrompt` and `AIBubble` integration in `app/song/[id]/page.tsx`
