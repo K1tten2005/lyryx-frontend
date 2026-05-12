@@ -40,7 +40,12 @@ export default function SongPage({ params }: { params: { id: string } }) {
 
   const formatDate = (dateString?: string) => {
     if (!dateString) return 'Unknown';
-    return dateString.split('T')[0];
+    // Use a simple split/join to avoid timezone/DST issues with Date object for display
+    const parts = dateString.split('T')[0].split('-');
+    if (parts.length === 3) {
+      return `${parts[2]}.${parts[1]}.${parts[0]}`;
+    }
+    return dateString;
   };
 
   if (loading) {
@@ -115,7 +120,7 @@ export default function SongPage({ params }: { params: { id: string } }) {
                 
                 <div className="flex items-center gap-2 bg-white/40 backdrop-blur-sm px-3 py-1 rounded-full border border-white/20">
                   <Calendar className="w-4 h-4" />
-                  <span>{song.release_date || 'Unknown'}</span>
+                  <span data-testid="release-date">{formatDate(song.release_date)}</span>
                 </div>
 
                 <div className="flex items-center gap-2 bg-white/40 backdrop-blur-sm px-3 py-1 rounded-full border border-white/20">
@@ -129,16 +134,16 @@ export default function SongPage({ params }: { params: { id: string } }) {
           {/* Lyrics and Annotations Section */}
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 animate-in fade-in slide-in-from-bottom-8 duration-1000 delay-200">
             {/* Left Column (Lyrics) */}
-            <div className="lg:col-span-8">
+            <div className="lg:col-span-9">
               <h2 className="text-2xl font-black uppercase tracking-widest text-accent mb-6 flex items-center gap-2">
                 <span className="w-8 h-1 bg-accent rounded-full"></span>
                 Lyrics
               </h2>
-              <div className="bg-white/70 backdrop-blur-xl p-8 md:p-12 rounded-[2rem] border border-white/50 shadow-glass relative overflow-hidden overflow-x-auto">
+              <div className="bg-white/70 backdrop-blur-xl p-8 md:p-12 rounded-[2rem] border border-white/50 shadow-glass relative overflow-hidden w-fit min-w-[50%]">
                 {/* Glossy overlay */}
                 <div className="absolute top-0 left-0 right-0 h-1/2 bg-gradient-to-b from-white/20 to-transparent pointer-events-none"></div>
-                
-                <pre className="text-xl md:text-2xl leading-relaxed text-slate-700 font-medium whitespace-pre font-sans relative z-10 min-w-max">
+
+                <pre className="text-xl md:text-2xl leading-relaxed text-slate-700 font-medium whitespace-pre font-sans relative z-10">
                   {song.lyrics}
                 </pre>
               </div>

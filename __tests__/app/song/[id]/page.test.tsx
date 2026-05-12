@@ -9,6 +9,15 @@ vi.mock("next/navigation", () => ({
   notFound: vi.fn(),
 }));
 
+// Mock Navbar and Footer
+vi.mock("@/components/Navbar", () => ({
+  default: () => <div data-testid="navbar">Navbar</div>,
+}));
+
+vi.mock("@/components/Footer", () => ({
+  default: () => <div data-testid="footer">Footer</div>,
+}));
+
 // Mock the API
 vi.mock("@/lib/api/song", () => ({
   getSongById: vi.fn(),
@@ -42,11 +51,11 @@ describe("SongPage", () => {
     await waitFor(() => {
       expect(screen.getByText("Bohemian Rhapsody")).toBeInTheDocument();
       expect(screen.getByText("Queen")).toBeInTheDocument();
-      expect(screen.getByText(/1975-10-31/i)).toBeInTheDocument();
+      expect(screen.getByTestId("release-date")).toHaveTextContent("31.10.1975");
       expect(screen.getByText(/1,000,000/i)).toBeInTheDocument();
       expect(screen.getByText(/Is this the real life\? Is this just fantasy\?/i)).toBeInTheDocument();
       const coverImg = screen.getByAltText("Bohemian Rhapsody cover") as HTMLImageElement;
-      expect(coverImg.src).toContain("http://example.com/cover.jpg");
+      expect(decodeURIComponent(coverImg.src)).toContain("http://example.com/cover.jpg");
     });
   });
 
