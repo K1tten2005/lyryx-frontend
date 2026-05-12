@@ -2,7 +2,7 @@
 
 ## Phase 1: API Client
 - [x] Task: Create test file `lib/api/song.test.ts` with failing tests for fetching a song by ID (Red Phase). (8314d4f)
-- [ ] Task: Implement `getSongById` function in `lib/api/song.ts` using the `/v1/song/{id}` endpoint to pass tests (Green Phase).
+- [x] Task: Implement `getSongById` function in `lib/api/song.ts` using the `/v1/song/{id}` endpoint to pass tests (Green Phase). (3f9ea5c)
 - [ ] Task: Conductor - User Manual Verification 'Phase 1: API Client' (Protocol in workflow.md)
 
 ## Phase 2: Song Page Component
