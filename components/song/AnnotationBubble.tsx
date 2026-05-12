@@ -33,8 +33,8 @@ export function AnnotationBubble({ annotation, isCreateMode = false, onClose, on
         return;
       }
       
-      // Also don't close if a modal is open
-      if (document.querySelector('[data-confirmation-modal]')) {
+      // Don't close if the confirmation modal is currently open
+      if (isDeleteModalOpen) {
         return;
       }
 
@@ -52,7 +52,7 @@ export function AnnotationBubble({ annotation, isCreateMode = false, onClose, on
       clearTimeout(timer);
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, [onClose]);
+  }, [onClose, isDeleteModalOpen]);
 
   useEffect(() => {
     if (annotation && !isCreateMode) {
@@ -266,19 +266,17 @@ export function AnnotationBubble({ annotation, isCreateMode = false, onClose, on
       {/* Frutiger Aero Glossy Overlay */}
       <div className="absolute top-0 left-0 right-0 h-1/3 bg-gradient-to-b from-white/30 to-transparent rounded-t-[2.5rem] pointer-events-none"></div>
       
-      <div data-confirmation-modal>
-        <ConfirmationModal
-          isOpen={isDeleteModalOpen}
-          onClose={() => setIsDeleteModalOpen(false)}
-          onConfirm={handleDelete}
-          title="Delete Annotation"
-          message="Are you sure you want to delete this annotation? This action cannot be undone."
-          confirmText="Delete"
-          cancelText="Cancel"
-          isDestructive={true}
-          isLoading={isSubmitting}
-        />
-      </div>
+      <ConfirmationModal
+        isOpen={isDeleteModalOpen}
+        onClose={() => setIsDeleteModalOpen(false)}
+        onConfirm={handleDelete}
+        title="Delete Annotation"
+        message="Are you sure you want to delete this annotation? This action cannot be undone."
+        confirmText="Delete"
+        cancelText="Cancel"
+        isDestructive={true}
+        isLoading={isSubmitting}
+      />
     </div>
   );
 }
