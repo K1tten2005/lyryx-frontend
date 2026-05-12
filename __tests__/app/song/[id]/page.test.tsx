@@ -18,6 +18,26 @@ vi.mock("@/components/Footer", () => ({
   default: () => <div data-testid="footer">Footer</div>,
 }));
 
+vi.mock("@/contexts/AuthContext", () => ({
+  useAuth: vi.fn(() => ({
+    user: null,
+    token: null,
+    isAuthenticated: false,
+    refreshAuth: vi.fn(),
+  })),
+}));
+
+import { useAuth } from "@/contexts/AuthContext";
+import { useTextSelection } from "@/hooks/useTextSelection";
+
+vi.mock("@/hooks/useTextSelection", () => ({
+  useTextSelection: vi.fn(() => ({
+    selection: null,
+    setSelection: vi.fn(),
+    handleSelection: vi.fn(),
+  })),
+}));
+
 // Mock the API
 vi.mock("@/lib/api/song", () => ({
   getSongById: vi.fn(),
@@ -29,6 +49,17 @@ const mockParams = { id: "1" };
 describe("SongPage", () => {
   beforeEach(() => {
     vi.resetAllMocks();
+    (useAuth as any).mockReturnValue({
+      user: null,
+      token: null,
+      isAuthenticated: false,
+      refreshAuth: vi.fn(),
+    });
+    (useTextSelection as any).mockReturnValue({
+      selection: null,
+      setSelection: vi.fn(),
+      handleSelection: vi.fn(),
+    });
   });
 
   it("renders song details successfully", async () => {
@@ -121,6 +152,79 @@ describe("SongPage", () => {
     await waitFor(() => {
       expect(screen.getByText("Meaning of line one")).toBeInTheDocument();
       expect(screen.getByText("tester")).toBeInTheDocument();
+    });
+  });
+
+  it("renders Ask AI prompt on selection", async () => {
+    const mockSong = {
+      id: 1,
+      title: "Test Song",
+      lyrics: "Line one\nLine two is here",
+      artist: { id: 1, name: "Artist" },
+    };
+
+    (getSongById as any).mockResolvedValue(mockSong);
+    (getSongAnnotations as any).mockResolvedValue([]);
+    (useAuth as any).mockReturnValue({
+      user: { user_id: 1 },
+      token: "token",
+      isAuthenticated: true,
+    });
+    (useTextSelection as any).mockReturnValue({
+      selection: {
+        text: "Line one",
+        startIndex: 0,
+        endIndex: 8,
+        lastRelativeRect: { top: 10, bottom: 20, left: 0, right: 100 }
+      },
+      setSelection: vi.fn(),
+      handleSelection: vi.fn(),
+    });
+
+    render(<SongPage params={mockParams} />);
+
+    await waitFor(() => {
+      expect(screen.getByRole("button", { name: /Add Annotation/i })).toBeInTheDocument();
+      expect(screen.getByRole("button", { name: /Ask AI/i })).toBeInTheDocument();
+    });
+  });
+
+  it("opens AIBubble when Ask AI is clicked", async () => {
+    const mockSong = {
+      id: 1,
+      title: "Test Song",
+      lyrics: "Line one\nLine two is here",
+      artist: { id: 1, name: "Artist" },
+    };
+
+    (getSongById as any).mockResolvedValue(mockSong);
+    (getSongAnnotations as any).mockResolvedValue([]);
+    (useAuth as any).mockReturnValue({
+      user: { user_id: 1 },
+      token: "token",
+      isAuthenticated: true,
+    });
+    (useTextSelection as any).mockReturnValue({
+      selection: {
+        text: "Line one",
+        startIndex: 0,
+        endIndex: 8,
+        lastRelativeRect: { top: 10, bottom: 20, left: 0, right: 100 }
+      },
+      setSelection: vi.fn(),
+      handleSelection: vi.fn(),
+    });
+
+    render(<SongPage params={mockParams} />);
+
+    await waitFor(() => {
+      const askAiButton = screen.getByRole("button", { name: /Ask AI/i });
+      fireEvent.click(askAiButton);
+    });
+
+    await waitFor(() => {
+      expect(screen.getByText("AI Explanation")).toBeInTheDocument();
+      expect(screen.getByPlaceholderText(/What would you like to know about these lyrics/i)).toBeInTheDocument();
     });
   });
 });

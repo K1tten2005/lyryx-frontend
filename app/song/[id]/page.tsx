@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState, useMemo, Fragment, useRef, useCallback } from 'react';
-import { getSongById, getSongAnnotations, createAnnotation, Song, Annotation } from '@/lib/api/song';
+import { getSongById, getSongAnnotations, createAnnotation, getAiAnnotation, Song, Annotation } from '@/lib/api/song';
 import { notFound } from 'next/navigation';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -12,6 +12,8 @@ import { AnnotationHighlight } from '@/components/song/AnnotationHighlight';
 import { AnnotationBubble } from '@/components/song/AnnotationBubble';
 import { useTextSelection } from '@/hooks/useTextSelection';
 import { CreateAnnotationPrompt } from '@/components/song/CreateAnnotationPrompt';
+import { AskAIPrompt } from '@/components/song/AskAIPrompt';
+import { AIBubble } from '@/components/song/AIBubble';
 import { useAuth } from '@/contexts/AuthContext';
 import { cn } from '@/lib/utils';
 import toast from 'react-hot-toast';
@@ -24,6 +26,7 @@ export default function SongPage({ params }: { params: { id: string } }) {
   const [annotations, setAnnotations] = useState<Annotation[]>([]);
   const [activeAnnotationId, setActiveAnnotationId] = useState<number | null>(null);
   const [isCreateMode, setIsCreateMode] = useState(false);
+  const [isAiMode, setIsAiMode] = useState(false);
   const [bubbleTop, setBubbleTop] = useState<number>(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -74,6 +77,7 @@ export default function SongPage({ params }: { params: { id: string } }) {
       if (target.closest('.pointer-events-auto')) return;
       if (lyricsContainerRef.current && !lyricsContainerRef.current.contains(event.target as Node)) {
         setSelection(null);
+        setIsAiMode(false);
       }
     }
     document.addEventListener('mousedown', handleClickOutside);
@@ -93,15 +97,32 @@ export default function SongPage({ params }: { params: { id: string } }) {
     );
   }, [selection, annotations]);
 
-  const showPrompt = isAuthenticated && selection && !isOverlap && !isCreateMode;
+  const showPrompt = isAuthenticated && selection && !isOverlap && !isCreateMode && !isAiMode;
 
   const handleCreateAnnotation = () => {
     setIsCreateMode(true);
+    setIsAiMode(false);
     setActiveAnnotationId(null);
     if (selection?.lastRelativeRect) {
       const lineCenter = (selection.lastRelativeRect.top + selection.lastRelativeRect.bottom) / 2;
       setBubbleTop(lineCenter);
     }
+  };
+
+  const handleAskAI = () => {
+    setIsAiMode(true);
+    setIsCreateMode(false);
+    setActiveAnnotationId(null);
+    if (selection?.lastRelativeRect) {
+      const lineCenter = (selection.lastRelativeRect.top + selection.lastRelativeRect.bottom) / 2;
+      setBubbleTop(lineCenter);
+    }
+  };
+
+  const handleAiSubmit = async (question: string) => {
+    if (!selection) throw new Error("No text selected");
+    const songId = parseInt(params.id);
+    return await getAiAnnotation(songId, question, selection.startIndex, selection.endIndex);
   };
 
   // Helper to retry authenticated requests
@@ -140,6 +161,7 @@ export default function SongPage({ params }: { params: { id: string } }) {
 
   const handleAnnotationClick = (id: number) => {
     setIsCreateMode(false);
+    setIsAiMode(false);
     const isClosing = activeAnnotationId === id;
     setActiveAnnotationId(prevId => prevId === id ? null : id);
     if (!isClosing) {
@@ -280,14 +302,15 @@ export default function SongPage({ params }: { params: { id: string } }) {
                 </pre>
                 {showPrompt && selection?.lastRelativeRect && (
                   <div 
-                    className="absolute z-[200] pointer-events-auto animate-fade-zoom"
+                    className="absolute z-[200] pointer-events-auto animate-fade-zoom flex flex-col gap-3"
                     style={{ 
                       top: `${(selection.lastRelativeRect.top + selection.lastRelativeRect.bottom) / 2}px`, 
                       left: 'calc(100% + 24px)',
-                      transform: 'translateY(-50%) translateY(-14px)' 
+                      transform: 'translateY(-50%)' 
                     }}
                   >
                     <CreateAnnotationPrompt onClick={handleCreateAnnotation} />
+                    <AskAIPrompt onClick={handleAskAI} />
                   </div>
                 )}
               </div>
@@ -296,7 +319,7 @@ export default function SongPage({ params }: { params: { id: string } }) {
               <div 
                 className={cn(
                   "absolute w-full transition-opacity duration-300 ease-out",
-                  (activeAnnotation || isCreateMode) ? "pointer-events-auto opacity-100" : "pointer-events-none opacity-0"
+                  (activeAnnotation || isCreateMode || isAiMode) ? "pointer-events-auto opacity-100" : "pointer-events-none opacity-0"
                 )}
                 style={{ top: `${bubbleTop - 40}px` }}
               >
@@ -309,6 +332,12 @@ export default function SongPage({ params }: { params: { id: string } }) {
                     onSubmit={handleAnnotationSubmit}
                     onUpdated={fetchAnnotations}
                     onDeleted={() => { setActiveAnnotationId(null); fetchAnnotations(); }}
+                  />
+                )}
+                {isAiMode && (
+                  <AIBubble 
+                    onClose={() => setIsAiMode(false)}
+                    onSubmit={handleAiSubmit}
                   />
                 )}
               </div>
