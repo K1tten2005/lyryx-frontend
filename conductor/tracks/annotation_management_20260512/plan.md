@@ -12,11 +12,11 @@
 - [x] Task: Create a `ConfirmationModal` or use a standard browser `confirm()` for deletion. 08cf2ff
 - [x] Task: Implement the inline editing state in `AnnotationBubble.tsx`. 08cf2ff
 - [x] Task: Write unit tests for `AnnotationBubble` updates in `__tests__/components/song/AnnotationBubble.test.tsx`. 08cf2ff
-- [ ] Task: Conductor - User Manual Verification 'Phase 2: UI Components' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 2: UI Components' (Protocol in workflow.md) [checkpoint: ff39e5a]
 
 ## Phase 3: Logic & State Management
 - [x] Task: Implement voting logic (optimistic updates or SWR revalidation) in `AnnotationBubble`. 08cf2ff
 - [x] Task: Implement edit submission logic and error handling. 08cf2ff
 - [x] Task: Implement delete logic and redirect/UI cleanup. 08cf2ff
 - [x] Task: Verify overall flow and edge cases (unauthenticated voting, session expiry). 08cf2ff
-- [ ] Task: Conductor - User Manual Verification 'Phase 3: Logic & State Management' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 3: Logic & State Management' (Protocol in workflow.md) [checkpoint: ff39e5a]
