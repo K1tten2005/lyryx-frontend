@@ -1,8 +1,8 @@
 # Implementation Plan: Lyrics Annotation
 
 ## Phase 1: API and Types Foundation
-- [ ] Task: Update Annotation API client (`lib/api/song.ts`) with `getSongAnnotations` and `createAnnotation` methods.
-- [ ] Task: Define TypeScript interfaces for Annotations and API responses.
+- [x] Task: Update Annotation API client (`lib/api/song.ts`) with `getSongAnnotations` and `createAnnotation` methods. 85745fa
+- [x] Task: Define TypeScript interfaces for Annotations and API responses. 85745fa
 - [ ] Task: Conductor - User Manual Verification 'Phase 1: API and Types Foundation' (Protocol in workflow.md)
 
 ## Phase 2: Highlighting and Viewing
