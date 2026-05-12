@@ -8,5 +8,5 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 ---
 
-- [ ] **Track: Implement interactive lyrics annotations (viewing and creating) on the song page.**
+- [~] **Track: Implement interactive lyrics annotations (viewing and creating) on the song page.**
 *Link: [./tracks/lyrics_annotation_20260512/](./tracks/lyrics_annotation_20260512/)*

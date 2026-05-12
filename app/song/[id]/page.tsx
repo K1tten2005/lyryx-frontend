@@ -15,6 +15,7 @@ export default function SongPage({ params }: { params: { id: string } }) {
   const [song, setSong] = useState<Song | null>(null);
   const [annotations, setAnnotations] = useState<Annotation[]>([]);
   const [activeAnnotationId, setActiveAnnotationId] = useState<number | null>(null);
+  const [bubbleTop, setBubbleTop] = useState<number>(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -60,7 +61,24 @@ export default function SongPage({ params }: { params: { id: string } }) {
   }, [annotations, activeAnnotationId]);
 
   const handleAnnotationClick = (id: number) => {
-    setActiveAnnotationId(prevId => prevId === id ? null : id);
+    setActiveAnnotationId(prevId => {
+      const nextId = prevId === id ? null : id;
+      if (nextId) {
+        // Find the element and calculate its position relative to the container
+        setTimeout(() => {
+          const element = document.querySelector(`[data-annotation-id="${id}"]`) as HTMLElement;
+          if (element) {
+            const container = element.closest('.grid') as HTMLElement;
+            if (container) {
+              const rect = element.getBoundingClientRect();
+              const containerRect = container.getBoundingClientRect();
+              setBubbleTop(rect.top - containerRect.top);
+            }
+          }
+        }, 0);
+      }
+      return nextId;
+    });
   };
 
   const renderLyricsWithAnnotations = () => {
@@ -75,7 +93,7 @@ export default function SongPage({ params }: { params: { id: string } }) {
     const elements: React.ReactNode[] = [];
     let currentIndex = 0;
 
-    sortedAnnotations.forEach((annotation) => {
+    sortedAnnotations.forEach((annotation, idx) => {
       // If the annotation starts before our current index, we have an overlap.
       // For now, we skip overlapping annotations or adjust them to prevent breaking the layout.
       if (annotation.start_index < currentIndex) {
@@ -217,12 +235,12 @@ export default function SongPage({ params }: { params: { id: string } }) {
           {/* Lyrics and Annotations Section */}
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 animate-in fade-in slide-in-from-bottom-8 duration-1000 delay-200">
             {/* Left Column (Lyrics) */}
-            <div className="lg:col-span-8">
+            <div className="lg:col-span-7">
               <h2 className="text-2xl font-black uppercase tracking-widest text-accent mb-8 flex items-center gap-3">
                 <span className="w-10 h-1.5 bg-accent rounded-full"></span>
                 Lyrics
               </h2>
-              <div className="bg-white/70 backdrop-blur-xl p-10 md:p-14 rounded-[2.5rem] border border-white/50 shadow-glass relative overflow-hidden w-fit min-w-[70%]">
+              <div className="bg-white/70 backdrop-blur-xl p-10 md:p-14 rounded-[2.5rem] border border-white/50 shadow-glass relative overflow-hidden w-fit min-w-[90%]">
                 {/* Glossy overlay */}
                 <div className="absolute top-0 left-0 right-0 h-1/2 bg-gradient-to-b from-white/20 to-transparent pointer-events-none"></div>
 
@@ -233,8 +251,11 @@ export default function SongPage({ params }: { params: { id: string } }) {
             </div>
 
             {/* Right Column (Annotations) */}
-            <div className="lg:col-span-4 relative mt-16 lg:mt-0">
-              <div className="sticky top-24">
+            <div className="lg:col-span-5 relative mt-16 lg:mt-0">
+              <div 
+                className="absolute transition-all duration-500 ease-out w-full"
+                style={{ top: `${bubbleTop}px`, opacity: activeAnnotation ? 1 : 0, pointerEvents: activeAnnotation ? 'auto' : 'none' }}
+              >
                 {activeAnnotation && (
                   <AnnotationBubble 
                     annotation={activeAnnotation} 

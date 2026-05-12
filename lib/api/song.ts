@@ -27,13 +27,13 @@ export type AnnotationUser = z.infer<typeof AnnotationUserSchema>;
 export const AnnotationSchema = z.object({
   id: z.number(),
   song_id: z.number().optional(),
-  content: z.string(),
+  content: z.string().default(''),
   start_index: z.number(),
   end_index: z.number(),
-  rating: z.number(),
+  rating: z.number().default(0),
   my_vote: z.number().nullable().optional(),
-  created_at: z.string(),
-  user: AnnotationUserSchema,
+  created_at: z.string().optional(),
+  user: AnnotationUserSchema.optional(),
 });
 
 export type Annotation = z.infer<typeof AnnotationSchema>;
@@ -80,11 +80,20 @@ export async function getSongAnnotations(songId: number): Promise<Annotation[]> 
   });
 
   if (!response.ok) {
-    throw new Error('Failed to fetch annotations');
+    throw new Error(`Failed to fetch annotations: ${response.status} ${response.statusText}`);
   }
 
   const data = await response.json();
-  return z.array(AnnotationSchema).parse(data.annotations);
+  console.log("Raw annotations data:", data);
+
+  const result = z.array(AnnotationSchema).safeParse(data.annotations);
+  if (!result.success) {
+    console.error("Annotation validation failed:", result.error.format());
+    // Try to return at least some data if possible, or return empty
+    return (data.annotations || []) as Annotation[];
+  }
+
+  return result.data;
 }
 
 /**

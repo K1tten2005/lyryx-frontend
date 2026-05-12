@@ -18,7 +18,7 @@ export default function UserAnnotationsTab({ annotations }: UserAnnotationsTabPr
           </svg>
         </div>
         <h3 className="text-2xl font-bold text-slate-800 mb-2 drop-shadow-sm">No annotations yet</h3>
-        <p className="text-slate-600 max-w-xs mx-auto font-medium">This user hasn't shared their insights on any lyrics yet. Stay tuned!</p>
+        <p className="text-slate-600 max-w-xs mx-auto font-medium">This user hasn&apos;t shared their insights on any lyrics yet. Stay tuned!</p>
       </div>
     );
   }
@@ -67,8 +67,7 @@ export default function UserAnnotationsTab({ annotations }: UserAnnotationsTabPr
             {annotation.snippet && (
               <div className="mb-6 relative z-10 pl-6 border-l-4 border-white/60">
                 <p className="text-slate-600 font-bold italic text-lg leading-relaxed drop-shadow-sm">
-                  "{annotation.snippet}"
-                </p>
+                  &quot;{annotation.snippet}&quot;                </p>
               </div>
             )}
 

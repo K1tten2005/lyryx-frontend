@@ -34,7 +34,7 @@ describe("AnnotationBubble", () => {
   it("should apply Frutiger Aero design classes", () => {
     const { container } = render(<AnnotationBubble annotation={mockAnnotation} onClose={() => {}} />);
     // Checking for glassmorphism classes typical of Frutiger Aero
-    expect(container.firstChild).toHaveClass("bg-white/40");
-    expect(container.firstChild).toHaveClass("backdrop-blur-md");
+    expect(container.firstChild).toHaveClass("bg-white/60");
+    expect(container.firstChild).toHaveClass("backdrop-blur-xl");
   });
 });

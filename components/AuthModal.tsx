@@ -47,8 +47,7 @@ export default function AuthModal({ isOpen, onClose }: AuthModalProps) {
           <div className="mt-6 text-center text-sm text-zinc-600">
             {view === 'login' ? (
               <>
-                Don't have an account?{' '}
-                <button
+                Don&apos;t have an account?{' '}                <button
                   onClick={() => setView('register')}
                   className="font-medium text-indigo-600 hover:text-indigo-500 hover:underline transition-colors"
                 >
