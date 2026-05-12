@@ -8,5 +8,5 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 ---
 
-- [~] **Track: Song Page**
+- [x] **Track: Song Page**
 *Link: [./tracks/song_page_20260512/](./tracks/song_page_20260512/)*
