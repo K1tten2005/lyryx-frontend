@@ -153,7 +153,7 @@ export async function createAnnotation(
   });
 
   if (!response.ok) {
-    throw new Error('Failed to create annotation');
+    throw new Error(`Failed to create annotation: ${response.status} ${response.statusText}`);
   }
 
   const data = await response.json();
@@ -186,7 +186,7 @@ export async function updateAnnotation(
   });
 
   if (!response.ok) {
-    throw new Error('Failed to update annotation');
+    throw new Error(`Failed to update annotation: ${response.status} ${response.statusText}`);
   }
 
   const data = await response.json();
@@ -208,7 +208,7 @@ export async function deleteAnnotation(annotationId: number, token?: string): Pr
   });
 
   if (!response.ok) {
-    throw new Error('Failed to delete annotation');
+    throw new Error(`Failed to delete annotation: ${response.status} ${response.statusText}`);
   }
 }
 
@@ -238,7 +238,7 @@ export async function voteAnnotation(
   });
 
   if (!response.ok) {
-    throw new Error('Failed to vote for annotation');
+    throw new Error(`Failed to vote for annotation: ${response.status} ${response.statusText}`);
   }
 
   const data = await response.json();
@@ -260,7 +260,7 @@ export async function deleteVote(annotationId: number, token?: string): Promise<
   });
 
   if (!response.ok) {
-    throw new Error('Failed to remove vote');
+    throw new Error(`Failed to remove vote: ${response.status} ${response.statusText}`);
   }
 }
 

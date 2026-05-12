@@ -104,36 +104,33 @@ export default function SongPage({ params }: { params: { id: string } }) {
     }
   };
 
+  // Helper to retry authenticated requests
+  const withAuthRetry = async <T,>(action: (authToken: string) => Promise<T>): Promise<T> => {
+    try {
+      return await action(token || '');
+    } catch (err: any) {
+      if (err.message.toLowerCase().includes('401') || err.message.toLowerCase().includes('unauthorized') || err.message.toLowerCase().includes('failed') || err.message.toLowerCase().includes('invalid')) {
+        const newToken = await refreshAuth();
+        if (newToken) {
+          return await action(newToken);
+        }
+      }
+      throw err;
+    }
+  };
+
   const handleAnnotationSubmit = async (content: string) => {
     if (!selection) return;
 
-    const performCreation = async (authToken: string) => {
-      const songId = parseInt(params.id);
-      return await createAnnotation(songId, content, selection.startIndex, selection.endIndex, authToken);
-    };
-
     try {
-      try {
-        await performCreation(token || '');
-        toast.success('Annotation saved!');
-        await fetchAnnotations();
-        setIsCreateMode(false);
-        setSelection(null);
-      } catch (err: any) {
-        // If expired/unauthorized, try refreshing once
-        if (err.message.toLowerCase().includes('failed') || err.message.toLowerCase().includes('unauthorized')) {
-          const newToken = await refreshAuth();
-          if (newToken) {
-            await performCreation(newToken);
-            toast.success('Annotation saved!');
-            await fetchAnnotations();
-            setIsCreateMode(false);
-            setSelection(null);
-            return;
-          }
-        }
-        throw err;
-      }
+      await withAuthRetry((authToken) => {
+        const songId = parseInt(params.id);
+        return createAnnotation(songId, content, selection.startIndex, selection.endIndex, authToken);
+      });
+      toast.success('Annotation saved!');
+      await fetchAnnotations();
+      setIsCreateMode(false);
+      setSelection(null);
     } catch (error: any) {
       console.error("Failed to create annotation:", error);
       toast.error(error.message || 'Failed to save annotation');
@@ -255,7 +252,7 @@ export default function SongPage({ params }: { params: { id: string } }) {
               )}
               <div className="absolute inset-0 bg-glossy-button opacity-30 pointer-events-none"></div>
             </div>
-            <div className="flex-grow flex flex-col justify-start py-2">
+            <div className="flex-grow flex flex-col justify-end py-2">
               <h1 className="text-4xl md:text-6xl font-black text-slate-800 mb-6 drop-shadow-sm">{song.title}</h1>
               <div className="flex flex-wrap gap-6 items-center text-slate-600 font-bold">
                 <Link href={`/artist/${song.artist.id}`} className="text-2xl text-accent hover:text-accent-hover transition-colors">{song.artist.name}</Link>

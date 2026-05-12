@@ -23,7 +23,7 @@ export function AnnotationBubble({ annotation, isCreateMode = false, onClose, on
   const [editContent, setEditContent] = useState('');
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   
-  const { user, token } = useAuth();
+  const { user, token, refreshAuth } = useAuth();
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -61,6 +61,21 @@ export function AnnotationBubble({ annotation, isCreateMode = false, onClose, on
     }
   }, [annotation, isCreateMode]);
 
+  // Helper to retry authenticated requests
+  const withAuthRetry = async <T,>(action: (authToken: string) => Promise<T>): Promise<T> => {
+    try {
+      return await action(token || '');
+    } catch (err: any) {
+      if (err.message.toLowerCase().includes('401') || err.message.toLowerCase().includes('unauthorized') || err.message.toLowerCase().includes('failed')) {
+        const newToken = await refreshAuth();
+        if (newToken) {
+          return await action(newToken);
+        }
+      }
+      throw err;
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!onSubmit || !content.trim()) return;
@@ -79,7 +94,7 @@ export function AnnotationBubble({ annotation, isCreateMode = false, onClose, on
     if (!annotation || !editContent.trim()) return;
     try {
       setIsSubmitting(true);
-      await updateAnnotation(annotation.id, editContent, token || undefined);
+      await withAuthRetry((authToken) => updateAnnotation(annotation.id, editContent, authToken));
       toast.success('Annotation updated successfully');
       setIsEditing(false);
       if (onUpdated) onUpdated();
@@ -94,7 +109,7 @@ export function AnnotationBubble({ annotation, isCreateMode = false, onClose, on
     if (!annotation) return;
     try {
       setIsSubmitting(true);
-      await deleteAnnotation(annotation.id, token || undefined);
+      await withAuthRetry((authToken) => deleteAnnotation(annotation.id, authToken));
       toast.success('Annotation deleted');
       setIsDeleteModalOpen(false);
       if (onDeleted) onDeleted();
@@ -116,9 +131,9 @@ export function AnnotationBubble({ annotation, isCreateMode = false, onClose, on
     try {
       if (annotation.my_vote === value) {
         // Toggle off
-        await deleteVote(annotation.id, token || undefined);
+        await withAuthRetry((authToken) => deleteVote(annotation.id, authToken));
       } else {
-        await voteAnnotation(annotation.id, value, token || undefined);
+        await withAuthRetry((authToken) => voteAnnotation(annotation.id, value, authToken));
       }
       if (onUpdated) onUpdated(); // trigger re-fetch
     } catch (error: any) {

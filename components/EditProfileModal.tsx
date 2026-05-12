@@ -49,6 +49,21 @@ export default function EditProfileModal({ isOpen, onClose, user }: EditProfileM
     }
   };
 
+  // Helper to retry authenticated requests
+  const withAuthRetry = async <T,>(action: (authToken: string) => Promise<T>): Promise<T> => {
+    try {
+      return await action(token || '');
+    } catch (err: any) {
+      if (err.message.toLowerCase().includes('401') || err.message.toLowerCase().includes('unauthorized') || err.message.toLowerCase().includes('failed') || err.message.toLowerCase().includes('invalid')) {
+        const newToken = await refreshAuth();
+        if (newToken) {
+          return await action(newToken);
+        }
+      }
+      throw err;
+    }
+  };
+
   const onSubmit = async (data: ProfileEditInput) => {
     if (!token) return;
 
@@ -78,25 +93,10 @@ export default function EditProfileModal({ isOpen, onClose, user }: EditProfileM
     };
 
     try {
-      try {
-        const updatedUser = await performUpdate(token);
-        updateUser(updatedUser as any);
-        toast.success('Profile updated successfully');
-        onClose();
-      } catch (err: any) {
-        // If expired/unauthorized, try refreshing once
-        if (err.message.toLowerCase().includes('expired') || err.message.toLowerCase().includes('invalid')) {
-          const newToken = await refreshAuth();
-          if (newToken) {
-            const updatedUser = await performUpdate(newToken);
-            updateUser(updatedUser as any);
-            toast.success('Profile updated successfully');
-            onClose();
-            return;
-          }
-        }
-        throw err;
-      }
+      const updatedUser = await withAuthRetry(performUpdate);
+      updateUser(updatedUser as any);
+      toast.success('Profile updated successfully');
+      onClose();
     } catch (err: any) {
       const msg = err.message || 'Failed to update profile';
       setError(msg);
