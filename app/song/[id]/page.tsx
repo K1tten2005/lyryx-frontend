@@ -25,9 +25,15 @@ export default function SongPage({ params }: { params: { id: string } }) {
         const songId = parseInt(params.id);
         const [songData, annotationsData] = await Promise.all([
           getSongById(songId),
-          getSongAnnotations(songId).catch(() => []) // Fallback to empty array if annotations fail
+          getSongAnnotations(songId).catch((e) => {
+            console.error("Failed to fetch annotations:", e);
+            return [];
+          }) // Fallback to empty array if annotations fail
         ]);
         
+        console.log("Fetched Song:", songData?.id);
+        console.log("Fetched Annotations:", annotationsData);
+
         if (!songData) {
           notFound();
           return;
@@ -70,6 +76,12 @@ export default function SongPage({ params }: { params: { id: string } }) {
     let currentIndex = 0;
 
     sortedAnnotations.forEach((annotation) => {
+      // If the annotation starts before our current index, we have an overlap.
+      // For now, we skip overlapping annotations or adjust them to prevent breaking the layout.
+      if (annotation.start_index < currentIndex) {
+        return; // Skip this overlapping annotation for basic rendering
+      }
+
       // Add text before the annotation
       if (currentIndex < annotation.start_index) {
         elements.push(
@@ -82,6 +94,7 @@ export default function SongPage({ params }: { params: { id: string } }) {
       // Add the annotated text
       if (annotation.start_index < song.lyrics.length) {
         const endIndex = Math.min(annotation.end_index, song.lyrics.length);
+        
         elements.push(
           <AnnotationHighlight
             key={`annotation-${annotation.id}`}
