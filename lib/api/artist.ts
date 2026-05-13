@@ -16,6 +16,73 @@ export interface ArtistProfile {
   songs: ArtistSong[];
 }
 
+export interface PostArtistIn {
+  name: string;
+  bio?: string;
+}
+
+export interface PatchUpdateArtistIn {
+  name?: string;
+  bio?: string;
+}
+
+export async function createArtist(token: string, data: PostArtistIn): Promise<ArtistProfile> {
+  const response = await fetch(`${API_URL}/v1/artist`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    },
+    body: JSON.stringify(data)
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json().catch(() => ({}));
+    throw new Error(errorData.message || 'Failed to create artist');
+  }
+
+  return response.json();
+}
+
+export async function updateArtist(token: string, id: number, data: PatchUpdateArtistIn): Promise<ArtistProfile> {
+  const response = await fetch(`${API_URL}/v1/artist/${id}`, {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    },
+    // The test expects artistID to be passed in body too based on Swagger
+    body: JSON.stringify({ artistID: id, ...data })
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json().catch(() => ({}));
+    throw new Error(errorData.message || 'Failed to update artist');
+  }
+
+  return response.json();
+}
+
+export async function updateArtistAvatar(token: string, id: number, file: File): Promise<{ avatar_url: string }> {
+  const formData = new FormData();
+  formData.append('avatar', file);
+
+  const response = await fetch(`${API_URL}/v1/artist/${id}/avatar`, {
+    method: 'PATCH',
+    headers: {
+      'Authorization': `Bearer ${token}`
+    },
+    body: formData
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json().catch(() => ({}));
+    throw new Error(errorData.message || 'Failed to update artist avatar');
+  }
+
+  return response.json();
+}
+
 export async function getArtistById(id: number, limit: number = 20, offset: number = 0): Promise<ArtistProfile | null> {
   const url = new URL(`${API_URL}/v1/artist/${id}`);
   url.searchParams.append('limit', limit.toString());
