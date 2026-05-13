@@ -20,12 +20,12 @@
 - [x] Task: Conductor - User Manual Verification 'Phase 2: Create Artist Modal (TDD)' (Protocol in workflow.md) 1555d35
 
 ## Phase 3: Inline Edit on Artist Page (TDD)
-- [x] Task: Update Artist Page tests for Inline Editing
-    - [x] Update `__tests__/app/artist/[id]/page.test.tsx` to simulate a moderator user
-    - [x] Add tests for clicking to edit name/bio and saving
-    - [x] Add tests for avatar upload interactions
-- [~] Task: Implement Inline Editing UI and Logic
-    - [~] Update `app/artist/[id]/page.tsx`
-    - [~] Add editable state for name and bio with Save/Cancel buttons
-    - [~] Add hidden file input and hover overlay for avatar upload
+- [x] Task: Update Artist Page tests for Inline Editing c4df5ef
+    - [x] Update `__tests__/app/artist/[id]/page.test.tsx` to simulate a moderator user c4df5ef
+    - [x] Add tests for clicking to edit name/bio and saving c4df5ef
+    - [x] Add tests for avatar upload interactions c4df5ef
+- [x] Task: Implement Inline Editing UI and Logic c4df5ef
+    - [x] Update `app/artist/[id]/page.tsx` c4df5ef
+    - [x] Add editable state for name and bio with Save/Cancel buttons c4df5ef
+    - [x] Add hidden file input and hover overlay for avatar upload c4df5ef
 - [ ] Task: Conductor - User Manual Verification 'Phase 3: Inline Edit on Artist Page (TDD)' (Protocol in workflow.md)
