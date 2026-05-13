@@ -25,6 +25,11 @@ const nextConfig = {
         hostname: 'images.rapgenius.com',
         pathname: '/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'i.embed.ly',
+        pathname: '/**',
+      },
     ],
   },
 };
