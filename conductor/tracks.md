@@ -5,4 +5,3 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 - [x] **Track: Implement User Profile Dropdown**
 *Link: [./tracks/user_profile_dropdown_20260511/](./tracks/user_profile_dropdown_20260511/)*
-\n---\n\n- [x] **Track: Song Management (Creation & Editing)**\n*Link: [./tracks/song_management_20260513/](./tracks/song_management_20260513/)*
