@@ -12,7 +12,7 @@ A frontend skeleton on Next.js for a Genius analogue.
 - **User Authentication:** JWT-based secure user registration and login system.
 - **User Profiles:** Dedicated pages showcasing user information (avatar, bio, role, reputation) with editing capabilities and a list of their annotated lyrics with song context.
 - **Artist Pages:** Dedicated profiles for artists showing their biography, avatar, and a paginated list of their discography. Includes moderator tools for creating new artists and inline editing of existing profiles.
-- **Song Pages:** Dedicated pages for viewing song details, including title, artist, release date, views, and lyrics, styled with the project's unique Frutiger Aero aesthetic.
+- **Song Pages:** Dedicated pages for viewing song details, including title, artist, release date, views, and lyrics, styled with the project's unique Frutiger Aero aesthetic. Includes moderator tools for adding new songs and a dedicated interface for editing song details and cover art.
 - **Lyrics Annotation:** Interactive system for viewing, creating, editing, and deleting explanations for lyrics segments. Includes a community voting system (likes/dislikes) and features glassmorphic sidebar bubbles with seamless text selection.
 - **AI-Powered Explanations:** On-demand AI lyrics explanation feature that allows users to ask custom questions about selected lyrics segments and receive instant, read-only AI-generated insights.
 - **AI Lyrics Translation:** Integrated AI translation tool allowing authenticated users to translate entire songs into target languages with line-by-line interleaved display and toggle visibility.
