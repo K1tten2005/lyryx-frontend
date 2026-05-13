@@ -288,10 +288,12 @@ describe("SongPage", () => {
         expect(screen.getByText("Перевод первой строки")).toBeInTheDocument();
         expect(screen.getByText("Line two")).toBeInTheDocument();
         expect(screen.getByText("Перевод второй строки")).toBeInTheDocument();
+        // The main button should now show "Russian"
+        expect(screen.getByRole("button", { name: /Russian/i })).toBeInTheDocument();
       });
     });
 
-    it("hides translation when Hide Translation is clicked", async () => {
+    it("toggles translation visibility without re-fetching", async () => {
       (getAiTranslation as any).mockResolvedValue({
         id: 1,
         response: "Translation",
@@ -308,11 +310,22 @@ describe("SongPage", () => {
         expect(screen.getByText("Translation")).toBeInTheDocument();
       });
 
-      const hideBtn = screen.getByRole("button", { name: /Hide Translation/i });
+      // Click "Hide"
+      const hideBtn = screen.getByRole("button", { name: /Hide/i });
       fireEvent.click(hideBtn);
 
       await waitFor(() => {
         expect(screen.queryByText("Translation")).not.toBeInTheDocument();
+      });
+
+      // Click "Show"
+      const showBtn = screen.getByRole("button", { name: /Show/i });
+      fireEvent.click(showBtn);
+
+      await waitFor(() => {
+        expect(screen.getByText("Translation")).toBeInTheDocument();
+        // Confirm no second call to getAiTranslation
+        expect(getAiTranslation).toHaveBeenCalledTimes(1);
       });
     });
   });

@@ -40,6 +40,7 @@ export default function SongPage({ params }: { params: { id: string } }) {
   const [translatedLyrics, setTranslatedLyrics] = useState<string | null>(null);
   const [isTranslationLoading, setIsTranslationLoading] = useState(false);
   const [showLangDropdown, setShowLangDropdown] = useState(false);
+  const [isTranslationVisible, setIsTranslationVisible] = useState(false);
 
   const fetchAnnotations = useCallback(async () => {
     try {
@@ -145,6 +146,11 @@ export default function SongPage({ params }: { params: { id: string } }) {
   };
 
   const handleTranslate = async (lang: string) => {
+    if (lang === targetLanguage && translatedLyrics) {
+      setIsTranslationVisible(true);
+      setShowLangDropdown(false);
+      return;
+    }
     try {
       setIsTranslationLoading(true);
       setShowLangDropdown(false);
@@ -153,6 +159,7 @@ export default function SongPage({ params }: { params: { id: string } }) {
       );
       setTranslatedLyrics(result.response);
       setTargetLanguage(lang);
+      setIsTranslationVisible(true);
       toast.success(`Translated to ${lang === 'en' ? 'English' : lang === 'ru' ? 'Russian' : lang}`);
     } catch (err: any) {
       console.error("Translation failed:", err);
@@ -254,7 +261,7 @@ export default function SongPage({ params }: { params: { id: string } }) {
     
     const sortedAnnotations = displayAnnotations.sort((a, b) => a.start_index - b.start_index);
 
-    if (translatedLyrics && targetLanguage) {
+    if (translatedLyrics && targetLanguage && isTranslationVisible) {
       const originalLines = song.lyrics.split('\n');
       const translatedLines = translatedLyrics.split('\n');
       let cumulativeIndex = 0;
@@ -429,42 +436,49 @@ export default function SongPage({ params }: { params: { id: string } }) {
                 </h2>
                 
                 {isAuthenticated && (
-                  <div className="relative">
-                    {!targetLanguage ? (
+                  <div className="flex items-center gap-3">
+                    <div className="relative">
                       <button 
                         onClick={() => setShowLangDropdown(!showLangDropdown)}
                         disabled={isTranslationLoading}
                         className="flex items-center gap-2 px-6 py-2.5 bg-white/60 backdrop-blur-md rounded-2xl border border-white/50 shadow-glass-sm hover:bg-white/80 transition-all font-bold text-slate-700 disabled:opacity-50"
                       >
                         {isTranslationLoading ? <Loader2 className="w-4 h-4 animate-spin text-accent" /> : <Languages className="w-4 h-4 text-accent" />}
-                        Translate
+                        {targetLanguage ? (targetLanguage === 'ru' ? 'Russian' : 'English') : 'Translate'}
                         <ChevronDown className={cn("w-4 h-4 transition-transform", showLangDropdown && "rotate-180")} />
                       </button>
-                    ) : (
-                      <button 
-                        onClick={() => { setTargetLanguage(null); setTranslatedLyrics(null); }}
-                        className="flex items-center gap-2 px-6 py-2.5 bg-accent/10 hover:bg-accent/20 backdrop-blur-md rounded-2xl border border-accent/20 shadow-glass-sm transition-all font-bold text-accent"
-                      >
-                        <X className="w-4 h-4" />
-                        Hide Translation
-                      </button>
-                    )}
 
-                    {showLangDropdown && (
-                      <div className="absolute right-0 top-full mt-3 w-48 bg-white/90 backdrop-blur-xl rounded-2xl border border-white/50 shadow-glass overflow-hidden z-[100] animate-in fade-in zoom-in-95 duration-200">
-                        <button 
-                          onClick={() => handleTranslate('ru')}
-                          className="w-full px-5 py-3 text-left hover:bg-accent/10 transition-colors font-bold text-slate-700"
-                        >
-                          Russian
-                        </button>
-                        <button 
-                          onClick={() => handleTranslate('en')}
-                          className="w-full px-5 py-3 text-left hover:bg-accent/10 transition-colors font-bold text-slate-700 border-t border-slate-100/50"
-                        >
-                          English
-                        </button>
-                      </div>
+                      {showLangDropdown && (
+                        <div className="absolute right-0 top-full mt-3 w-48 bg-white/90 backdrop-blur-xl rounded-2xl border border-white/50 shadow-glass overflow-hidden z-[100] animate-in fade-in zoom-in-95 duration-200">
+                          <button 
+                            onClick={() => handleTranslate('ru')}
+                            className="w-full px-5 py-3 text-left hover:bg-accent/10 transition-colors font-bold text-slate-700"
+                          >
+                            Russian
+                          </button>
+                          <button 
+                            onClick={() => handleTranslate('en')}
+                            className="w-full px-5 py-3 text-left hover:bg-accent/10 transition-colors font-bold text-slate-700 border-t border-slate-100/50"
+                          >
+                            English
+                          </button>
+                        </div>
+                      )}
+                    </div>
+
+                    {translatedLyrics && (
+                      <button 
+                        onClick={() => setIsTranslationVisible(!isTranslationVisible)}
+                        className={cn(
+                          "flex items-center gap-2 px-6 py-2.5 backdrop-blur-md rounded-2xl border shadow-glass-sm transition-all font-bold",
+                          isTranslationVisible 
+                            ? "bg-accent/10 hover:bg-accent/20 border-accent/20 text-accent" 
+                            : "bg-white/60 hover:bg-white/80 border-white/50 text-slate-700"
+                        )}
+                      >
+                        {isTranslationVisible ? <X className="w-4 h-4" /> : <Languages className="w-4 h-4" />}
+                        {isTranslationVisible ? 'Hide' : 'Show'}
+                      </button>
                     )}
                   </div>
                 )}
@@ -474,7 +488,7 @@ export default function SongPage({ params }: { params: { id: string } }) {
                 <div className="absolute top-0 left-0 right-0 h-1/2 bg-gradient-to-b from-white/20 to-transparent pointer-events-none"></div>
                 <div className={cn(
                   "text-lg md:text-xl leading-relaxed text-slate-700 font-semibold whitespace-pre-wrap font-sans relative z-10 tracking-tight select-text",
-                  translatedLyrics && "whitespace-normal"
+                  (translatedLyrics && isTranslationVisible) && "whitespace-normal"
                 )}>
                   {renderLyricsWithAnnotations()}
                 </div>
