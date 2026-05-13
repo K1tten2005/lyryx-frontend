@@ -193,7 +193,7 @@ export default function EditSongPage({ params }: { params: { id: string } }) {
               className="flex items-center gap-2 text-slate-500 hover:text-accent font-bold mb-8 transition-colors"
             >
               <ArrowLeft className="w-5 h-5" />
-              Back
+              Назад
             </button>
             
             <div className="bg-white/80 backdrop-blur-xl p-8 sm:p-10 rounded-[2rem] border border-white/50 shadow-glass">
@@ -202,15 +202,15 @@ export default function EditSongPage({ params }: { params: { id: string } }) {
                   <Music className="w-6 h-6 text-accent" />
                 </div>
                 <div>
-                  <h1 className="text-3xl font-black text-slate-800">Edit Song</h1>
-                  <p className="text-slate-500 font-medium">Updating details for {song.title}</p>
+                  <h1 className="text-3xl font-black text-slate-800">Редактировать песню</h1>
+                  <p className="text-slate-500 font-medium">Обновление информации для {song.title}</p>
                 </div>
               </div>
 
               <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
                 <div>
                   <label htmlFor="title" className="block text-sm font-bold text-slate-700 mb-2 uppercase tracking-wide">
-                    Song Title
+                    Название песни
                   </label>
                   <input
                     id="title"
@@ -227,7 +227,7 @@ export default function EditSongPage({ params }: { params: { id: string } }) {
 
                 <div>
                   <label htmlFor="release_date" className="block text-sm font-bold text-slate-700 mb-2 uppercase tracking-wide">
-                    Release Date
+                    Дата выхода
                   </label>
                   <input
                     id="release_date"
@@ -245,7 +245,7 @@ export default function EditSongPage({ params }: { params: { id: string } }) {
 
                 <div>
                   <label htmlFor="lyrics" className="block text-sm font-bold text-slate-700 mb-2 uppercase tracking-wide">
-                    Lyrics
+                    Текст песни
                   </label>
                   <textarea
                     id="lyrics"
@@ -270,10 +270,10 @@ export default function EditSongPage({ params }: { params: { id: string } }) {
                     {isSubmitting ? (
                       <>
                         <Loader2 className="w-5 h-5 animate-spin" />
-                        Saving...
+                        Сохранение...
                       </>
                     ) : (
-                      'Save Changes'
+                      'Сохранить изменения'
                     )}
                   </button>
                 </div>
@@ -284,14 +284,14 @@ export default function EditSongPage({ params }: { params: { id: string } }) {
           {/* Sidebar / Cover Area */}
           <div className="w-full md:w-64 flex-shrink-0 order-1 md:order-2 md:pt-16">
             <div className="bg-white/80 backdrop-blur-xl p-6 rounded-[2rem] border border-white/50 shadow-glass flex flex-col items-center">
-              <h3 className="text-sm font-bold text-slate-700 mb-4 uppercase tracking-wide w-full text-center">Cover Art</h3>
+              <h3 className="text-sm font-bold text-slate-700 mb-4 uppercase tracking-wide w-full text-center">Обложка</h3>
               <div className="relative w-48 h-48 mb-4 group">
                 <div className="absolute inset-0 bg-gradient-to-tr from-accent to-purple-400 rounded-2xl blur-lg opacity-40 group-hover:opacity-60 transition-opacity duration-500"></div>
                 <div className="relative w-full h-full rounded-2xl overflow-hidden shadow-glass border-2 border-white/80 flex items-center justify-center bg-white/40 backdrop-blur-md">
                   {song.cover_url ? (
                     <Image 
                       src={song.cover_url} 
-                      alt={`${song.title} cover`} 
+                      alt={`Обложка ${song.title}`} 
                       fill 
                       className="object-cover transition-transform duration-700 group-hover:scale-105" 
                     />
@@ -308,7 +308,7 @@ export default function EditSongPage({ params }: { params: { id: string } }) {
                     ) : (
                       <>
                         <Upload className="w-8 h-8 text-white mb-2 drop-shadow-md" />
-                        <span className="text-white text-xs font-bold uppercase tracking-wider drop-shadow-md">Upload</span>
+                        <span className="text-white text-xs font-bold uppercase tracking-wider drop-shadow-md">Загрузить</span>
                       </>
                     )}
                     <input 
@@ -325,7 +325,7 @@ export default function EditSongPage({ params }: { params: { id: string } }) {
                 </div>
               </div>
               <p className="text-xs text-center text-slate-400 font-medium px-4">
-                Recommended size: 1000x1000px. JPG or PNG.
+                Рекомендуемый размер: 1000x1000px. JPG или PNG.
               </p>
             </div>
           </div>

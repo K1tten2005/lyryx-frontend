@@ -4,15 +4,26 @@ import { cn } from '@/lib/utils';
 
 interface AIBubbleProps {
   onClose: () => void;
-  onSubmit: (question: string) => Promise<{ response: string }>;
+  onSubmit: (question: string) => void;
+  status: 'idle' | 'loading' | 'result' | 'error';
+  aiResponse: string;
+  errorMessage: string;
+  question: string;
+  setQuestion: (q: string) => void;
+  onReset: () => void;
 }
 
-export function AIBubble({ onClose, onSubmit }: AIBubbleProps) {
+export function AIBubble({ 
+  onClose, 
+  onSubmit, 
+  status, 
+  aiResponse, 
+  errorMessage, 
+  question, 
+  setQuestion,
+  onReset 
+}: AIBubbleProps) {
   const bubbleRef = useRef<HTMLDivElement>(null);
-  const [question, setQuestion] = useState('');
-  const [status, setStatus] = useState<'idle' | 'loading' | 'result' | 'error'>('idle');
-  const [aiResponse, setAiResponse] = useState('');
-  const [errorMessage, setErrorMessage] = useState('');
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -31,28 +42,17 @@ export function AIBubble({ onClose, onSubmit }: AIBubbleProps) {
     };
   }, [onClose]);
 
-  const handleSubmit = async (e?: React.FormEvent) => {
+  const handleSubmit = (e?: React.FormEvent) => {
     e?.preventDefault();
     if (!question.trim() || status === 'loading') return;
-
-    try {
-      setStatus('loading');
-      const result = await onSubmit(question);
-      setAiResponse(result.response);
-      setStatus('result');
-    } catch (error: any) {
-      console.error("AI Annotation failed:", error);
-      setErrorMessage(error.message || 'Failed to get AI explanation');
-      setStatus('error');
-    }
+    onSubmit(question);
   };
 
   return (
     <div 
       ref={bubbleRef}
       className={cn(
-        "bg-indigo-50/60 backdrop-blur-2xl rounded-[2.5rem] p-8 shadow-glass border border-white/60 relative text-slate-800 w-full min-h-[200px] flex flex-col animate-fade-zoom overflow-hidden",
-        status === 'loading' && "items-center justify-center"
+        "bg-indigo-50/60 backdrop-blur-2xl rounded-[2.5rem] p-8 shadow-glass border border-white/60 relative text-slate-800 w-full min-h-[200px] flex flex-col animate-fade-zoom overflow-hidden pointer-events-auto"
       )}
     >
       {/* Frutiger Aero Glossy Pointer/Tail */}
@@ -69,7 +69,7 @@ export function AIBubble({ onClose, onSubmit }: AIBubbleProps) {
             <div className="bg-indigo-500 p-1.5 rounded-lg shadow-lg shadow-indigo-500/30">
               <Bot className="w-4 h-4 text-white" />
             </div>
-            <h3 className="text-xs font-black uppercase tracking-widest text-indigo-600">AI Explanation</h3>
+            <h3 className="text-xs font-black uppercase tracking-widest text-indigo-600">ИИ Объяснение</h3>
           </div>
           <button 
             onClick={onClose}
@@ -86,7 +86,7 @@ export function AIBubble({ onClose, onSubmit }: AIBubbleProps) {
               <textarea
                 autoFocus
                 className="w-full bg-white/40 border-2 border-white/80 rounded-2xl p-4 text-slate-800 font-bold placeholder-slate-400 focus:outline-none focus:ring-4 focus:ring-indigo-500/20 min-h-[120px] transition-all resize-none mb-4 shadow-inset-heavy"
-                placeholder="What would you like to know about these lyrics?"
+                placeholder="Что бы вы хотели узнать об этих словах?"
                 value={question}
                 onChange={(e) => setQuestion(e.target.value)}
               />
@@ -96,7 +96,7 @@ export function AIBubble({ onClose, onSubmit }: AIBubbleProps) {
                 className="w-full flex items-center justify-center gap-2 py-3 px-8 bg-indigo-600 text-white font-bold rounded-full shadow-lg shadow-indigo-600/30 border border-white/20 hover:bg-indigo-700 active:scale-95 transition-all disabled:opacity-50 disabled:scale-100"
               >
                 <Send size={16} />
-                <span>Ask AI</span>
+                <span>Спросить ИИ</span>
               </button>
             </form>
           )}
@@ -112,15 +112,15 @@ export function AIBubble({ onClose, onSubmit }: AIBubbleProps) {
           )}
 
           {status === 'result' && (
-            <div className="animate-fade-in flex flex-col flex-grow">
-              <div className="text-base md:text-lg font-bold leading-relaxed text-slate-700 whitespace-pre-wrap break-words mb-6 bg-white/30 p-6 rounded-3xl border border-white/40 shadow-inset-heavy">
-                {aiResponse}
+            <div className="animate-in fade-in zoom-in-95 duration-500 flex flex-col flex-grow min-h-0">
+              <div className="text-base md:text-lg font-bold leading-relaxed text-slate-700 whitespace-pre-wrap break-words mb-6 bg-white/30 p-6 rounded-3xl border border-white/40 shadow-inset-heavy overflow-y-auto max-h-[400px] custom-scrollbar">
+                {aiResponse || 'The AI provided an empty response. Please try again.'}
               </div>
               <button
-                onClick={() => setStatus('idle')}
+                onClick={onReset}
                 className="mt-auto self-end text-xs font-black uppercase tracking-widest text-indigo-500 hover:text-indigo-700 transition-colors flex items-center gap-1"
               >
-                Ask another question
+                Задать другой вопрос
               </button>
             </div>
           )}
@@ -132,7 +132,7 @@ export function AIBubble({ onClose, onSubmit }: AIBubbleProps) {
               </div>
               <p className="text-red-500 font-bold mb-6">{errorMessage}</p>
               <button
-                onClick={() => setStatus('idle')}
+                onClick={onReset}
                 className="py-2 px-6 bg-white/60 text-slate-600 font-bold rounded-full hover:bg-white/80 transition-all border border-slate-200"
               >
                 Try Again

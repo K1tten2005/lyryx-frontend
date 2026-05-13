@@ -21,15 +21,15 @@ describe('RegisterForm', () => {
 
   it('renders register form correctly', () => {
     render(<RegisterForm onSuccess={mockOnSuccess} />);
-    expect(screen.getByPlaceholderText(/username/i)).toBeInTheDocument();
-    expect(screen.getByPlaceholderText(/email/i)).toBeInTheDocument();
+    expect(screen.getByPlaceholderText(/ваш_никнейм/i)).toBeInTheDocument();
+    expect(screen.getByPlaceholderText(/your@email.com/i)).toBeInTheDocument();
     expect(screen.getByPlaceholderText(/••••••••/i)).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: /create account/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /зарегистрироваться/i })).toBeInTheDocument();
   });
 
   it('shows validation errors for empty fields', async () => {
     render(<RegisterForm onSuccess={mockOnSuccess} />);
-    fireEvent.click(screen.getByRole('button', { name: /create account/i }));
+    fireEvent.click(screen.getByRole('button', { name: /зарегистрироваться/i }));
 
     await waitFor(() => {
       expect(screen.getByText(/username must be at least 3 characters/i)).toBeInTheDocument();
@@ -42,11 +42,11 @@ describe('RegisterForm', () => {
   it('calls register and onSuccess when form is valid', async () => {
     render(<RegisterForm onSuccess={mockOnSuccess} />);
     
-    fireEvent.change(screen.getByPlaceholderText(/username/i), { target: { value: 'testuser' } });
-    fireEvent.change(screen.getByPlaceholderText(/email/i), { target: { value: 'test@example.com' } });
+    fireEvent.change(screen.getByPlaceholderText(/ваш_никнейм/i), { target: { value: 'testuser' } });
+    fireEvent.change(screen.getByPlaceholderText(/your@email.com/i), { target: { value: 'test@example.com' } });
     fireEvent.change(screen.getByPlaceholderText(/••••••••/i), { target: { value: 'password123' } });
     
-    fireEvent.click(screen.getByRole('button', { name: /create account/i }));
+    fireEvent.click(screen.getByRole('button', { name: /зарегистрироваться/i }));
 
     await waitFor(() => {
       expect(mockRegister).toHaveBeenCalledWith('testuser', 'test@example.com', 'password123');
@@ -58,11 +58,11 @@ describe('RegisterForm', () => {
     mockRegister.mockRejectedValueOnce(new Error('Email already taken'));
     render(<RegisterForm onSuccess={mockOnSuccess} />);
     
-    fireEvent.change(screen.getByPlaceholderText(/username/i), { target: { value: 'testuser' } });
-    fireEvent.change(screen.getByPlaceholderText(/email/i), { target: { value: 'test@example.com' } });
+    fireEvent.change(screen.getByPlaceholderText(/ваш_никнейм/i), { target: { value: 'testuser' } });
+    fireEvent.change(screen.getByPlaceholderText(/your@email.com/i), { target: { value: 'test@example.com' } });
     fireEvent.change(screen.getByPlaceholderText(/••••••••/i), { target: { value: 'password123' } });
     
-    fireEvent.click(screen.getByRole('button', { name: /create account/i }));
+    fireEvent.click(screen.getByRole('button', { name: /зарегистрироваться/i }));
 
     await waitFor(() => {
       expect(screen.getByText('Email already taken')).toBeInTheDocument();

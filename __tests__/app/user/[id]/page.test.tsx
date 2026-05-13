@@ -51,7 +51,7 @@ describe("UserProfilePage", () => {
       reputation_score: 100,
       bio: "This is a test bio",
     };
-    const mockAnnotations = {
+    const mockАннотации = {
       user_id: 1,
       annotations: [],
       total: 0,
@@ -59,7 +59,7 @@ describe("UserProfilePage", () => {
     };
 
     (getUserProfile as any).mockResolvedValue(mockUser);
-    (getUserAnnotations as any).mockResolvedValue(mockAnnotations);
+    (getUserAnnotations as any).mockResolvedValue(mockАннотации);
 
     render(<UserProfilePage params={mockParams} />);
 
@@ -67,13 +67,13 @@ describe("UserProfilePage", () => {
       expect(screen.getByText("testuser")).toBeInTheDocument();
       expect(screen.getByText(/This is a test bio/i)).toBeInTheDocument();
       expect(screen.getByText("100")).toBeInTheDocument();
-      expect(screen.getByText("Annotations (0)")).toBeInTheDocument();
+      expect(screen.getByText("Аннотации (0)")).toBeInTheDocument();
     });
   });
 
   it("renders annotations if present", async () => {
     const mockUser = { user_id: 1, username: "testuser", email: "test@example.com", role: "user", reputation_score: 100 };
-    const mockAnnotations = {
+    const mockАннотации = {
       user_id: 1,
       annotations: [
         { 
@@ -89,7 +89,7 @@ describe("UserProfilePage", () => {
     };
 
     (getUserProfile as any).mockResolvedValue(mockUser);
-    (getUserAnnotations as any).mockResolvedValue(mockAnnotations);
+    (getUserAnnotations as any).mockResolvedValue(mockАннотации);
 
     render(<UserProfilePage params={mockParams} />);
 
@@ -101,13 +101,13 @@ describe("UserProfilePage", () => {
   });
 
   it("renders error state if fetch fails", async () => {
-    (getUserProfile as any).mockRejectedValue(new Error("User not found"));
+    (getUserProfile as any).mockRejectedValue(new Error("Пользователь не найден"));
     (getUserAnnotations as any).mockResolvedValue({ annotations: [], total: 0, has_more: false });
 
     render(<UserProfilePage params={mockParams} />);
 
     await waitFor(() => {
-      expect(screen.getByText(/User not found/i)).toBeInTheDocument();
+      expect(screen.getByText(/Пользователь не найден/i)).toBeInTheDocument();
     });
   });
 });

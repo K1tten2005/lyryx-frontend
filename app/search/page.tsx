@@ -84,11 +84,11 @@ function SearchResults() {
   if (!query) {
     return (
       <main className="flex-grow container mx-auto px-4 py-8 relative z-10 max-w-4xl">
-        <h1 className="text-4xl font-black mb-8 text-slate-800 drop-shadow-sm">Search Results</h1>
+        <h1 className="text-4xl font-black mb-8 text-slate-800 drop-shadow-sm">Результаты поиска</h1>
         <div className="bg-white/40 backdrop-blur-xl rounded-3xl p-8 border border-white/60 shadow-glass flex items-center justify-center min-h-[300px]">
           <div className="text-center">
             <Music2 className="mx-auto h-16 w-16 text-slate-400/80 mb-4 drop-shadow-sm" />
-            <p className="text-xl text-slate-700 font-bold">Please enter a search query.</p>
+            <p className="text-xl text-slate-700 font-bold">Пожалуйста, введите поисковой запрос.</p>
           </div>
         </div>
       </main>
@@ -103,60 +103,60 @@ function SearchResults() {
 
   return (
     <main className="flex-grow container mx-auto px-4 py-8 relative z-10 max-w-4xl">
-      <h1 className="text-4xl font-black mb-8 text-slate-800 drop-shadow-sm">Search Results</h1>
+      <h1 className="text-4xl font-black mb-8 text-slate-800 drop-shadow-sm">Результаты поиска</h1>
       
       {isLoading ? (
         <div className="flex flex-col items-center justify-center py-20 bg-white/40 backdrop-blur-xl rounded-3xl border border-white/60 shadow-glass" data-testid="loading-spinner">
           <Loader2 className="h-12 w-12 text-accent animate-spin mb-4 drop-shadow-sm" />
-          <p className="text-lg text-slate-700 font-bold animate-pulse">Searching for &quot;{query}&quot;...</p>
+          <p className="text-lg text-slate-700 font-bold animate-pulse">Поиск по запросу &quot;{query}&quot;...</p>
         </div>
       ) : error ? (
         <div className="bg-red-50/60 backdrop-blur-xl rounded-3xl p-8 border border-red-200/60 shadow-glass flex items-center justify-center min-h-[300px]">
           <div className="text-center">
             <AlertCircle className="mx-auto h-16 w-16 text-red-500/80 mb-4 drop-shadow-sm" />
-            <p className="text-xl text-red-800 font-bold">An error occurred while fetching results.</p>
-            <p className="text-red-600/80 mt-2 font-medium">Please try again later.</p>
+            <p className="text-xl text-red-800 font-bold">Произошла ошибка при поиске.</p>
+            <p className="text-red-600/80 mt-2 font-medium">Пожалуйста, попробуйте позже.</p>
           </div>
         </div>
       ) : isEmpty ? (
         <div className="bg-white/40 backdrop-blur-xl rounded-3xl p-8 border border-white/60 shadow-glass flex items-center justify-center min-h-[300px]">
            <div className="text-center">
             <Search className="mx-auto h-16 w-16 text-slate-400/80 mb-4 drop-shadow-sm" />
-            <p className="text-2xl text-slate-800 font-bold mb-2">No results found</p>
+            <p className="text-2xl text-slate-800 font-bold mb-2">Ничего не найдено</p>
             <p className="text-slate-600 font-medium">
-              We couldn&apos;t find anything matching &quot;<span className="font-bold text-accent">{query}</span>&quot;
+              Мы не смогли найти ничего по запросу &quot;<span className="font-bold text-accent">{query}</span>&quot;
             </p>
           </div>
         </div>
       ) : (
         <div className="space-y-8">
           <p className="text-xl text-slate-600 mb-6 px-2">
-            Showing results for &quot;<span className="font-bold text-indigo-600">{query}</span>&quot;
+            Показаны результаты для &quot;<span className="font-bold text-indigo-600">{query}</span>&quot;
           </p>
           
           <SearchCategory 
-            title="Artists" 
+            title="Артисты" 
             items={results?.artists || []} 
             renderItem={(artist) => <ArtistCard key={artist.id} artist={artist} />} 
             onSeeAll={() => handleOpenModal('artists')}
           />
           
           <SearchCategory 
-            title="Songs" 
+            title="Песни" 
             items={results?.songs || []} 
             renderItem={(song) => <SongCard key={song.id} song={song} />} 
             onSeeAll={() => handleOpenModal('songs')}
           />
 
           <SearchCategory 
-            title="Lyrics Matches" 
+            title="Совпадения в текстах" 
             items={results?.lyrics_matched_songs || []} 
             renderItem={(song) => <SongCard key={`lyric-${song.id}`} song={song} showSnippet={true} />} 
             onSeeAll={() => handleOpenModal('lyrics_matched_songs')}
           />
           
           <SearchCategory 
-            title="Users" 
+            title="Пользователи" 
             items={results?.users || []} 
             renderItem={(user) => <UserCard key={user.id} user={user} />} 
             onSeeAll={() => handleOpenModal('users')}
@@ -168,10 +168,10 @@ function SearchResults() {
         isOpen={activeCategory !== null}
         onClose={handleCloseModal}
         title={
-          activeCategory === 'artists' ? 'Artists' :
-          activeCategory === 'songs' ? 'Songs' :
-          activeCategory === 'lyrics_matched_songs' ? 'Lyrics Matches' :
-          activeCategory === 'users' ? 'Users' : ''
+          activeCategory === 'artists' ? 'Артисты' :
+          activeCategory === 'songs' ? 'Песни' :
+          activeCategory === 'lyrics_matched_songs' ? 'Совпадения в текстах' :
+          activeCategory === 'users' ? 'Пользователи' : ''
         }
         items={modalItems}
         renderItem={(item, index) => {

@@ -31,7 +31,7 @@ describe('AuthModal', () => {
   it('renders login form by default', () => {
     render(<AuthModal isOpen={true} onClose={mockOnClose} />);
     expect(screen.getByTestId('login-form')).toBeInTheDocument();
-    expect(screen.getByText(/sign in/i)).toBeInTheDocument();
+    expect(screen.getByText(/Вход/i)).toBeInTheDocument();
   });
 
   it('does not render when isOpen is false', () => {
@@ -42,19 +42,19 @@ describe('AuthModal', () => {
   it('toggles to register form when "Sign up" is clicked', () => {
     render(<AuthModal isOpen={true} onClose={mockOnClose} />);
     
-    fireEvent.click(screen.getByRole('button', { name: /sign up/i }));
+    fireEvent.click(screen.getByRole('button', { name: /Зарегистрироваться/i }));
     
     expect(screen.getByTestId('register-form')).toBeInTheDocument();
-    expect(screen.getByText(/create account/i)).toBeInTheDocument();
+    expect(screen.getByText(/Регистрация/i)).toBeInTheDocument();
   });
 
   it('toggles back to login form when "Sign in" is clicked', () => {
     render(<AuthModal isOpen={true} onClose={mockOnClose} />);
     
     // switch to register
-    fireEvent.click(screen.getByRole('button', { name: /sign up/i }));
+    fireEvent.click(screen.getByRole('button', { name: /Зарегистрироваться/i }));
     // switch back
-    fireEvent.click(screen.getByRole('button', { name: /sign in/i }));
+    fireEvent.click(screen.getByRole('button', { name: /Войти/i }));
     
     expect(screen.getByTestId('login-form')).toBeInTheDocument();
   });

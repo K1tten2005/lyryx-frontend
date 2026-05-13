@@ -158,7 +158,7 @@ describe("SongPage", () => {
     });
   });
 
-  it("renders Ask AI prompt on selection", async () => {
+  it("renders Спросить ИИ prompt on selection", async () => {
     const mockSong = {
       id: 1,
       title: "Test Song",
@@ -188,11 +188,11 @@ describe("SongPage", () => {
 
     await waitFor(() => {
       expect(screen.getByRole("button", { name: /Add Annotation/i })).toBeInTheDocument();
-      expect(screen.getByRole("button", { name: /Ask AI/i })).toBeInTheDocument();
+      expect(screen.getByRole("button", { name: /Спросить ИИ/i })).toBeInTheDocument();
     });
   });
 
-  it("opens AIBubble when Ask AI is clicked", async () => {
+  it("opens AIBubble when Спросить ИИ is clicked", async () => {
     const mockSong = {
       id: 1,
       title: "Test Song",
@@ -221,13 +221,13 @@ describe("SongPage", () => {
     render(<SongPage params={mockParams} />);
 
     await waitFor(() => {
-      const askAiButton = screen.getByRole("button", { name: /Ask AI/i });
+      const askAiButton = screen.getByRole("button", { name: /Спросить ИИ/i });
       fireEvent.click(askAiButton);
     });
 
     await waitFor(() => {
-      expect(screen.getByText("AI Explanation")).toBeInTheDocument();
-      expect(screen.getByPlaceholderText(/What would you like to know about these lyrics/i)).toBeInTheDocument();
+      expect(screen.getByText("ИИ Объяснение")).toBeInTheDocument();
+      expect(screen.getByPlaceholderText(/Что бы вы хотели узнать об этих словах/i)).toBeInTheDocument();
     });
   });
 

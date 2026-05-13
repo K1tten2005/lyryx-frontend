@@ -15,7 +15,7 @@ vi.mock('next/navigation', () => ({
 }));
 
 describe('UserDropdown', () => {
-  const mockLogout = vi.fn();
+  const mockВыйти = vi.fn();
 
   beforeEach(() => {
     vi.clearAllMocks();
@@ -24,7 +24,7 @@ describe('UserDropdown', () => {
   it('renders user without avatar correctly (shows fallback icon)', () => {
     (useAuth as any).mockReturnValue({
       user: { username: 'testuser', reputation_score: 42 },
-      logout: mockLogout,
+      logout: mockВыйти,
     });
 
     render(<UserDropdown />);
@@ -38,7 +38,7 @@ describe('UserDropdown', () => {
   it('renders user with avatar correctly', () => {
     (useAuth as any).mockReturnValue({
       user: { username: 'testuser', reputation_score: 100, avatar_url: 'http://example.com/avatar.png' },
-      logout: mockLogout,
+      logout: mockВыйти,
     });
 
     render(<UserDropdown />);
@@ -53,7 +53,7 @@ describe('UserDropdown', () => {
   it('toggles dropdown on click', () => {
     (useAuth as any).mockReturnValue({
       user: { username: 'testuser', reputation_score: 10 },
-      logout: mockLogout,
+      logout: mockВыйти,
     });
 
     render(<UserDropdown />);
@@ -67,8 +67,8 @@ describe('UserDropdown', () => {
 
     // Menu should be visible
     expect(screen.getByRole('menu')).toBeInTheDocument();
-    expect(screen.getByText('Profile')).toBeInTheDocument();
-    expect(screen.getByText('Logout')).toBeInTheDocument();
+    expect(screen.getByText('Профиль')).toBeInTheDocument();
+    expect(screen.getByText('Выйти')).toBeInTheDocument();
 
     // Click to close
     fireEvent.click(button);
@@ -78,7 +78,7 @@ describe('UserDropdown', () => {
   it('closes dropdown when clicking outside', () => {
     (useAuth as any).mockReturnValue({
       user: { username: 'testuser', reputation_score: 10 },
-      logout: mockLogout,
+      logout: mockВыйти,
     });
 
     render(
@@ -100,7 +100,7 @@ describe('UserDropdown', () => {
   it('calls logout when logout button is clicked', () => {
     (useAuth as any).mockReturnValue({
       user: { username: 'testuser', reputation_score: 10 },
-      logout: mockLogout,
+      logout: mockВыйти,
     });
 
     render(<UserDropdown />);
@@ -109,15 +109,15 @@ describe('UserDropdown', () => {
     fireEvent.click(screen.getByRole('button'));
     
     // Click logout
-    fireEvent.click(screen.getByText('Logout'));
+    fireEvent.click(screen.getByText('Выйти'));
     
-    expect(mockLogout).toHaveBeenCalledTimes(1);
+    expect(mockВыйти).toHaveBeenCalledTimes(1);
   });
 
-  it('renders Profile button as a link to user profile', () => {
+  it('renders Профиль button as a link to user profile', () => {
     (useAuth as any).mockReturnValue({
       user: { user_id: 123, username: 'testuser', reputation_score: 10 },
-      logout: mockLogout,
+      logout: mockВыйти,
     });
 
     render(<UserDropdown />);
@@ -125,7 +125,7 @@ describe('UserDropdown', () => {
     // Open menu
     fireEvent.click(screen.getByRole('button'));
     
-    const profileLink = screen.getByRole('menuitem', { name: /profile/i });
+    const profileLink = screen.getByRole('menuitem', { name: /профиль/i });
     expect(profileLink).toHaveAttribute('href', '/user/123');
     expect(profileLink.tagName).toBe('A');
     expect(screen.queryByText('Create Artist')).not.toBeInTheDocument();

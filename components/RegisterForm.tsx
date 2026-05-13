@@ -59,11 +59,11 @@ export default function RegisterForm({ onSuccess }: RegisterFormProps) {
       
       <div>
         <label className="block text-sm font-bold text-foreground mb-1 uppercase tracking-wider">
-          Username
+          Имя пользователя
         </label>
         <input
           type="text"
-          placeholder="yourusername"
+          placeholder="ваш_никнейм"
           {...register('username')}
           className="input-primary"
         />
@@ -89,7 +89,7 @@ export default function RegisterForm({ onSuccess }: RegisterFormProps) {
 
       <div>
         <label className="block text-sm font-bold text-foreground mb-1 uppercase tracking-wider">
-          Password
+          Пароль
         </label>
         <input
           type="password"
@@ -107,7 +107,7 @@ export default function RegisterForm({ onSuccess }: RegisterFormProps) {
         disabled={isSubmitting}
         className="w-full flex items-center justify-center py-2.5 px-8 bg-accent text-white font-bold rounded-full shadow-md border border-white/20 hover:bg-accent-hover active:scale-95 transition-all disabled:opacity-50"
       >
-        {isSubmitting ? 'Creating account...' : 'Create Account'}
+        {isSubmitting ? 'Создание аккаунта...' : 'Зарегистрироваться'}
       </button>
     </form>
   );

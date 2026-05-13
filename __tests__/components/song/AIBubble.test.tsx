@@ -1,82 +1,66 @@
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import { render, screen, fireEvent } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { AIBubble } from "@/components/song/AIBubble";
 
 describe("AIBubble", () => {
+  const defaultProps = {
+    onClose: vi.fn(),
+    onSubmit: vi.fn(),
+    status: 'idle' as const,
+    aiResponse: '',
+    errorMessage: '',
+    question: '',
+    setQuestion: vi.fn(),
+    onReset: vi.fn(),
+  };
+
   beforeEach(() => {
     vi.resetAllMocks();
   });
 
-  it("should render question input by default", () => {
-    render(<AIBubble onClose={() => {}} onSubmit={async () => {}} />);
+  it("should render question input when status is idle", () => {
+    render(<AIBubble {...defaultProps} />);
     
-    expect(screen.getByPlaceholderText(/What would you like to know about these lyrics/i)).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: /Ask AI/i })).toBeInTheDocument();
+    expect(screen.getByPlaceholderText(/Что бы вы хотели узнать об этих словах/i)).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /Спросить ИИ/i })).toBeInTheDocument();
   });
 
-  it("should call onSubmit when question is submitted", async () => {
-    const handleSubmit = vi.fn().mockResolvedValue({ response: "AI response" });
-    render(<AIBubble onClose={() => {}} onSubmit={handleSubmit} />);
+  it("should call onSubmit when question is submitted", () => {
+    render(<AIBubble {...defaultProps} question="Test question" />);
     
-    const input = screen.getByPlaceholderText(/What would you like to know about these lyrics/i);
-    const button = screen.getByRole("button", { name: /Ask AI/i });
-    
-    fireEvent.change(input, { target: { value: "Explain this." } });
+    const button = screen.getByRole("button", { name: /Спросить ИИ/i });
     fireEvent.click(button);
     
-    expect(handleSubmit).toHaveBeenCalledWith("Explain this.");
+    expect(defaultProps.onSubmit).toHaveBeenCalledWith("Test question");
   });
 
-  it("should show loading state during submission", async () => {
-    // A promise that doesn't resolve immediately
-    let resolveSubmit: (val: any) => void;
-    const slowSubmit = new Promise((resolve) => {
-      resolveSubmit = resolve;
-    });
-    
-    const handleSubmit = vi.fn().mockReturnValue(slowSubmit);
-    render(<AIBubble onClose={() => {}} onSubmit={handleSubmit} />);
-    
-    const input = screen.getByPlaceholderText(/What would you like to know about these lyrics/i);
-    const button = screen.getByRole("button", { name: /Ask AI/i });
-    
-    fireEvent.change(input, { target: { value: "Wait for me." } });
-    fireEvent.click(button);
+  it("should show loading state when status is loading", () => {
+    render(<AIBubble {...defaultProps} status="loading" />);
     
     expect(screen.getByTestId("ai-loading-indicator")).toBeInTheDocument();
-    expect(screen.queryByPlaceholderText(/What would you like to know about these lyrics/i)).not.toBeInTheDocument();
+    expect(screen.queryByPlaceholderText(/Что бы вы хотели узнать об этих словах/i)).not.toBeInTheDocument();
   });
 
-  it("should display AI response when finished", async () => {
-    const handleSubmit = vi.fn().mockResolvedValue({ response: "This is the answer." });
-    render(<AIBubble onClose={() => {}} onSubmit={handleSubmit} />);
+  it("should display AI response when status is result", () => {
+    render(<AIBubble {...defaultProps} status="result" aiResponse="This is the answer." />);
     
-    const input = screen.getByPlaceholderText(/What would you like to know about these lyrics/i);
-    const button = screen.getByRole("button", { name: /Ask AI/i });
-    
-    fireEvent.change(input, { target: { value: "Tell me." } });
-    fireEvent.click(button);
-    
-    await waitFor(() => {
-      expect(screen.getByText("This is the answer.")).toBeInTheDocument();
-    });
-    
-    expect(screen.queryByPlaceholderText(/What would you like to know about these lyrics/i)).not.toBeInTheDocument();
-    expect(screen.getByText("AI Explanation")).toBeInTheDocument();
+    expect(screen.getByText("This is the answer.")).toBeInTheDocument();
+    expect(screen.queryByPlaceholderText(/Что бы вы хотели узнать об этих словах/i)).not.toBeInTheDocument();
   });
 
-  it("should show error message if submission fails", async () => {
-    const handleSubmit = vi.fn().mockRejectedValue(new Error("API Error"));
-    render(<AIBubble onClose={() => {}} onSubmit={handleSubmit} />);
+  it("should show error message when status is error", () => {
+    render(<AIBubble {...defaultProps} status="error" errorMessage="API Error" />);
     
-    const input = screen.getByPlaceholderText(/What would you like to know about these lyrics/i);
-    const button = screen.getByRole("button", { name: /Ask AI/i });
+    expect(screen.getByText(/API Error/i)).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /Try Again/i })).toBeInTheDocument();
+  });
+
+  it("should call onReset when Try Again is clicked", () => {
+    render(<AIBubble {...defaultProps} status="error" errorMessage="API Error" />);
     
-    fireEvent.change(input, { target: { value: "Fail me." } });
+    const button = screen.getByRole("button", { name: /Try Again/i });
     fireEvent.click(button);
     
-    await waitFor(() => {
-      expect(screen.getByText(/API Error/i)).toBeInTheDocument();
-    });
+    expect(defaultProps.onReset).toHaveBeenCalled();
   });
 });

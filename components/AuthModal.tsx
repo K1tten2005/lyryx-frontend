@@ -26,12 +26,12 @@ export default function AuthModal({ isOpen, onClose }: AuthModalProps) {
       >
         <div className="flex items-center justify-between p-4 border-b border-white/40">
           <h2 className="text-2xl font-bold text-slate-800 tracking-tight drop-shadow-sm">
-            {view === 'login' ? 'Sign In' : 'Create Account'}
+            {view === 'login' ? 'Вход' : 'Регистрация'}
           </h2>
           <button
             onClick={onClose}
             className="p-1.5 rounded-full hover:bg-white/50 text-slate-500 transition-all shadow-inner-glow"
-            aria-label="Close modal"
+            aria-label="Закрыть"
           >
             <X className="w-5 h-5" />
           </button>
@@ -47,21 +47,22 @@ export default function AuthModal({ isOpen, onClose }: AuthModalProps) {
           <div className="mt-6 text-center text-sm text-zinc-600">
             {view === 'login' ? (
               <>
-                Don&apos;t have an account?{' '}                <button
+                Нет аккаунта?{' '}
+                <button
                   onClick={() => setView('register')}
                   className="font-medium text-indigo-600 hover:text-indigo-500 hover:underline transition-colors"
                 >
-                  Sign up
+                  Зарегистрироваться
                 </button>
               </>
             ) : (
               <>
-                Already have an account?{' '}
+                Уже есть аккаунт?{' '}
                 <button
                   onClick={() => setView('login')}
                   className="font-bold text-accent hover:text-accent-hover hover:underline transition-colors uppercase tracking-widest text-xs"
                 >
-                  Sign in
+                  Войти
                 </button>
               </>
             )}

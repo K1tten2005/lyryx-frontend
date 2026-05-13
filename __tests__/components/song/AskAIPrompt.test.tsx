@@ -5,14 +5,14 @@ import { AskAIPrompt } from "@/components/song/AskAIPrompt";
 describe("AskAIPrompt", () => {
   it("should render with correctly", () => {
     render(<AskAIPrompt onClick={() => {}} />);
-    expect(screen.getByRole("button", { name: /Ask AI/i })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /Спросить ИИ/i })).toBeInTheDocument();
   });
 
   it("should call onClick when clicked", () => {
     const handleClick = vi.fn();
     render(<AskAIPrompt onClick={handleClick} />);
     
-    const button = screen.getByRole("button", { name: /Ask AI/i });
+    const button = screen.getByRole("button", { name: /Спросить ИИ/i });
     fireEvent.click(button);
     
     expect(handleClick).toHaveBeenCalled();
@@ -20,7 +20,7 @@ describe("AskAIPrompt", () => {
 
   it("should have Frutiger Aero design classes", () => {
     render(<AskAIPrompt onClick={() => {}} />);
-    const button = screen.getByRole("button", { name: /Ask AI/i });
+    const button = screen.getByRole("button", { name: /Спросить ИИ/i });
     
     expect(button).toHaveClass("bg-indigo-500/90"); // Example of vibrant AI accent
     expect(button).toHaveClass("backdrop-blur-md");

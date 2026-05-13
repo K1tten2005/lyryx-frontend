@@ -38,7 +38,9 @@ export async function createArtist(token: string, data: PostArtistIn): Promise<A
 
   if (!response.ok) {
     const errorData = await response.json().catch(() => ({}));
-    throw new Error(errorData.message || 'Failed to create artist');
+    const error = new Error(errorData.message || 'Failed to create artist');
+    (error as any).status = response.status;
+    throw error;
   }
 
   return response.json();

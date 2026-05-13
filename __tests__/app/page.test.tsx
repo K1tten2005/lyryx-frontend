@@ -14,7 +14,7 @@ vi.mock("@/contexts/AuthContext", () => ({
 describe("HomePage", () => {
   it("renders the main heading", () => {
     render(<HomePage />);
-    const heading = screen.getByRole("heading", { name: /Understand the Music./i, level: 1 });
+    const heading = screen.getByRole("heading", { name: /Пойми музыку./i, level: 1 });
     expect(heading).toBeInTheDocument();
   });
 
@@ -27,6 +27,6 @@ describe("HomePage", () => {
     expect(screen.getByRole("textbox")).toBeInTheDocument();
     
     // Footer
-    expect(screen.getByText(/Lyryx. All rights reserved./i)).toBeInTheDocument();
+    expect(screen.getByText(/Lyryx. Все права защищены./i)).toBeInTheDocument();
   });
 });

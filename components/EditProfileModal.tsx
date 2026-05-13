@@ -116,11 +116,11 @@ export default function EditProfileModal({ isOpen, onClose, user }: EditProfileM
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex items-center justify-between p-4 border-b border-white/40">
-          <h2 className="text-2xl font-bold text-slate-800 tracking-tight drop-shadow-sm">Edit Profile</h2>
+          <h2 className="text-2xl font-bold text-slate-800 tracking-tight drop-shadow-sm">Редактировать профиль</h2>
           <button
             onClick={onClose}
             className="p-1.5 rounded-full hover:bg-white/50 text-slate-500 transition-all shadow-inner-glow"
-            aria-label="Close modal"
+            aria-label="Закрыть"
           >
             <X className="w-5 h-5" />
           </button>
@@ -141,7 +141,7 @@ export default function EditProfileModal({ isOpen, onClose, user }: EditProfileM
                   {avatarPreview || user.avatar_url ? (
                     <img
                       src={avatarPreview || user.avatar_url}
-                      alt="Avatar preview"
+                      alt="Предпросмотр аватара"
                       className="w-full h-full object-cover"
                     />
                   ) : (
@@ -155,7 +155,7 @@ export default function EditProfileModal({ isOpen, onClose, user }: EditProfileM
                   className="absolute inset-0 flex items-center justify-center bg-black/40 text-white opacity-0 group-hover:opacity-100 cursor-pointer transition-opacity rounded-full"
                 >
                   <Camera className="w-6 h-6" />
-                  <span className="sr-only">Change avatar</span>
+                  <span className="sr-only">Изменить аватар</span>
                 </label>
                 <input
                   id="avatar-upload"
@@ -166,13 +166,13 @@ export default function EditProfileModal({ isOpen, onClose, user }: EditProfileM
                 />
               </div>
               <p className="mt-2 text-xs text-zinc-500 text-center">
-                Click photo to change avatar
+                Нажмите на фото, чтобы изменить аватар
               </p>
             </div>
 
             <div>
               <label htmlFor="username" className="block text-sm font-medium text-zinc-700 mb-1">
-                Name
+                Имя
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-zinc-400">
@@ -183,7 +183,7 @@ export default function EditProfileModal({ isOpen, onClose, user }: EditProfileM
                   id="username"
                   type="text"
                   className="input-primary pl-10"
-                  placeholder="Your name"
+                  placeholder="Ваше имя"
                 />
               </div>
               {errors.username && (
@@ -214,7 +214,7 @@ export default function EditProfileModal({ isOpen, onClose, user }: EditProfileM
 
             <div>
               <label htmlFor="bio" className="block text-sm font-medium text-zinc-700 mb-1">
-                Bio
+                О себе
               </label>
               <div className="relative">
                 <div className="absolute top-3 left-3 pointer-events-none text-zinc-400">
@@ -225,7 +225,7 @@ export default function EditProfileModal({ isOpen, onClose, user }: EditProfileM
                   id="bio"
                   rows={3}
                   className="input-primary pl-10 resize-none"
-                  placeholder="Tell us about yourself"
+                  placeholder="Расскажите о себе"
                 />
               </div>
               {errors.bio && (
@@ -235,7 +235,7 @@ export default function EditProfileModal({ isOpen, onClose, user }: EditProfileM
 
             <div>
               <label htmlFor="password" className="block text-sm font-medium text-zinc-700 mb-1">
-                New Password
+                Новый пароль
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-zinc-400">
@@ -256,7 +256,7 @@ export default function EditProfileModal({ isOpen, onClose, user }: EditProfileM
 
             <div>
               <label htmlFor="confirmPassword" className="block text-sm font-medium text-zinc-700 mb-1">
-                Confirm New Password
+                Подтвердите новый пароль
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-zinc-400">
@@ -284,7 +284,7 @@ export default function EditProfileModal({ isOpen, onClose, user }: EditProfileM
                 {isSubmitting ? (
                   <Loader2 className="w-5 h-5 animate-spin" />
                 ) : (
-                  'Save Changes'
+                  'Сохранить изменения'
                 )}
               </button>
             </div>

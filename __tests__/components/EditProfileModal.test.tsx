@@ -36,9 +36,9 @@ describe('EditProfileModal', () => {
   it('renders correctly with initial values', () => {
     render(<EditProfileModal isOpen={true} onClose={mockOnClose} user={initialUser} />);
     
-    expect(screen.getByLabelText(/name/i)).toHaveValue(initialUser.username);
-    expect(screen.getByLabelText(/email/i)).toHaveValue(initialUser.email);
-    expect(screen.getByLabelText(/bio/i)).toHaveValue(initialUser.bio);
+    expect(screen.getByLabelText(/Имя/i)).toHaveValue(initialUser.username);
+    expect(screen.getByLabelText(/Email/i)).toHaveValue(initialUser.email);
+    expect(screen.getByLabelText(/О себе/i)).toHaveValue(initialUser.bio);
   });
 
   it('calls updateUserProfile and onClose on successful submission', async () => {
@@ -46,8 +46,8 @@ describe('EditProfileModal', () => {
     
     render(<EditProfileModal isOpen={true} onClose={mockOnClose} user={initialUser} />);
     
-    fireEvent.change(screen.getByLabelText(/name/i), { target: { value: 'newname' } });
-    fireEvent.submit(screen.getByRole('button', { name: /save changes/i }));
+    fireEvent.change(screen.getByLabelText(/Имя/i), { target: { value: 'newname' } });
+    fireEvent.click(screen.getByRole('button', { name: /сохранить изменения/i }));
     
     await waitFor(() => {
       expect(updateUserProfile).toHaveBeenCalledWith('test-token', expect.objectContaining({
@@ -63,8 +63,8 @@ describe('EditProfileModal', () => {
     
     render(<EditProfileModal isOpen={true} onClose={mockOnClose} user={initialUser} />);
     
-    fireEvent.change(screen.getByLabelText(/name/i), { target: { value: 'newname' } });
-    fireEvent.submit(screen.getByRole('button', { name: /save changes/i }));
+    fireEvent.change(screen.getByLabelText(/Имя/i), { target: { value: 'newname' } });
+    fireEvent.click(screen.getByRole('button', { name: /сохранить изменения/i }));
     
     await waitFor(() => {
       expect(screen.getByText(/update failed/i)).toBeInTheDocument();
@@ -73,14 +73,14 @@ describe('EditProfileModal', () => {
 
   it('validates inputs client-side', async () => {
     render(<EditProfileModal isOpen={true} onClose={mockOnClose} user={initialUser} />);
-    
-    fireEvent.change(screen.getByLabelText(/email/i), { target: { value: 'invalid-email' } });
-    fireEvent.submit(screen.getByRole('button', { name: /save changes/i }));
-    
+
+    fireEvent.change(screen.getByLabelText(/Имя/i), { target: { value: 'a' } });
+    fireEvent.click(screen.getByRole('button', { name: /сохранить изменения/i }));
+
     await waitFor(() => {
-      expect(screen.getByText(/invalid email address/i)).toBeInTheDocument();
+      expect(screen.getByText(/Name must be at least 2 characters/i)).toBeInTheDocument();
     });
-    
+
     expect(updateUserProfile).not.toHaveBeenCalled();
   });
 
@@ -99,8 +99,8 @@ describe('EditProfileModal', () => {
 
     render(<EditProfileModal isOpen={true} onClose={mockOnClose} user={initialUser} />);
     
-    fireEvent.change(screen.getByLabelText(/name/i), { target: { value: 'newname' } });
-    fireEvent.submit(screen.getByRole('button', { name: /save changes/i }));
+    fireEvent.change(screen.getByLabelText(/Имя/i), { target: { value: 'retryuser' } });
+    fireEvent.click(screen.getByRole('button', { name: /сохранить изменения/i }));
 
     await waitFor(() => {
       expect(mockRefreshAuth).toHaveBeenCalled();
@@ -117,10 +117,10 @@ describe('EditProfileModal', () => {
     render(<EditProfileModal isOpen={true} onClose={mockOnClose} user={initialUser} />);
     
     const file = new File(['hello'], 'avatar.png', { type: 'image/png' });
-    const input = screen.getByLabelText(/change avatar/i);
+    const input = screen.getByLabelText(/Изменить аватар/i);
     
     fireEvent.change(input, { target: { files: [file] } });
-    fireEvent.submit(screen.getByRole('button', { name: /save changes/i }));
+    fireEvent.click(screen.getByRole('button', { name: /сохранить изменения/i }));
     
     await waitFor(() => {
       expect(updateUserAvatar).toHaveBeenCalledWith('test-token', file);

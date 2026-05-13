@@ -62,7 +62,7 @@ describe("EditSongPage", () => {
     render(<EditSongPage params={mockParams} />);
     
     await waitFor(() => {
-      expect(screen.getByText(/Edit Song/i)).toBeInTheDocument();
+      expect(screen.getByText(/Редактировать песню/i)).toBeInTheDocument();
       expect(screen.getByDisplayValue("Old Title")).toBeInTheDocument();
       expect(screen.getByDisplayValue("2020-01-01")).toBeInTheDocument();
       expect(screen.getByDisplayValue("Old lyrics")).toBeInTheDocument();
@@ -81,8 +81,8 @@ describe("EditSongPage", () => {
       expect(screen.getByDisplayValue("Old Title")).toBeInTheDocument();
     });
 
-    fireEvent.change(screen.getByLabelText(/Song Title/i), { target: { value: "New Title" } });
-    fireEvent.click(screen.getByRole("button", { name: /Save Changes/i }));
+    fireEvent.change(screen.getByLabelText(/Название песни/i), { target: { value: "New Title" } });
+    fireEvent.click(screen.getByRole("button", { name: /Сохранить изменения/i }));
 
     await waitFor(() => {
       expect(updateSong).toHaveBeenCalledWith("mod-token", 100, {
@@ -117,7 +117,7 @@ describe("EditSongPage", () => {
       expect(screen.getByDisplayValue("Old Title")).toBeInTheDocument();
     });
 
-    fireEvent.click(screen.getByRole("button", { name: /Save Changes/i }));
+    fireEvent.click(screen.getByRole("button", { name: /Сохранить изменения/i }));
 
     await waitFor(() => {
       expect(mockRefresh).toHaveBeenCalled();

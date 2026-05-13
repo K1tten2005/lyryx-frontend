@@ -42,21 +42,21 @@ describe("CreateArtistModal", () => {
 
   it("renders correctly", () => {
     render(<CreateArtistModal isOpen={true} onClose={mockOnClose} />);
-    expect(screen.getByRole("heading", { name: "New Artist" })).toBeInTheDocument();
-    expect(screen.getByLabelText(/Name/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/Biography/i)).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "Create" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Новый Артист" })).toBeInTheDocument();
+    expect(screen.getByLabelText(/Имя/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/Биография/i)).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /Создать/i })).toBeInTheDocument();
   });
 
   it("does not render when isOpen is false", () => {
     render(<CreateArtistModal isOpen={false} onClose={mockOnClose} />);
-    expect(screen.queryByRole("heading", { name: "New Artist" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("heading", { name: "Новый Артист" })).not.toBeInTheDocument();
   });
 
   it("validates required fields", async () => {
     render(<CreateArtistModal isOpen={true} onClose={mockOnClose} />);
     
-    const submitBtn = screen.getByRole("button", { name: "Create" });
+    const submitBtn = screen.getByRole("button", { name: /Создать/i });
     fireEvent.click(submitBtn);
 
     await waitFor(() => {
@@ -66,17 +66,17 @@ describe("CreateArtistModal", () => {
   });
 
   it("submits successfully and redirects", async () => {
-    (createArtist as any).mockResolvedValue({ id: 123, name: "New Artist" });
+    (createArtist as any).mockResolvedValue({ id: 123, name: "Новый Артист" });
 
     render(<CreateArtistModal isOpen={true} onClose={mockOnClose} />);
     
-    fireEvent.change(screen.getByLabelText(/Name/i), { target: { value: "New Artist" } });
-    fireEvent.change(screen.getByLabelText(/Biography/i), { target: { value: "A cool bio" } });
+    fireEvent.change(screen.getByLabelText(/Имя/i), { target: { value: "Новый Артист" } });
+    fireEvent.change(screen.getByLabelText(/Биография/i), { target: { value: "A cool bio" } });
     
-    fireEvent.click(screen.getByRole("button", { name: "Create" }));
+    fireEvent.click(screen.getByRole("button", { name: /Создать/i }));
 
     await waitFor(() => {
-      expect(createArtist).toHaveBeenCalledWith("fake-token", { name: "New Artist", bio: "A cool bio" });
+      expect(createArtist).toHaveBeenCalledWith("fake-token", { name: "Новый Артист", bio: "A cool bio" });
       expect(toast.success).toHaveBeenCalledWith("Artist created successfully!");
       expect(mockOnClose).toHaveBeenCalled();
       expect(mockPush).toHaveBeenCalledWith("/artist/123");
@@ -88,8 +88,8 @@ describe("CreateArtistModal", () => {
 
     render(<CreateArtistModal isOpen={true} onClose={mockOnClose} />);
     
-    fireEvent.change(screen.getByLabelText(/Name/i), { target: { value: "New Artist" } });
-    fireEvent.click(screen.getByRole("button", { name: "Create" }));
+    fireEvent.change(screen.getByLabelText(/Имя/i), { target: { value: "Новый Артист" } });
+    fireEvent.click(screen.getByRole("button", { name: /Создать/i }));
 
     await waitFor(() => {
       expect(toast.error).toHaveBeenCalledWith("API Error");

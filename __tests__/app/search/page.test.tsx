@@ -44,8 +44,8 @@ describe("SearchPage", () => {
     render(<SearchPage />);
     
     await waitFor(() => {
-        expect(screen.getByRole("heading", { name: /Search Results/i })).toBeInTheDocument();
-        expect(screen.getByText("No results found")).toBeInTheDocument(); // Updated assertion for new empty state UI
+        expect(screen.getByRole("heading", { name: /Результаты поиска/i })).toBeInTheDocument();
+        expect(screen.getByText("Ничего не найдено")).toBeInTheDocument(); // Updated assertion for new empty state UI
     });
   });
 
@@ -54,7 +54,7 @@ describe("SearchPage", () => {
     (SWR.default as any).mockReturnValue({ data: null, error: null, isLoading: false });
     
     render(<SearchPage />);
-    expect(screen.getByText(/Please enter a search query/i)).toBeInTheDocument();
+    expect(screen.getByText(/Пожалуйста, введите поисковой запрос/i)).toBeInTheDocument();
   });
 
   it("renders loading state initially when query is provided", () => {
@@ -76,7 +76,7 @@ describe("SearchPage", () => {
     render(<SearchPage />);
 
     await waitFor(() => {
-      expect(screen.getByText("No results found")).toBeInTheDocument(); // Updated assertion
+      expect(screen.getByText("Ничего не найдено")).toBeInTheDocument(); // Updated assertion
       expect(screen.getByText("NonexistentQuery")).toBeInTheDocument();
     });
   });

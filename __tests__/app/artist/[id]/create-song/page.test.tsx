@@ -64,12 +64,12 @@ describe("CreateSongPage", () => {
     render(<CreateSongPage params={mockParams} />);
     
     await waitFor(() => {
-      expect(screen.getByText(/Add New Song/i)).toBeInTheDocument();
+      expect(screen.getByText(/Добавить песню/i)).toBeInTheDocument();
       expect(screen.getByText(/Test Artist/i)).toBeInTheDocument();
-      expect(screen.getByLabelText(/Title/i)).toBeInTheDocument();
-      expect(screen.getByLabelText(/Release Date/i)).toBeInTheDocument();
-      expect(screen.getByLabelText(/Lyrics/i)).toBeInTheDocument();
-      expect(screen.getByRole("button", { name: /Create Song/i })).toBeInTheDocument();
+      expect(screen.getByLabelText(/Название песни/i)).toBeInTheDocument();
+      expect(screen.getByLabelText(/Дата выхода/i)).toBeInTheDocument();
+      expect(screen.getByLabelText(/Текст песни/i)).toBeInTheDocument();
+      expect(screen.getByRole("button", { name: /Создать песню/i })).toBeInTheDocument();
     });
   });
 
@@ -82,14 +82,14 @@ describe("CreateSongPage", () => {
     render(<CreateSongPage params={mockParams} />);
     
     await waitFor(() => {
-      expect(screen.getByLabelText(/Title/i)).toBeInTheDocument();
+      expect(screen.getByLabelText(/Название песни/i)).toBeInTheDocument();
     });
 
-    fireEvent.change(screen.getByLabelText(/Title/i), { target: { value: "New Song" } });
-    fireEvent.change(screen.getByLabelText(/Release Date/i), { target: { value: "2026-05-13" } });
-    fireEvent.change(screen.getByLabelText(/Lyrics/i), { target: { value: "La la la lyrics" } });
+    fireEvent.change(screen.getByLabelText(/Название песни/i), { target: { value: "New Song" } });
+    fireEvent.change(screen.getByLabelText(/Дата выхода/i), { target: { value: "2026-05-13" } });
+    fireEvent.change(screen.getByLabelText(/Текст песни/i), { target: { value: "La la la lyrics" } });
 
-    fireEvent.click(screen.getByRole("button", { name: /Create Song/i }));
+    fireEvent.click(screen.getByRole("button", { name: /Создать песню/i }));
 
     await waitFor(() => {
       expect(createSong).toHaveBeenCalledWith("mod-token", {
@@ -122,10 +122,10 @@ describe("CreateSongPage", () => {
     render(<CreateSongPage params={mockParams} />);
     
     await waitFor(() => {
-      expect(screen.getByLabelText(/Title/i)).toBeInTheDocument();
+      expect(screen.getByLabelText(/Название песни/i)).toBeInTheDocument();
     });
 
-    fireEvent.click(screen.getByRole("button", { name: /Create Song/i }));
+    fireEvent.click(screen.getByRole("button", { name: /Создать песню/i }));
 
     await waitFor(() => {
       expect(screen.getByText(/Title is required/i)).toBeInTheDocument();

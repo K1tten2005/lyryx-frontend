@@ -7,7 +7,7 @@ describe("Footer", () => {
     const year = new Date().getFullYear();
     const copyrightText = screen.getByText(new RegExp(year.toString(), "i"));
     expect(copyrightText).toBeInTheDocument();
-    expect(screen.getByText(/Lyryx. All rights reserved./i)).toBeInTheDocument();
+    expect(screen.getByText(/Lyryx. Все права защищены./i)).toBeInTheDocument();
   });
 
   it("has the correct background and text colors", () => {

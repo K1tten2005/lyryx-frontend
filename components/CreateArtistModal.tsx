@@ -100,8 +100,8 @@ export default function CreateArtistModal({ isOpen, onClose }: CreateArtistModal
                 <UserPlus className="w-7 h-7 text-accent" />
               </div>
               <div>
-                <h2 className="text-3xl font-black text-slate-800 tracking-tight">New Artist</h2>
-                <p className="text-slate-500 font-medium mt-1">Add an artist to the database</p>
+                <h2 className="text-3xl font-black text-slate-800 tracking-tight">Новый Артист</h2>
+                <p className="text-slate-500 font-medium mt-1">Добавить артиста в базу</p>
               </div>
             </div>
             <button 
@@ -115,13 +115,13 @@ export default function CreateArtistModal({ isOpen, onClose }: CreateArtistModal
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
             <div>
               <label htmlFor="name" className="block text-sm font-bold text-slate-700 mb-2 uppercase tracking-wide">
-                Artist Name <span className="text-accent">*</span>
+                Имя артиста <span className="text-accent">*</span>
               </label>
               <input
                 id="name"
                 {...register('name')}
                 className="w-full px-5 py-4 bg-slate-50/50 border border-slate-200/60 rounded-2xl focus:outline-none focus:ring-2 focus:ring-accent/50 focus:bg-white transition-all font-medium text-slate-800 shadow-sm placeholder:text-slate-400"
-                placeholder="e.g. Radiohead"
+                placeholder="напр., Скриптонит"
               />
               {errors.name && (
                 <p className="mt-2 text-sm font-bold text-red-500 flex items-center gap-1">
@@ -132,14 +132,14 @@ export default function CreateArtistModal({ isOpen, onClose }: CreateArtistModal
 
             <div>
               <label htmlFor="bio" className="block text-sm font-bold text-slate-700 mb-2 uppercase tracking-wide">
-                Biography
+                Биография
               </label>
               <textarea
                 id="bio"
                 {...register('bio')}
                 rows={5}
                 className="w-full px-5 py-4 bg-slate-50/50 border border-slate-200/60 rounded-2xl focus:outline-none focus:ring-2 focus:ring-accent/50 focus:bg-white transition-all font-medium text-slate-800 shadow-sm placeholder:text-slate-400 resize-none"
-                placeholder="Enter a short biography..."
+                placeholder="Короткая биография..."
               />
               {errors.bio && (
                 <p className="mt-2 text-sm font-bold text-red-500 flex items-center gap-1">
@@ -155,7 +155,7 @@ export default function CreateArtistModal({ isOpen, onClose }: CreateArtistModal
                 className="px-6 py-3.5 font-bold text-slate-500 hover:text-slate-800 hover:bg-slate-100 rounded-2xl transition-colors"
                 disabled={isSubmitting}
               >
-                Cancel
+                Отмена
               </button>
               <button
                 type="submit"
@@ -165,7 +165,7 @@ export default function CreateArtistModal({ isOpen, onClose }: CreateArtistModal
                 {isSubmitting ? (
                   <Loader2 className="w-5 h-5 animate-spin" />
                 ) : (
-                  'Create'
+                  'Создать'
                 )}
               </button>
             </div>

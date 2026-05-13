@@ -49,7 +49,7 @@ export default function SearchBar({ variant = 'hero' }: SearchBarProps) {
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           className="block w-full pl-16 pr-6 py-5 bg-white/80 border-2 border-white rounded-full text-xl text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-4 focus:ring-accent/40 focus:border-accent transition-all shadow-glass font-sans backdrop-blur-md"
-          placeholder="Search for songs, artists, or lyrics..."
+          placeholder="Поиск песен, артистов или текстов..."
         />
       </div>
     </form>

@@ -17,10 +17,10 @@ export default function HomePage() {
           <div className="absolute inset-0 bg-white/20 backdrop-blur-xl rounded-[3rem] border border-white/50 shadow-glass -z-10 max-w-4xl mx-auto h-[120%] -top-[10%]"></div>
           
           <h1 className="text-5xl md:text-7xl font-black mb-6 tracking-tighter text-slate-800 drop-shadow-md">
-            Understand the Music.
+            Пойми музыку.
           </h1>
           <p className="text-xl text-slate-700 mb-12 max-w-2xl mx-auto font-bold bg-white/50 py-2 px-6 rounded-full shadow-inner-glow inline-block border border-white/60">
-            Search for lyrics, read annotations, and explore the meaning behind your favorite songs with AI.
+            Ищи тексты, читай аннотации и узнавай смысл любимых песен с помощью ИИ.
           </p>
           
           <SearchBar />

@@ -40,7 +40,7 @@ describe("Navbar", () => {
     (useAuth as any).mockReturnValue({ isAuthenticated: false, isInitialized: true, user: null });
     render(<Navbar />);
     
-    const loginButton = screen.getByRole("button", { name: /log in/i });
+    const loginButton = screen.getByRole("button", { name: /войти/i });
     expect(loginButton).toBeInTheDocument();
     
     // Modal should be closed initially
@@ -62,7 +62,7 @@ describe("Navbar", () => {
     // It should render the reputation score from UserDropdown
     expect(screen.getByText('10 RS')).toBeInTheDocument();
     
-    const loginButton = screen.queryByRole("button", { name: /log in/i });
+    const loginButton = screen.queryByRole("button", { name: /войти/i });
     expect(loginButton).not.toBeInTheDocument();
   });
 

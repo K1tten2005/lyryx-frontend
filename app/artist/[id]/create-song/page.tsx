@@ -138,7 +138,7 @@ export default function CreateSongPage({ params }: { params: { id: string } }) {
             className="flex items-center gap-2 text-slate-500 hover:text-accent font-bold mb-8 transition-colors"
           >
             <ArrowLeft className="w-5 h-5" />
-            Back to Artist
+            Назад к артисту
           </button>
           
           <div className="bg-white/80 backdrop-blur-xl p-8 sm:p-10 rounded-[2rem] border border-white/50 shadow-glass">
@@ -147,21 +147,21 @@ export default function CreateSongPage({ params }: { params: { id: string } }) {
                 <Music className="w-6 h-6 text-accent" />
               </div>
               <div>
-                <h1 className="text-3xl font-black text-slate-800">Add New Song</h1>
-                {artist && <p className="text-slate-500 font-medium">for {artist.name}</p>}
+                <h1 className="text-3xl font-black text-slate-800">Добавить песню</h1>
+                {artist && <p className="text-slate-500 font-medium">для {artist.name}</p>}
               </div>
             </div>
 
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
               <div>
                 <label htmlFor="title" className="block text-sm font-bold text-slate-700 mb-2 uppercase tracking-wide">
-                  Song Title
+                  Название песни
                 </label>
                 <input
                   id="title"
                   {...register('title')}
                   className="w-full px-4 py-3 bg-slate-50/50 border border-slate-200/60 rounded-xl focus:outline-none focus:ring-2 focus:ring-accent/50 font-medium text-slate-800 transition-all"
-                  placeholder="e.g., Bohemian Rhapsody"
+                  placeholder="напр., Bohemian Rhapsody"
                 />
                 {errors.title && (
                   <p className="mt-2 text-sm text-red-500 font-medium flex items-center gap-1">
@@ -173,7 +173,7 @@ export default function CreateSongPage({ params }: { params: { id: string } }) {
 
               <div>
                 <label htmlFor="release_date" className="block text-sm font-bold text-slate-700 mb-2 uppercase tracking-wide">
-                  Release Date
+                  Дата выхода
                 </label>
                 <input
                   id="release_date"
@@ -191,14 +191,14 @@ export default function CreateSongPage({ params }: { params: { id: string } }) {
 
               <div>
                 <label htmlFor="lyrics" className="block text-sm font-bold text-slate-700 mb-2 uppercase tracking-wide">
-                  Lyrics
+                  Текст песни
                 </label>
                 <textarea
                   id="lyrics"
                   rows={15}
                   {...register('lyrics')}
                   className="w-full px-4 py-3 bg-slate-50/50 border border-slate-200/60 rounded-xl focus:outline-none focus:ring-2 focus:ring-accent/50 font-medium text-slate-800 resize-y transition-all font-mono text-sm leading-relaxed"
-                  placeholder="Paste lyrics here..."
+                  placeholder="Вставьте текст здесь..."
                 />
                 {errors.lyrics && (
                   <p className="mt-2 text-sm text-red-500 font-medium flex items-center gap-1">
@@ -217,10 +217,10 @@ export default function CreateSongPage({ params }: { params: { id: string } }) {
                   {isSubmitting ? (
                     <>
                       <Loader2 className="w-5 h-5 animate-spin" />
-                      Creating...
+                      Создание...
                     </>
                   ) : (
-                    'Create Song'
+                    'Создать песню'
                   )}
                 </button>
               </div>

@@ -62,7 +62,7 @@ export default function UserProfileHeader({ user: initialUser }: UserProfileHead
               </div>
               
               <div className="flex flex-col items-center md:items-end bg-white/40 px-5 py-3 rounded-2xl border border-white/50 shadow-inset-heavy">
-                <div className="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-0.5 drop-shadow-sm">Reputation</div>
+                <div className="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-0.5 drop-shadow-sm">Репутация</div>
                 <div className="text-3xl font-black text-accent leading-none tabular-nums drop-shadow-md">
                   {user.reputation_score.toLocaleString()}
                 </div>
@@ -76,7 +76,7 @@ export default function UserProfileHeader({ user: initialUser }: UserProfileHead
                 </p>
               </div>
             ) : (
-              <p className="text-slate-500 italic font-semibold drop-shadow-sm">No bio provided yet.</p>
+              <p className="text-slate-500 italic font-semibold drop-shadow-sm">Биография пока не добавлена.</p>
             )}
           </div>
         </div>

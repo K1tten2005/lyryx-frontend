@@ -17,8 +17,8 @@ export default function UserAnnotationsTab({ annotations }: UserAnnotationsTabPr
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
           </svg>
         </div>
-        <h3 className="text-2xl font-bold text-slate-800 mb-2 drop-shadow-sm">No annotations yet</h3>
-        <p className="text-slate-600 max-w-xs mx-auto font-medium">This user hasn&apos;t shared their insights on any lyrics yet. Stay tuned!</p>
+        <h3 className="text-2xl font-bold text-slate-800 mb-2 drop-shadow-sm">Пока нет аннотаций</h3>
+        <p className="text-slate-600 max-w-xs mx-auto font-medium">Этот пользователь еще не поделился своими мыслями о текстах песен.</p>
       </div>
     );
   }

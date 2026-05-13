@@ -70,7 +70,7 @@ export default function LoginForm({ onSuccess }: LoginFormProps) {
 
       <div>
         <label className="block text-sm font-bold text-foreground mb-1 uppercase tracking-wider">
-          Password
+          Пароль
         </label>
         <input
           type="password"
@@ -88,7 +88,7 @@ export default function LoginForm({ onSuccess }: LoginFormProps) {
         disabled={isSubmitting}
         className="w-full flex items-center justify-center py-2.5 px-8 bg-accent text-white font-bold rounded-full shadow-md border border-white/20 hover:bg-accent-hover active:scale-95 transition-all disabled:opacity-50"
       >
-        {isSubmitting ? 'Logging in...' : 'Log In'}
+        {isSubmitting ? 'Вход...' : 'Войти'}
       </button>
     </form>
   );

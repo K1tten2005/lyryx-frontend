@@ -391,7 +391,7 @@ export default function ArtistPage({ params }: { params: { id: string } }) {
                       disabled={loadingMore}
                       className="px-8 py-4 bg-white/80 backdrop-blur-md border border-white/50 shadow-glass-sm hover:shadow-glass text-slate-800 font-black uppercase tracking-widest rounded-2xl transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed hover:-translate-y-1 active:translate-y-0"
                     >
-                      {loadingMore ? 'Loading...' : 'Load More Songs'}
+                      {loadingMore ? 'Загрузка...' : 'Загрузить еще'}
                     </button>
                   </div>
                 )}
@@ -401,8 +401,8 @@ export default function ArtistPage({ params }: { params: { id: string } }) {
                 <div className="inline-flex items-center justify-center w-24 h-24 rounded-full bg-accent/10 mb-6">
                   <Music className="w-10 h-10 text-accent/50" />
                 </div>
-                <h3 className="text-2xl font-black text-slate-800 mb-2">No songs found</h3>
-                <p className="text-slate-500 font-medium text-lg">This artist hasn't added any songs yet.</p>
+                <h3 className="text-2xl font-black text-slate-800 mb-2">Песни не найдены</h3>
+                <p className="text-slate-500 font-medium text-lg">Этот артист еще не добавил ни одной песни.</p>
               </div>
             )}
           </div>

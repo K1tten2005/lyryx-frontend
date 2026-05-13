@@ -74,7 +74,7 @@ export default function SongPage({ params }: { params: { id: string } }) {
         if (err.message === 'NEXT_NOT_FOUND') {
           notFound();
         } else {
-          setError(err.message || 'An error occurred');
+          setError(err.message || 'Произошла ошибка');
         }
       } finally {
         setLoading(false);
@@ -167,18 +167,18 @@ export default function SongPage({ params }: { params: { id: string } }) {
       setTranslatedLyrics(result.response);
       setTargetLanguage(lang);
       setIsTranslationVisible(true);
-      toast.success(`Translated to ${lang === 'en' ? 'English' : lang === 'ru' ? 'Russian' : lang}`);
-    } catch (err: any) {
-      console.error("Translation failed:", err);
-      toast.error(err.message || 'Failed to translate lyrics');
-    } finally {
+      toast.success(`Переведено на ${lang === 'en' ? 'Английский' : lang === 'ru' ? 'Русский' : lang}`);
+      } catch (err: any) {
+      console.error('Translation error:', err);
+      toast.error(err.message || 'Ошибка перевода текста');
+      } finally {
       setIsTranslationLoading(false);
     }
   };
 
   const handleAiSubmit = async (question: string) => {
     if (!selection) {
-      setAiError("No text selected");
+      setAiError("Текст не выбран");
       setAiStatus('error');
       return;
     }
@@ -192,7 +192,7 @@ export default function SongPage({ params }: { params: { id: string } }) {
       setAiStatus('result');
     } catch (err: any) {
       console.error("AI Annotation failed:", err);
-      setAiError(err.message || 'Failed to get AI explanation');
+      setAiError(err.message || 'Ошибка при получении объяснения');
       setAiStatus('error');
     }
   };
@@ -226,7 +226,7 @@ export default function SongPage({ params }: { params: { id: string } }) {
       setSelection(null);
     } catch (error: any) {
       console.error("Failed to create annotation:", error);
-      toast.error(error.message || 'Failed to save annotation');
+      toast.error(error.message || 'Ошибка при сохранении аннотации');
       throw error;
     }
   };
@@ -392,7 +392,7 @@ export default function SongPage({ params }: { params: { id: string } }) {
       <Navbar />
       <main className="flex-grow flex flex-col items-center justify-center p-4">
         <div className="bg-white/80 backdrop-blur-md p-8 rounded-3xl border border-white/40 shadow-glass text-center">
-          <h1 className="text-2xl font-black text-red-500 mb-2">Error</h1>
+          <h1 className="text-2xl font-black text-red-500 mb-2">Ошибка</h1>
           <p className="text-slate-600">{error}</p>
         </div>
       </main>
@@ -450,15 +450,14 @@ export default function SongPage({ params }: { params: { id: string } }) {
             <div className="lg:col-span-7 relative z-20">
               <div className="flex justify-between items-center mb-8">
                 <h2 className="text-2xl font-black uppercase tracking-widest text-accent flex items-center gap-3">
-                  <span className="w-10 h-1.5 bg-accent rounded-full"></span> Lyrics
-                </h2>
-                
+                  <span className="w-10 h-1.5 bg-accent rounded-full"></span> Текст песни
+                </h2>                
                 <div className="flex items-center gap-3">
                   <div className="relative" ref={dropdownRef}>
                     <button 
                       onClick={() => {
                         if (!isAuthenticated) {
-                          toast.error('Only logged in users can use translation');
+                          toast.error('Только авторизованные пользователи могут переводить тексты');
                           return;
                         }
                         setShowLangDropdown(!showLangDropdown);

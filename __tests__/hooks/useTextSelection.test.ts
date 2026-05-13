@@ -22,13 +22,14 @@ describe("useTextSelection", () => {
   it("should calculate indices relative to container", () => {
     const container = document.createElement("div");
     container.textContent = "Line one\nLine two";
+    const ref = { current: container };
     
     // Mocking the selection indices is hard in JSDOM, 
     // so we'll focus on checking if the hook tries to calculate them.
-    const { result } = renderHook(() => useTextSelection(container));
+    const { result } = renderHook(() => useTextSelection(ref as any));
 
     act(() => {
-      document.dispatchEvent(new Event("selectionchange"));
+      document.dispatchEvent(new Event("mouseup"));
     });
 
     expect(result.current.selection).toBeDefined();

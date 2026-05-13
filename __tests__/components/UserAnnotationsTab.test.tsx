@@ -40,6 +40,6 @@ describe("UserAnnotationsTab", () => {
 
   it("renders empty state", () => {
     render(<UserAnnotationsTab annotations={[]} />);
-    expect(screen.getByText(/No annotations yet/i)).toBeInTheDocument();
+    expect(screen.getByText(/Пока нет аннотаций/i)).toBeInTheDocument();
   });
 });

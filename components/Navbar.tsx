@@ -45,7 +45,7 @@ export default function Navbar() {
               onClick={() => setIsAuthModalOpen(true)}
               className="px-6 py-2 bg-white/10 hover:bg-white/20 border border-white/30 hover:border-white/50 text-white font-semibold rounded-full shadow-glass backdrop-blur-md transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 focus:ring-offset-indigo-900"
             >
-              Log In
+              Войти
             </button>
           )}
         </div>

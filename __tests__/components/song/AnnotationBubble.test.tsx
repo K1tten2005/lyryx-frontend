@@ -76,8 +76,8 @@ describe("AnnotationBubble", () => {
       />
     );
     
-    expect(screen.getByPlaceholderText(/Explain these lyrics/i)).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: /save annotation/i })).toBeInTheDocument();
+    expect(screen.getByPlaceholderText(/Объясните этот текст/i)).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /сохранить аннотацию/i })).toBeInTheDocument();
   });
 
   it("should not show edit and delete buttons for non-authors", () => {
@@ -85,8 +85,8 @@ describe("AnnotationBubble", () => {
       user: { user_id: 2, role: "user" },
     });
     render(<AnnotationBubble annotation={mockAnnotation} onClose={() => {}} />);
-    expect(screen.queryByTitle("Edit")).not.toBeInTheDocument();
-    expect(screen.queryByTitle("Delete")).not.toBeInTheDocument();
+    expect(screen.queryByTitle("Редактировать")).not.toBeInTheDocument();
+    expect(screen.queryByTitle("Удалить")).not.toBeInTheDocument();
   });
 
   it("should show edit and delete buttons for the author", () => {
@@ -94,8 +94,8 @@ describe("AnnotationBubble", () => {
       user: { user_id: 1, role: "user" },
     });
     render(<AnnotationBubble annotation={mockAnnotation} onClose={() => {}} />);
-    expect(screen.getByTitle("Edit")).toBeInTheDocument();
-    expect(screen.getByTitle("Delete")).toBeInTheDocument();
+    expect(screen.getByTitle("Редактировать")).toBeInTheDocument();
+    expect(screen.getByTitle("Удалить")).toBeInTheDocument();
   });
 
   it("should show delete button for moderators even if not author", () => {
@@ -103,8 +103,8 @@ describe("AnnotationBubble", () => {
       user: { user_id: 99, role: "moderator" },
     });
     render(<AnnotationBubble annotation={mockAnnotation} onClose={() => {}} />);
-    expect(screen.queryByTitle("Edit")).not.toBeInTheDocument();
-    expect(screen.getByTitle("Delete")).toBeInTheDocument();
+    expect(screen.queryByTitle("Редактировать")).not.toBeInTheDocument();
+    expect(screen.getByTitle("Удалить")).toBeInTheDocument();
   });
 });
 

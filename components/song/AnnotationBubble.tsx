@@ -90,6 +90,12 @@ export function AnnotationBubble({ annotation, isCreateMode = false, onClose, on
     }
   };
 
+  const handleStartEdit = () => {
+    if (!annotation) return;
+    setIsEditing(true);
+    setEditContent(annotation.content);
+  };
+
   const handleEditSubmit = async () => {
     if (!annotation || !editContent.trim()) return;
     try {
@@ -151,7 +157,7 @@ export function AnnotationBubble({ annotation, isCreateMode = false, onClose, on
   return (
     <div 
       ref={bubbleRef}
-      className="bg-white/60 backdrop-blur-xl rounded-[2.5rem] p-8 shadow-glass border border-white/60 relative text-slate-800 w-full min-h-[150px] flex flex-col animate-fade-zoom"
+      className="bg-white/60 backdrop-blur-xl rounded-[2.5rem] p-8 shadow-glass border border-white/60 relative text-slate-800 w-full min-h-[150px] flex flex-col animate-fade-zoom pointer-events-auto"
     >
       {/* Glossy Pointer/Tail */}
       <div className="absolute top-10 -left-4 w-8 h-8 bg-white/60 backdrop-blur-xl border-l border-t border-white/60 rotate-[-45deg] hidden lg:block z-0 shadow-[-4px_-4px_10px_-4px_rgba(0,0,0,0.1)]"></div>
@@ -159,11 +165,11 @@ export function AnnotationBubble({ annotation, isCreateMode = false, onClose, on
       <div className="relative z-10 flex-grow flex flex-col">
         {isCreateMode ? (
           <form onSubmit={handleSubmit} className="flex flex-col flex-grow">
-            <h3 className="text-sm font-black uppercase tracking-widest text-accent mb-4">New Annotation</h3>
+            <h3 className="text-sm font-black uppercase tracking-widest text-accent mb-4">Новая аннотация</h3>
             <textarea
               autoFocus
               className="w-full bg-white/60 border-2 border-white/80 rounded-2xl p-4 text-slate-800 font-bold placeholder-slate-400 focus:outline-none focus:ring-4 focus:ring-accent/30 min-h-[160px] transition-all resize-none mb-6 shadow-inset-heavy"
-              placeholder="Explain these lyrics..."
+              placeholder="Объясните этот текст..."
               value={content}
               onChange={(e) => setContent(e.target.value)}
             />
@@ -175,7 +181,7 @@ export function AnnotationBubble({ annotation, isCreateMode = false, onClose, on
               {isSubmitting ? (
                 <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
               ) : (
-                'Save Annotation'
+                'Сохранить аннотацию'
               )}
             </button>
           </form>
@@ -211,12 +217,12 @@ export function AnnotationBubble({ annotation, isCreateMode = false, onClose, on
               {/* Action Buttons */}
               <div className="flex gap-2">
                 {canEdit && !isEditing && (
-                  <button onClick={() => setIsEditing(true)} className="p-2 text-slate-400 hover:text-accent transition-colors" title="Edit">
+                  <button onClick={handleStartEdit} className="p-2 text-slate-400 hover:text-accent transition-colors" title="Редактировать">
                     <Edit2 size={18} />
                   </button>
                 )}
                 {canDelete && !isEditing && (
-                  <button onClick={() => setIsDeleteModalOpen(true)} className="p-2 text-slate-400 hover:text-red-500 transition-colors" title="Delete">
+                  <button onClick={() => setIsDeleteModalOpen(true)} className="p-2 text-slate-400 hover:text-red-500 transition-colors" title="Удалить">
                     <Trash2 size={18} />
                   </button>
                 )}
@@ -233,21 +239,22 @@ export function AnnotationBubble({ annotation, isCreateMode = false, onClose, on
                   onChange={(e) => setEditContent(e.target.value)}
                 />
                 <div className="flex gap-2">
-                  <button
+                  <button 
                     onClick={handleEditSubmit}
                     disabled={isSubmitting || !editContent.trim()}
                     className="flex-1 py-2 bg-accent text-white font-bold rounded-full hover:bg-accent-hover transition-all disabled:opacity-50"
                   >
-                    {isSubmitting ? 'Saving...' : 'Save'}
-                  </button>
-                  <button
-                    onClick={() => { setIsEditing(false); setEditContent(annotation.content || ''); }}
-                    className="flex-1 py-2 bg-white/50 text-slate-600 font-bold rounded-full hover:bg-white/80 transition-all border border-slate-200"
-                  >
-                    Cancel
+                    {isSubmitting ? 'Сохранение...' : 'Сохранить'}
                   </button>
                 </div>
-              </div>
+                  <button 
+                    onClick={() => setIsEditing(false)}
+                    disabled={isSubmitting}
+                    className="flex-1 py-2 bg-white/50 text-slate-600 font-bold rounded-full hover:bg-white/80 transition-all border border-slate-200"
+                  >
+                    Отмена
+                  </button>
+                </div>
             ) : (
               <div className="text-base md:text-lg font-bold leading-relaxed text-slate-700 whitespace-pre-wrap break-words mb-4 flex-grow">
                 {annotation.content}
@@ -295,5 +302,3 @@ export function AnnotationBubble({ annotation, isCreateMode = false, onClose, on
     </div>
   );
 }
-
-

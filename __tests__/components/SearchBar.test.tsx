@@ -25,7 +25,7 @@ describe("SearchBar", () => {
     (useRouter as any).mockReturnValue({ push });
 
     render(<SearchBar />);
-    const input = screen.getByPlaceholderText(/Search for songs/i);
+    const input = screen.getByPlaceholderText(/Поиск песен/i);
     
     fireEvent.change(input, { target: { value: "Queen" } });
     fireEvent.submit(input.closest('form') || input); // Fallback if no form yet

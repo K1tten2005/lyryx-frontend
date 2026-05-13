@@ -42,7 +42,7 @@ export default function CreateDropdown() {
           aria-haspopup="menu"
         >
           <Plus className={`w-5 h-5 transition-transform duration-300 ${isOpen ? 'rotate-45' : ''}`} />
-          Create
+          Создать
         </button>
 
         {isOpen && (
@@ -59,7 +59,7 @@ export default function CreateDropdown() {
               className="w-full flex items-center gap-3 px-4 py-3 text-sm font-bold text-slate-700 hover:bg-emerald-100 hover:text-emerald-800 transition-colors"
             >
               <UserPlus className="w-5 h-5 text-emerald-500" />
-              Artist
+              Артиста
             </button>
           </div>
         )}

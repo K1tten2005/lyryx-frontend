@@ -81,7 +81,7 @@ export default function UserDropdown() {
             }}
           >
             <UserCircle className="w-5 h-5 text-indigo-500" />
-            Profile
+            Профиль
           </Link>
           
           <button
@@ -93,7 +93,7 @@ export default function UserDropdown() {
             className="w-full flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-red-600 hover:bg-red-100 hover:text-red-800 transition-colors"
           >
             <LogOut className="w-5 h-5 text-red-500" />
-            Logout
+            Выйти
           </button>
         </div>
       )}

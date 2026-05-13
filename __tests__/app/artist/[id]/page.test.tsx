@@ -136,7 +136,7 @@ describe("ArtistPage", () => {
     render(<ArtistPage params={mockParams} />);
 
     await waitFor(() => {
-      expect(screen.getByText("No songs found")).toBeInTheDocument();
+      expect(screen.getByText("Песни не найдены")).toBeInTheDocument();
     });
   });
 
@@ -185,15 +185,15 @@ describe("ArtistPage", () => {
     await waitFor(() => {
       expect(screen.getByText("Song 0")).toBeInTheDocument();
       expect(screen.getByText("Song 19")).toBeInTheDocument();
-      expect(screen.getByRole("button", { name: /Load More Songs/i })).toBeInTheDocument();
+      expect(screen.getByRole("button", { name: /Загрузить еще/i })).toBeInTheDocument();
     });
 
-    fireEvent.click(screen.getByRole("button", { name: /Load More Songs/i }));
+    fireEvent.click(screen.getByRole("button", { name: /Загрузить еще/i }));
 
     await waitFor(() => {
       expect(screen.getByText("Song 21")).toBeInTheDocument();
       // Button should disappear because next fetch returns < 20 items
-      expect(screen.queryByRole("button", { name: /Load More Songs/i })).not.toBeInTheDocument();
+      expect(screen.queryByRole("button", { name: /Загрузить еще/i })).not.toBeInTheDocument();
     });
   });
 

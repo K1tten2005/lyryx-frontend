@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, RefObject } from 'react';
 
 interface SelectionData {
   text: string;
@@ -9,10 +9,11 @@ interface SelectionData {
   lastRelativeRect: { top: number; left: number; bottom: number; right: number } | null;
 }
 
-export function useTextSelection(container: HTMLElement | null = null) {
+export function useTextSelection(containerRef: RefObject<HTMLElement>) {
   const [selection, setSelection] = useState<SelectionData | null>(null);
 
   const getOffsetInContainer = useCallback((node: Node, offset: number) => {
+    const container = containerRef.current;
     if (!container) return offset;
     
     let totalOffset = 0;
@@ -28,15 +29,16 @@ export function useTextSelection(container: HTMLElement | null = null) {
     }
     
     return -1;
-  }, [container]);
+  }, [containerRef]);
 
-  const handleSelection = useCallback(() => {
+  const handleSelection = useCallback((e?: MouseEvent) => {
+    const container = containerRef.current;
     // Delay slightly to ensure selection is fully updated
     setTimeout(() => {
       const sel = window.getSelection();
       
+      // Only update if we have a non-collapsed selection
       if (!sel || sel.isCollapsed || sel.rangeCount === 0) {
-        setSelection(null);
         return;
       }
 
@@ -44,7 +46,6 @@ export function useTextSelection(container: HTMLElement | null = null) {
       
       // Check if selection is within the container
       if (container && !container.contains(range.commonAncestorContainer)) {
-        setSelection(null);
         return;
       }
 
@@ -53,7 +54,6 @@ export function useTextSelection(container: HTMLElement | null = null) {
       const endIndex = getOffsetInContainer(range.endContainer, range.endOffset);
 
       if (startIndex === -1 || endIndex === -1) {
-        setSelection(null);
         return;
       }
 
@@ -89,14 +89,18 @@ export function useTextSelection(container: HTMLElement | null = null) {
         lastRelativeRect,
       });
     }, 10);
-  }, [container, getOffsetInContainer]);
+  }, [containerRef, getOffsetInContainer]);
 
   useEffect(() => {
-    // We'll let the component call handleSelection on mouseUp for more control
-    return () => {
-      // Clean up
+    const onMouseUp = (e: MouseEvent) => {
+      handleSelection(e);
     };
-  }, []);
+
+    document.addEventListener('mouseup', onMouseUp);
+    return () => {
+      document.removeEventListener('mouseup', onMouseUp);
+    };
+  }, [handleSelection]);
 
   return { selection, setSelection, handleSelection };
 }

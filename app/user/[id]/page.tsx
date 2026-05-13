@@ -102,7 +102,7 @@ export default function UserProfilePage({ params }: { params: { id: string } }) 
                       : 'border-transparent text-zinc-400 hover:text-zinc-600'
                   }`}
                 >
-                  Annotations ({annotations?.total || 0})
+                  Аннотации ({annotations?.total || 0})
                 </button>
               </nav>
             </div>
@@ -119,7 +119,7 @@ export default function UserProfilePage({ params }: { params: { id: string } }) 
                         disabled={loadingMore}
                         className="px-8 py-4 bg-white border-2 border-indigo-600 text-indigo-600 font-black uppercase tracking-widest rounded-full hover:bg-indigo-600 hover:text-white transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-md hover:shadow-lg active:scale-95"
                       >
-                        {loadingMore ? 'Loading...' : 'Load More Annotations'}
+                        {loadingMore ? 'Загрузка...' : 'Загрузить еще'}
                       </button>
                     </div>
                   )}
