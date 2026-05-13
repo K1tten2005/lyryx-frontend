@@ -1,12 +1,12 @@
 # Implementation Plan: Song Management
 
-## Phase 1: API Integration (TDD)
-- [ ] Task: Define TypeScript types for Song API
-    - [ ] Update `lib/api/song.ts` with creation/update payload types matching Swagger.
-- [ ] Task: Implement API mutation functions
-    - [ ] Add `createSong`, `updateSong`, and `updateSongCover` to `lib/api/song.ts`.
-    - [ ] Add failing tests in `__tests__/lib/api/song.test.ts`, then implement to pass.
-- [ ] Task: Conductor - User Manual Verification 'Phase 1: API Integration (TDD)' (Protocol in workflow.md)
+## Phase 1: API Integration (TDD) [checkpoint: 0b9d305]
+- [x] Task: Define TypeScript types for Song API
+    - [x] Update `lib/api/song.ts` with creation/update payload types matching Swagger.
+- [x] Task: Implement API mutation functions
+    - [x] Add `createSong`, `updateSong`, and `updateSongCover` to `lib/api/song.ts`.
+    - [x] Add failing tests in `__tests__/lib/api/song.test.ts`, then implement to pass.
+- [x] Task: Conductor - User Manual Verification 'Phase 1: API Integration (TDD)' (Protocol in workflow.md) 0b9d305
 
 ## Phase 2: Song Creation Feature (TDD)
 - [ ] Task: Setup Song Creation Route & Tests
