@@ -323,11 +323,23 @@ export default function ArtistPage({ params }: { params: { id: string } }) {
 
           {/* Songs Vertical List Section */}
           <div className="animate-in fade-in slide-in-from-bottom-8 duration-700 delay-150 fill-mode-both">
-            <div className="flex items-center gap-4 mb-8">
-              <div className="w-12 h-1.5 bg-gradient-to-r from-accent to-purple-400 rounded-full"></div>
-              <h2 className="text-3xl font-black uppercase tracking-widest text-slate-800">
-                Discography
-              </h2>
+            <div className="flex items-center justify-between mb-8">
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-1.5 bg-gradient-to-r from-accent to-purple-400 rounded-full"></div>
+                <h2 className="text-3xl font-black uppercase tracking-widest text-slate-800">
+                  Discography
+                </h2>
+              </div>
+              
+              {isModerator && (
+                <Link
+                  href={`/artist/${artist.id}/create-song`}
+                  className="flex items-center gap-2 px-4 py-2 bg-white/80 hover:bg-white text-accent font-bold rounded-xl shadow-sm border border-white/50 transition-all hover:-translate-y-0.5"
+                >
+                  <Music className="w-4 h-4" />
+                  Add Song
+                </Link>
+              )}
             </div>
 
             {artist.songs && artist.songs.length > 0 ? (
