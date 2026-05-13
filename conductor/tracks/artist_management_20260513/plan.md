@@ -8,7 +8,7 @@
     - [x] Update `__tests__/lib/api/artist.test.ts` with failing tests, then implement to pass ff57727
 - [x] Task: Conductor - User Manual Verification 'Phase 1: API Integration (TDD)' (Protocol in workflow.md) f64aadf
 
-## Phase 2: Create Artist Modal (TDD)
+## Phase 2: Create Artist Modal (TDD) [checkpoint: 1555d35]
 - [x] Task: Create CreateArtistModal tests d370865
     - [x] Create `__tests__/components/CreateArtistModal.test.tsx` d370865
     - [x] Write failing tests for form rendering, validation, and submission d370865
@@ -17,7 +17,7 @@
     - [x] Implement form logic and handle loading/error states d370865
 - [x] Task: Integrate Create Artist into UserDropdown d370865
     - [x] Update `components/UserDropdown.tsx` to conditionally render the modal trigger for moderators d370865
-- [ ] Task: Conductor - User Manual Verification 'Phase 2: Create Artist Modal (TDD)' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 2: Create Artist Modal (TDD)' (Protocol in workflow.md) 1555d35
 
 ## Phase 3: Inline Edit on Artist Page (TDD)
 - [ ] Task: Update Artist Page tests for Inline Editing
