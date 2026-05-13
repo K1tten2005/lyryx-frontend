@@ -1,7 +1,7 @@
 import { render, screen, waitFor, fireEvent } from "@testing-library/react";
 import SongPage from "@/app/song/[id]/page";
 import { vi } from "vitest";
-import { getSongById, getSongAnnotations } from "@/lib/api/song";
+import { getSongById, getSongAnnotations, getAiTranslation } from "@/lib/api/song";
 import { notFound } from "next/navigation";
 
 // Mock next/navigation
@@ -42,6 +42,9 @@ vi.mock("@/hooks/useTextSelection", () => ({
 vi.mock("@/lib/api/song", () => ({
   getSongById: vi.fn(),
   getSongAnnotations: vi.fn(),
+  getAiTranslation: vi.fn(),
+  getAiAnnotation: vi.fn(),
+  createAnnotation: vi.fn(),
 }));
 
 const mockParams = { id: "1" };
@@ -225,6 +228,92 @@ describe("SongPage", () => {
     await waitFor(() => {
       expect(screen.getByText("AI Explanation")).toBeInTheDocument();
       expect(screen.getByPlaceholderText(/What would you like to know about these lyrics/i)).toBeInTheDocument();
+    });
+  });
+
+  describe("AI Translation", () => {
+    const mockSong = {
+      id: 1,
+      title: "Test Song",
+      lyrics: "Line one\nLine two",
+      artist: { id: 1, name: "Artist" },
+    };
+
+    beforeEach(() => {
+      (getSongById as any).mockResolvedValue(mockSong);
+      (getSongAnnotations as any).mockResolvedValue([]);
+      (useAuth as any).mockReturnValue({
+        user: { user_id: 1 },
+        token: "token",
+        isAuthenticated: true,
+      });
+    });
+
+    it("renders Translate button when authenticated", async () => {
+      render(<SongPage params={mockParams} />);
+      await waitFor(() => {
+        expect(screen.getByRole("button", { name: /Translate/i })).toBeInTheDocument();
+      });
+    });
+
+    it("shows language dropdown when Translate is clicked", async () => {
+      render(<SongPage params={mockParams} />);
+      await waitFor(() => {
+        const translateBtn = screen.getByRole("button", { name: /Translate/i });
+        fireEvent.click(translateBtn);
+      });
+      expect(screen.getByText("English")).toBeInTheDocument();
+      expect(screen.getByText("Russian")).toBeInTheDocument();
+    });
+
+    it("fetches translation and displays interleaved lyrics", async () => {
+      (getAiTranslation as any).mockResolvedValue({
+        id: 1,
+        response: "Перевод первой строки\nПеревод второй строки",
+      });
+
+      render(<SongPage params={mockParams} />);
+      
+      await waitFor(() => {
+        const translateBtn = screen.getByRole("button", { name: /Translate/i });
+        fireEvent.click(translateBtn);
+      });
+
+      const russianOption = screen.getByText("Russian");
+      fireEvent.click(russianOption);
+
+      await waitFor(() => {
+        expect(getAiTranslation).toHaveBeenCalledWith(1, "ru", "token");
+        expect(screen.getByText("Line one")).toBeInTheDocument();
+        expect(screen.getByText("Перевод первой строки")).toBeInTheDocument();
+        expect(screen.getByText("Line two")).toBeInTheDocument();
+        expect(screen.getByText("Перевод второй строки")).toBeInTheDocument();
+      });
+    });
+
+    it("hides translation when Hide Translation is clicked", async () => {
+      (getAiTranslation as any).mockResolvedValue({
+        id: 1,
+        response: "Translation",
+      });
+
+      render(<SongPage params={mockParams} />);
+      
+      await waitFor(() => {
+        fireEvent.click(screen.getByRole("button", { name: /Translate/i }));
+      });
+      fireEvent.click(screen.getByText("English"));
+
+      await waitFor(() => {
+        expect(screen.getByText("Translation")).toBeInTheDocument();
+      });
+
+      const hideBtn = screen.getByRole("button", { name: /Hide Translation/i });
+      fireEvent.click(hideBtn);
+
+      await waitFor(() => {
+        expect(screen.queryByText("Translation")).not.toBeInTheDocument();
+      });
     });
   });
 });

@@ -1,13 +1,13 @@
 'use client';
 
 import { useEffect, useState, useMemo, Fragment, useRef, useCallback } from 'react';
-import { getSongById, getSongAnnotations, createAnnotation, getAiAnnotation, Song, Annotation } from '@/lib/api/song';
+import { getSongById, getSongAnnotations, createAnnotation, getAiAnnotation, getAiTranslation, Song, Annotation } from '@/lib/api/song';
 import { notFound } from 'next/navigation';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Calendar, Eye, Music } from 'lucide-react';
+import { Calendar, Eye, Music, Languages, ChevronDown, Loader2, X } from 'lucide-react';
 import { AnnotationHighlight } from '@/components/song/AnnotationHighlight';
 import { AnnotationBubble } from '@/components/song/AnnotationBubble';
 import { useTextSelection } from '@/hooks/useTextSelection';
@@ -21,15 +21,25 @@ import toast from 'react-hot-toast';
 export default function SongPage({ params }: { params: { id: string } }) {
   const { isAuthenticated, token, refreshAuth } = useAuth();
   const lyricsContainerRef = useRef<HTMLDivElement>(null);
-  const { selection, setSelection, handleSelection } = useTextSelection(lyricsContainerRef.current);
+  const { selection, setSelection, handleSelection } = useTextSelection(lyricsContainerRef);
   const [song, setSong] = useState<Song | null>(null);
   const [annotations, setAnnotations] = useState<Annotation[]>([]);
   const [activeAnnotationId, setActiveAnnotationId] = useState<number | null>(null);
   const [isCreateMode, setIsCreateMode] = useState(false);
   const [isAiMode, setIsAiMode] = useState(false);
+  const [aiStatus, setAiStatus] = useState<'idle' | 'loading' | 'result' | 'error'>('idle');
+  const [aiQuestion, setAiQuestion] = useState('');
+  const [aiResponse, setAiResponse] = useState('');
+  const [aiError, setAiError] = useState('');
   const [bubbleTop, setBubbleTop] = useState<number>(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+  // Translation State
+  const [targetLanguage, setTargetLanguage] = useState<string | null>(null);
+  const [translatedLyrics, setTranslatedLyrics] = useState<string | null>(null);
+  const [isTranslationLoading, setIsTranslationLoading] = useState(false);
+  const [showLangDropdown, setShowLangDropdown] = useState(false);
 
   const fetchAnnotations = useCallback(async () => {
     try {
@@ -74,15 +84,27 @@ export default function SongPage({ params }: { params: { id: string } }) {
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       const target = event.target as HTMLElement;
+      // Don't clear if clicking on something interactive
       if (target.closest('.pointer-events-auto')) return;
+      
+      // Clear selection if clicking outside the lyrics container
+      // or if we are not in an active mode (to hide the prompts)
       if (lyricsContainerRef.current && !lyricsContainerRef.current.contains(event.target as Node)) {
         setSelection(null);
         setIsAiMode(false);
+        setIsCreateMode(false);
+      } else if (!isAiMode && !isCreateMode) {
+        // If clicking inside container but no mode is active, 
+        // we might want to clear the prompt if it's a simple click
+        const sel = window.getSelection();
+        if (sel?.isCollapsed) {
+          setSelection(null);
+        }
       }
     }
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, [setSelection]);
+  }, [setSelection, isAiMode, isCreateMode]);
 
   const activeAnnotation = useMemo(() => {
     return annotations.find(a => a.id === activeAnnotationId) || null;
@@ -113,16 +135,52 @@ export default function SongPage({ params }: { params: { id: string } }) {
     setIsAiMode(true);
     setIsCreateMode(false);
     setActiveAnnotationId(null);
+    setAiStatus('idle');
+    setAiResponse('');
+    setAiError('');
     if (selection?.lastRelativeRect) {
       const lineCenter = (selection.lastRelativeRect.top + selection.lastRelativeRect.bottom) / 2;
       setBubbleTop(lineCenter);
     }
   };
 
+  const handleTranslate = async (lang: string) => {
+    try {
+      setIsTranslationLoading(true);
+      setShowLangDropdown(false);
+      const result = await withAuthRetry((authToken) => 
+        getAiTranslation(parseInt(params.id), lang, authToken)
+      );
+      setTranslatedLyrics(result.response);
+      setTargetLanguage(lang);
+      toast.success(`Translated to ${lang === 'en' ? 'English' : lang === 'ru' ? 'Russian' : lang}`);
+    } catch (err: any) {
+      console.error("Translation failed:", err);
+      toast.error(err.message || 'Failed to translate lyrics');
+    } finally {
+      setIsTranslationLoading(false);
+    }
+  };
+
   const handleAiSubmit = async (question: string) => {
-    if (!selection) throw new Error("No text selected");
-    const songId = parseInt(params.id);
-    return await getAiAnnotation(songId, question, selection.startIndex, selection.endIndex);
+    if (!selection) {
+      setAiError("No text selected");
+      setAiStatus('error');
+      return;
+    }
+    
+    try {
+      setAiStatus('loading');
+      const result = await withAuthRetry((authToken) => 
+        getAiAnnotation(parseInt(params.id), question, selection.startIndex, selection.endIndex, authToken)
+      );
+      setAiResponse(result.response);
+      setAiStatus('result');
+    } catch (err: any) {
+      console.error("AI Annotation failed:", err);
+      setAiError(err.message || 'Failed to get AI explanation');
+      setAiStatus('error');
+    }
   };
 
   // Helper to retry authenticated requests
@@ -182,7 +240,7 @@ export default function SongPage({ params }: { params: { id: string } }) {
   const renderLyricsWithAnnotations = () => {
     if (!song) return null;
     const displayAnnotations = [...annotations];
-    if (isCreateMode && selection) {
+    if ((isCreateMode || isAiMode) && selection) {
       displayAnnotations.push({
         id: -1,
         content: '',
@@ -193,8 +251,81 @@ export default function SongPage({ params }: { params: { id: string } }) {
         user: undefined
       } as any);
     }
-    if (displayAnnotations.length === 0) return song.lyrics;
+    
     const sortedAnnotations = displayAnnotations.sort((a, b) => a.start_index - b.start_index);
+
+    if (translatedLyrics && targetLanguage) {
+      const originalLines = song.lyrics.split('\n');
+      const translatedLines = translatedLyrics.split('\n');
+      let cumulativeIndex = 0;
+
+      return originalLines.map((lineText, lineIdx) => {
+        const lineStart = cumulativeIndex;
+        const lineEnd = lineStart + lineText.length;
+        cumulativeIndex = lineEnd + 1; // +1 for the newline character
+
+        const lineElements: React.ReactNode[] = [];
+        let lineCurrentIndex = lineStart;
+
+        // Find annotations that overlap with this line
+        const relevantAnnotations = sortedAnnotations.filter(a => 
+          (a.start_index < lineEnd && a.end_index > lineStart)
+        );
+
+        relevantAnnotations.forEach(a => {
+          // Part before annotation
+          if (a.start_index > lineCurrentIndex) {
+            lineElements.push(
+              <Fragment key={`text-${lineCurrentIndex}`}>
+                {lineText.slice(lineCurrentIndex - lineStart, a.start_index - lineStart)}
+              </Fragment>
+            );
+            lineCurrentIndex = a.start_index;
+          }
+          
+          // Annotation part (possibly partial)
+          const start = Math.max(a.start_index, lineCurrentIndex);
+          const end = Math.min(a.end_index, lineEnd);
+          if (start < end) {
+            lineElements.push(
+              <AnnotationHighlight
+                key={a.id === -1 ? 'current-selection' : `annotation-${a.id}-${lineIdx}`}
+                id={a.id}
+                isActive={activeAnnotationId === a.id || a.id === -1}
+                onClick={a.id === -1 ? () => {} : handleAnnotationClick}
+              >
+                {lineText.slice(start - lineStart, end - lineStart)}
+              </AnnotationHighlight>
+            );
+            lineCurrentIndex = end;
+          }
+        });
+
+        // Remaining part of the line
+        if (lineCurrentIndex < lineEnd) {
+          lineElements.push(
+            <Fragment key={`text-${lineCurrentIndex}`}>
+              {lineText.slice(lineCurrentIndex - lineStart)}
+            </Fragment>
+          );
+        }
+
+        return (
+          <div key={`line-group-${lineIdx}`} className="mb-4 last:mb-0">
+            <div className="relative min-h-[1.5em]">{lineElements || '\u00A0'}</div>
+            {translatedLines[lineIdx] && (
+              <div className="text-sm italic text-slate-500 mt-1 animate-in fade-in slide-in-from-left-2 duration-300">
+                {translatedLines[lineIdx]}
+              </div>
+            )}
+          </div>
+        );
+      });
+    }
+
+    // Default rendering
+    if (displayAnnotations.length === 0) return song.lyrics;
+    
     const elements: React.ReactNode[] = [];
     let currentIndex = 0;
     sortedAnnotations.forEach((annotation) => {
@@ -292,14 +423,61 @@ export default function SongPage({ params }: { params: { id: string } }) {
 
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-16">
             <div className="lg:col-span-7 relative z-20">
-              <h2 className="text-2xl font-black uppercase tracking-widest text-accent mb-8 flex items-center gap-3">
-                <span className="w-10 h-1.5 bg-accent rounded-full"></span> Lyrics
-              </h2>
+              <div className="flex justify-between items-center mb-8">
+                <h2 className="text-2xl font-black uppercase tracking-widest text-accent flex items-center gap-3">
+                  <span className="w-10 h-1.5 bg-accent rounded-full"></span> Lyrics
+                </h2>
+                
+                {isAuthenticated && (
+                  <div className="relative">
+                    {!targetLanguage ? (
+                      <button 
+                        onClick={() => setShowLangDropdown(!showLangDropdown)}
+                        disabled={isTranslationLoading}
+                        className="flex items-center gap-2 px-6 py-2.5 bg-white/60 backdrop-blur-md rounded-2xl border border-white/50 shadow-glass-sm hover:bg-white/80 transition-all font-bold text-slate-700 disabled:opacity-50"
+                      >
+                        {isTranslationLoading ? <Loader2 className="w-4 h-4 animate-spin text-accent" /> : <Languages className="w-4 h-4 text-accent" />}
+                        Translate
+                        <ChevronDown className={cn("w-4 h-4 transition-transform", showLangDropdown && "rotate-180")} />
+                      </button>
+                    ) : (
+                      <button 
+                        onClick={() => { setTargetLanguage(null); setTranslatedLyrics(null); }}
+                        className="flex items-center gap-2 px-6 py-2.5 bg-accent/10 hover:bg-accent/20 backdrop-blur-md rounded-2xl border border-accent/20 shadow-glass-sm transition-all font-bold text-accent"
+                      >
+                        <X className="w-4 h-4" />
+                        Hide Translation
+                      </button>
+                    )}
+
+                    {showLangDropdown && (
+                      <div className="absolute right-0 top-full mt-3 w-48 bg-white/90 backdrop-blur-xl rounded-2xl border border-white/50 shadow-glass overflow-hidden z-[100] animate-in fade-in zoom-in-95 duration-200">
+                        <button 
+                          onClick={() => handleTranslate('ru')}
+                          className="w-full px-5 py-3 text-left hover:bg-accent/10 transition-colors font-bold text-slate-700"
+                        >
+                          Russian
+                        </button>
+                        <button 
+                          onClick={() => handleTranslate('en')}
+                          className="w-full px-5 py-3 text-left hover:bg-accent/10 transition-colors font-bold text-slate-700 border-t border-slate-100/50"
+                        >
+                          English
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
+
               <div ref={lyricsContainerRef} className="bg-white/70 backdrop-blur-xl p-10 md:p-14 rounded-[2.5rem] border border-white/50 shadow-glass relative w-fit min-w-[90%]">
                 <div className="absolute top-0 left-0 right-0 h-1/2 bg-gradient-to-b from-white/20 to-transparent pointer-events-none"></div>
-                <pre onMouseUp={handleSelection} className="text-lg md:text-xl leading-relaxed text-slate-700 font-semibold whitespace-pre-wrap font-sans relative z-10 tracking-tight select-text">
+                <div className={cn(
+                  "text-lg md:text-xl leading-relaxed text-slate-700 font-semibold whitespace-pre-wrap font-sans relative z-10 tracking-tight select-text",
+                  translatedLyrics && "whitespace-normal"
+                )}>
                   {renderLyricsWithAnnotations()}
-                </pre>
+                </div>
                 {showPrompt && selection?.lastRelativeRect && (
                   <div 
                     className="absolute z-[200] pointer-events-auto animate-fade-zoom flex flex-col gap-3"
@@ -318,8 +496,8 @@ export default function SongPage({ params }: { params: { id: string } }) {
             <div className="lg:col-span-5 relative mt-16 lg:mt-0">
               <div 
                 className={cn(
-                  "absolute w-full transition-opacity duration-300 ease-out",
-                  (activeAnnotation || isCreateMode || isAiMode) ? "pointer-events-auto opacity-100" : "pointer-events-none opacity-0"
+                  "absolute w-full transition-opacity duration-300 ease-out pointer-events-auto",
+                  (activeAnnotation || isCreateMode || isAiMode) ? "opacity-100" : "pointer-events-none opacity-0"
                 )}
                 style={{ top: `${bubbleTop - 40}px` }}
               >
@@ -338,6 +516,16 @@ export default function SongPage({ params }: { params: { id: string } }) {
                   <AIBubble 
                     onClose={() => setIsAiMode(false)}
                     onSubmit={handleAiSubmit}
+                    status={aiStatus}
+                    aiResponse={aiResponse}
+                    errorMessage={aiError}
+                    question={aiQuestion}
+                    setQuestion={setAiQuestion}
+                    onReset={() => {
+                      setAiStatus('idle');
+                      setAiResponse('');
+                      setAiError('');
+                    }}
                   />
                 )}
               </div>
