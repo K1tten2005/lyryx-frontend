@@ -61,19 +61,6 @@ export default function CreateDropdown() {
               <UserPlus className="w-5 h-5 text-emerald-500" />
               Artist
             </button>
-            <button
-              role="menuitem"
-              onClick={() => {
-                setIsOpen(false);
-                // Future: Create Song Modal
-              }}
-              className="w-full flex items-center gap-3 px-4 py-3 text-sm font-bold text-slate-400 cursor-not-allowed transition-colors"
-              disabled
-              title="Coming soon"
-            >
-              <Music className="w-5 h-5 text-slate-300" />
-              Song (Coming soon)
-            </button>
           </div>
         )}
       </div>

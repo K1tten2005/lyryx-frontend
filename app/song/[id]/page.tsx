@@ -7,7 +7,7 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Calendar, Eye, Music, Languages, ChevronDown, Loader2, X } from 'lucide-react';
+import { Calendar, Eye, Music, Languages, ChevronDown, Loader2, X, Edit2 } from 'lucide-react';
 import { AnnotationHighlight } from '@/components/song/AnnotationHighlight';
 import { AnnotationBubble } from '@/components/song/AnnotationBubble';
 import { useTextSelection } from '@/hooks/useTextSelection';
@@ -19,8 +19,9 @@ import { cn } from '@/lib/utils';
 import toast from 'react-hot-toast';
 
 export default function SongPage({ params }: { params: { id: string } }) {
-  const { isAuthenticated, token, refreshAuth } = useAuth();
+  const { isAuthenticated, token, user, refreshAuth } = useAuth();
   const lyricsContainerRef = useRef<HTMLDivElement>(null);
+  const dropdownRef = useRef<HTMLDivElement>(null);
   const { selection, setSelection, handleSelection } = useTextSelection(lyricsContainerRef);
   const [song, setSong] = useState<Song | null>(null);
   const [annotations, setAnnotations] = useState<Annotation[]>([]);
@@ -85,6 +86,12 @@ export default function SongPage({ params }: { params: { id: string } }) {
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       const target = event.target as HTMLElement;
+      
+      // Handle translation dropdown
+      if (dropdownRef.current && !dropdownRef.current.contains(target)) {
+        setShowLangDropdown(false);
+      }
+
       // Don't clear if clicking on something interactive
       if (target.closest('.pointer-events-auto')) return;
       
@@ -413,7 +420,18 @@ export default function SongPage({ params }: { params: { id: string } }) {
               <div className="absolute inset-0 bg-glossy-button opacity-30 pointer-events-none"></div>
             </div>
             <div className="flex-grow flex flex-col justify-end py-2">
-              <h1 className="text-4xl md:text-6xl font-black text-slate-800 mb-6 drop-shadow-sm">{song.title}</h1>
+              <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+                <h1 className="text-4xl md:text-6xl font-black text-slate-800 drop-shadow-sm">{song.title}</h1>
+                {user?.role === 'moderator' && (
+                  <Link
+                    href={`/song/${song.id}/edit`}
+                    className="flex items-center gap-2 px-4 py-2 bg-white/80 hover:bg-white text-accent font-bold rounded-xl shadow-sm border border-white/50 transition-all hover:-translate-y-0.5"
+                  >
+                    <Edit2 className="w-4 h-4" />
+                    Edit Song
+                  </Link>
+                )}
+              </div>
               <div className="flex flex-wrap gap-6 items-center text-slate-600 font-bold">
                 <Link href={`/artist/${song.artist.id}`} className="text-2xl text-accent hover:text-accent-hover transition-colors">{song.artist.name}</Link>
                 <div className="flex items-center gap-2 bg-white/40 backdrop-blur-sm px-4 py-2 rounded-full border border-white/20 shadow-sm">
@@ -435,53 +453,57 @@ export default function SongPage({ params }: { params: { id: string } }) {
                   <span className="w-10 h-1.5 bg-accent rounded-full"></span> Lyrics
                 </h2>
                 
-                {isAuthenticated && (
-                  <div className="flex items-center gap-3">
-                    <div className="relative">
-                      <button 
-                        onClick={() => setShowLangDropdown(!showLangDropdown)}
-                        disabled={isTranslationLoading}
-                        className="flex items-center gap-2 px-6 py-2.5 bg-white/60 backdrop-blur-md rounded-2xl border border-white/50 shadow-glass-sm hover:bg-white/80 transition-all font-bold text-slate-700 disabled:opacity-50"
-                      >
-                        {isTranslationLoading ? <Loader2 className="w-4 h-4 animate-spin text-accent" /> : <Languages className="w-4 h-4 text-accent" />}
-                        {targetLanguage ? (targetLanguage === 'ru' ? 'Russian' : 'English') : 'Translate'}
-                        <ChevronDown className={cn("w-4 h-4 transition-transform", showLangDropdown && "rotate-180")} />
-                      </button>
+                <div className="flex items-center gap-3">
+                  <div className="relative" ref={dropdownRef}>
+                    <button 
+                      onClick={() => {
+                        if (!isAuthenticated) {
+                          toast.error('Only logged in users can use translation');
+                          return;
+                        }
+                        setShowLangDropdown(!showLangDropdown);
+                      }}
+                      disabled={isTranslationLoading}
+                      className="flex items-center gap-2 px-6 py-2.5 bg-white/60 backdrop-blur-md rounded-2xl border border-white/50 shadow-glass-sm hover:bg-white/80 transition-all font-bold text-slate-700 disabled:opacity-50"
+                    >
+                      {isTranslationLoading ? <Loader2 className="w-4 h-4 animate-spin text-accent" /> : <Languages className="w-4 h-4 text-accent" />}
+                      {targetLanguage ? (targetLanguage === 'ru' ? 'Russian' : 'English') : 'Translate'}
+                      <ChevronDown className={cn("w-4 h-4 transition-transform", showLangDropdown && "rotate-180")} />
+                    </button>
 
-                      {showLangDropdown && (
-                        <div className="absolute right-0 top-full mt-3 w-48 bg-white/90 backdrop-blur-xl rounded-2xl border border-white/50 shadow-glass overflow-hidden z-[100] animate-in fade-in zoom-in-95 duration-200">
-                          <button 
-                            onClick={() => handleTranslate('ru')}
-                            className="w-full px-5 py-3 text-left hover:bg-accent/10 transition-colors font-bold text-slate-700"
-                          >
-                            Russian
-                          </button>
-                          <button 
-                            onClick={() => handleTranslate('en')}
-                            className="w-full px-5 py-3 text-left hover:bg-accent/10 transition-colors font-bold text-slate-700 border-t border-slate-100/50"
-                          >
-                            English
-                          </button>
-                        </div>
-                      )}
-                    </div>
-
-                    {translatedLyrics && (
-                      <button 
-                        onClick={() => setIsTranslationVisible(!isTranslationVisible)}
-                        className={cn(
-                          "flex items-center gap-2 px-6 py-2.5 backdrop-blur-md rounded-2xl border shadow-glass-sm transition-all font-bold",
-                          isTranslationVisible 
-                            ? "bg-accent/10 hover:bg-accent/20 border-accent/20 text-accent" 
-                            : "bg-white/60 hover:bg-white/80 border-white/50 text-slate-700"
-                        )}
-                      >
-                        {isTranslationVisible ? <X className="w-4 h-4" /> : <Languages className="w-4 h-4" />}
-                        {isTranslationVisible ? 'Hide' : 'Show'}
-                      </button>
+                    {showLangDropdown && (
+                      <div className="absolute right-0 top-full mt-3 w-48 bg-white/90 backdrop-blur-xl rounded-2xl border border-white/50 shadow-glass overflow-hidden z-[100] animate-in fade-in zoom-in-95 duration-200">
+                        <button 
+                          onClick={() => handleTranslate('ru')}
+                          className="w-full px-5 py-3 text-left hover:bg-accent/10 transition-colors font-bold text-slate-700"
+                        >
+                          Russian
+                        </button>
+                        <button 
+                          onClick={() => handleTranslate('en')}
+                          className="w-full px-5 py-3 text-left hover:bg-accent/10 transition-colors font-bold text-slate-700 border-t border-slate-100/50"
+                        >
+                          English
+                        </button>
+                      </div>
                     )}
                   </div>
-                )}
+
+                  {translatedLyrics && (
+                    <button 
+                      onClick={() => setIsTranslationVisible(!isTranslationVisible)}
+                      className={cn(
+                        "flex items-center gap-2 px-6 py-2.5 backdrop-blur-md rounded-2xl border shadow-glass-sm transition-all font-bold",
+                        isTranslationVisible 
+                          ? "bg-accent/10 hover:bg-accent/20 border-accent/20 text-accent" 
+                          : "bg-white/60 hover:bg-white/80 border-white/50 text-slate-700"
+                      )}
+                    >
+                      {isTranslationVisible ? <X className="w-4 h-4" /> : <Languages className="w-4 h-4" />}
+                      {isTranslationVisible ? 'Hide' : 'Show'}
+                    </button>
+                  )}
+                </div>
               </div>
 
               <div ref={lyricsContainerRef} className="bg-white/70 backdrop-blur-xl p-10 md:p-14 rounded-[2.5rem] border border-white/50 shadow-glass relative w-fit min-w-[90%]">
