@@ -31,7 +31,7 @@ export default function SearchBar({ variant = 'hero' }: SearchBarProps) {
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             className="block w-full pl-10 pr-4 py-1.5 bg-white/10 border-2 border-indigo-400/50 hover:border-indigo-300 rounded-full text-sm text-white placeholder-indigo-200 focus:outline-none focus:ring-4 focus:ring-accent/40 focus:border-accent focus:bg-white/20 transition-all shadow-md backdrop-blur-md"
-            placeholder="Search Lyryx..."
+            placeholder="Поиск..."
           />
         </div>
       </form>

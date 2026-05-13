@@ -259,7 +259,7 @@ export default function ArtistPage({ params }: { params: { id: string } }) {
                 <div className="w-full bg-white/80 backdrop-blur-xl p-8 rounded-[2rem] border border-white/50 shadow-glass mb-6 animate-in fade-in zoom-in-95 duration-200">
                   <div className="space-y-4 text-left">
                     <div>
-                      <label className="block text-sm font-bold text-slate-700 mb-1 uppercase tracking-wide">Name</label>
+                      <label className="block text-sm font-bold text-slate-700 mb-1 uppercase tracking-wide">Имя</label>
                       <input 
                         value={editName}
                         onChange={(e) => setEditName(e.target.value)}
@@ -267,7 +267,7 @@ export default function ArtistPage({ params }: { params: { id: string } }) {
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-bold text-slate-700 mb-1 uppercase tracking-wide">Biography</label>
+                      <label className="block text-sm font-bold text-slate-700 mb-1 uppercase tracking-wide">О себе</label>
                       <textarea 
                         value={editBio}
                         onChange={(e) => setEditBio(e.target.value)}
@@ -285,7 +285,7 @@ export default function ArtistPage({ params }: { params: { id: string } }) {
                         className="px-6 py-2.5 font-bold text-slate-500 hover:text-slate-800 hover:bg-slate-100 rounded-xl transition-colors"
                         disabled={isSaving}
                       >
-                        Cancel
+                        Отмена
                       </button>
                       <button 
                         onClick={handleSaveEdit}
@@ -293,7 +293,7 @@ export default function ArtistPage({ params }: { params: { id: string } }) {
                         className="flex items-center gap-2 px-6 py-2.5 bg-accent hover:bg-accent-hover text-white font-bold rounded-xl transition-all shadow-md hover:shadow-lg disabled:opacity-50"
                       >
                         {isSaving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
-                        Save Profile
+                        Сохранить
                       </button>
                     </div>
                   </div>
@@ -311,7 +311,7 @@ export default function ArtistPage({ params }: { params: { id: string } }) {
                       </p>
                     ) : (
                       <p className="text-lg md:text-xl text-slate-400 italic font-medium">
-                        Biography not provided
+                        Информация "О себе" отсутствует
                       </p>
                     )}
                   </div>
@@ -327,7 +327,7 @@ export default function ArtistPage({ params }: { params: { id: string } }) {
               <div className="flex items-center gap-4">
                 <div className="w-12 h-1.5 bg-gradient-to-r from-accent to-purple-400 rounded-full"></div>
                 <h2 className="text-3xl font-black uppercase tracking-widest text-slate-800">
-                  Discography
+                  Дискография
                 </h2>
               </div>
               
@@ -337,7 +337,7 @@ export default function ArtistPage({ params }: { params: { id: string } }) {
                   className="flex items-center gap-2 px-4 py-2 bg-white/80 hover:bg-white text-accent font-bold rounded-xl shadow-sm border border-white/50 transition-all hover:-translate-y-0.5"
                 >
                   <Music className="w-4 h-4" />
-                  Add Song
+                  Добавить песню
                 </Link>
               )}
             </div>

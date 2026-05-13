@@ -26,7 +26,7 @@ export function CreateAnnotationPrompt({ onClick }: CreateAnnotationPromptProps)
       <div className="bg-white/20 p-1.5 rounded-lg pointer-events-none">
         <Plus className="w-4 h-4 relative z-10" />
       </div>
-      <span className="relative z-10 drop-shadow-sm pointer-events-none">Add Annotation</span>
+      <span className="relative z-10 drop-shadow-sm pointer-events-none">Добавить аннотацию</span>
     </button>
   );
 }

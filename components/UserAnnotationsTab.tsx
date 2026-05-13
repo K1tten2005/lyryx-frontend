@@ -49,7 +49,7 @@ export default function UserAnnotationsTab({ annotations }: UserAnnotationsTabPr
               </Link>
             </div>
             <div className="shrink-0 text-right">
-               <div className="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-0.5 drop-shadow-sm">Rating</div>
+               <div className="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-0.5 drop-shadow-sm">Рейтинг</div>
                <div className="px-2 py-0.5 bg-gradient-to-r from-accent to-accent-light text-white text-xs font-bold rounded-full tabular-nums shadow-sm border border-white/40">
                 {annotation.rating}
                </div>
@@ -77,11 +77,11 @@ export default function UserAnnotationsTab({ annotations }: UserAnnotationsTabPr
 
             <div className="mt-8 flex items-center justify-between">
               <span className="text-[10px] font-black text-slate-500 uppercase tracking-widest drop-shadow-sm">
-                Annotated on {new Date(annotation.created_at).toLocaleDateString(undefined, { day: 'numeric', month: 'short', year: 'numeric' })}
+                Аннотировано {new Date(annotation.created_at).toLocaleDateString(undefined, { day: 'numeric', month: 'short', year: 'numeric' })}
               </span>
               
               <Link href={`/song/${annotation.song.id}`} className="text-xs font-bold text-white uppercase tracking-widest flex items-center gap-2 group/link px-5 py-2.5 bg-accent border border-white/20 shadow-md rounded-full hover:bg-accent-hover active:scale-95 transition-all">
-                Full Song
+                К песне
                 <svg className="w-3.5 h-3.5 transition-transform group-hover/link:translate-x-1 drop-shadow-md" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
                 </svg>

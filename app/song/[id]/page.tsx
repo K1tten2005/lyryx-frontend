@@ -428,7 +428,7 @@ export default function SongPage({ params }: { params: { id: string } }) {
                     className="flex items-center gap-2 px-4 py-2 bg-white/80 hover:bg-white text-accent font-bold rounded-xl shadow-sm border border-white/50 transition-all hover:-translate-y-0.5"
                   >
                     <Edit2 className="w-4 h-4" />
-                    Edit Song
+                    Редактировать
                   </Link>
                 )}
               </div>
@@ -466,7 +466,7 @@ export default function SongPage({ params }: { params: { id: string } }) {
                       className="flex items-center gap-2 px-6 py-2.5 bg-white/60 backdrop-blur-md rounded-2xl border border-white/50 shadow-glass-sm hover:bg-white/80 transition-all font-bold text-slate-700 disabled:opacity-50"
                     >
                       {isTranslationLoading ? <Loader2 className="w-4 h-4 animate-spin text-accent" /> : <Languages className="w-4 h-4 text-accent" />}
-                      {targetLanguage ? (targetLanguage === 'ru' ? 'Russian' : 'English') : 'Translate'}
+                      {targetLanguage ? (targetLanguage === 'ru' ? 'Russian' : 'English') : 'Перевести'}
                       <ChevronDown className={cn("w-4 h-4 transition-transform", showLangDropdown && "rotate-180")} />
                     </button>
 

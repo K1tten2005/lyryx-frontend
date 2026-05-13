@@ -65,7 +65,7 @@ export default function SeeAllModal<T>({
       >
         <div className="flex items-center justify-between p-6 border-b border-slate-200/60 bg-white/50">
           <h2 id="modal-title" className="text-2xl font-bold text-slate-800">
-            All {title}
+            {title}
           </h2>
           <button
             onClick={onClose}

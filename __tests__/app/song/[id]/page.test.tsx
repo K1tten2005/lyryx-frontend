@@ -187,7 +187,7 @@ describe("SongPage", () => {
     render(<SongPage params={mockParams} />);
 
     await waitFor(() => {
-      expect(screen.getByRole("button", { name: /Add Annotation/i })).toBeInTheDocument();
+      expect(screen.getByRole("button", { name: /Добавить аннотацию/i })).toBeInTheDocument();
       expect(screen.getByRole("button", { name: /Спросить ИИ/i })).toBeInTheDocument();
     });
   });
