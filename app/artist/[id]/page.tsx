@@ -241,89 +241,84 @@ export default function ArtistPage({ params }: { params: { id: string } }) {
               </div>
             </div>
             
-            {isEditing ? (
-              <div className="w-full max-w-2xl bg-white/80 backdrop-blur-xl p-8 rounded-[2rem] border border-white/50 shadow-glass mb-6 animate-in fade-in zoom-in-95 duration-200">
-                <div className="space-y-4 text-left">
-                  <div>
-                    <label className="block text-sm font-bold text-slate-700 mb-1 uppercase tracking-wide">Name</label>
-                    <input 
-                      value={editName}
-                      onChange={(e) => setEditName(e.target.value)}
-                      className="w-full px-4 py-3 bg-slate-50/50 border border-slate-200/60 rounded-xl focus:outline-none focus:ring-2 focus:ring-accent/50 font-black text-slate-800 text-2xl"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-bold text-slate-700 mb-1 uppercase tracking-wide">Biography</label>
-                    <textarea 
-                      value={editBio}
-                      onChange={(e) => setEditBio(e.target.value)}
-                      rows={5}
-                      className="w-full px-4 py-3 bg-slate-50/50 border border-slate-200/60 rounded-xl focus:outline-none focus:ring-2 focus:ring-accent/50 font-medium text-slate-700 resize-none"
-                    />
-                  </div>
-                  <div className="flex justify-end gap-3 pt-4">
-                    <button 
-                      onClick={() => {
-                        setIsEditing(false);
-                        setEditName(artist.name);
-                        setEditBio(artist.bio || '');
-                      }}
-                      className="px-6 py-2.5 font-bold text-slate-500 hover:text-slate-800 hover:bg-slate-100 rounded-xl transition-colors"
-                      disabled={isSaving}
-                    >
-                      Cancel
-                    </button>
-                    <button 
-                      onClick={handleSaveEdit}
-                      disabled={isSaving || !editName.trim()}
-                      className="flex items-center gap-2 px-6 py-2.5 bg-accent hover:bg-accent-hover text-white font-bold rounded-xl transition-all shadow-md hover:shadow-lg disabled:opacity-50"
-                    >
-                      {isSaving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
-                      Save Profile
-                    </button>
+            {/* Artist Details Section */}
+            <div className="relative max-w-3xl w-full flex flex-col items-center">
+              {/* Single Edit Button (Moderator only) */}
+              {isModerator && !isEditing && (
+                <button 
+                  data-testid="edit-name-btn"
+                  onClick={() => setIsEditing(true)}
+                  className="absolute -right-4 sm:-right-16 top-0 p-3 bg-white/80 hover:bg-white text-accent hover:scale-110 rounded-2xl shadow-glass border border-white/50 transition-all duration-300 z-20 group"
+                  title="Edit Profile"
+                >
+                  <Edit2 className="w-5 h-5 group-hover:rotate-12 transition-transform" />
+                </button>
+              )}
+
+              {isEditing ? (
+                <div className="w-full bg-white/80 backdrop-blur-xl p-8 rounded-[2rem] border border-white/50 shadow-glass mb-6 animate-in fade-in zoom-in-95 duration-200">
+                  <div className="space-y-4 text-left">
+                    <div>
+                      <label className="block text-sm font-bold text-slate-700 mb-1 uppercase tracking-wide">Name</label>
+                      <input 
+                        value={editName}
+                        onChange={(e) => setEditName(e.target.value)}
+                        className="w-full px-4 py-3 bg-slate-50/50 border border-slate-200/60 rounded-xl focus:outline-none focus:ring-2 focus:ring-accent/50 font-black text-slate-800 text-2xl"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-bold text-slate-700 mb-1 uppercase tracking-wide">Biography</label>
+                      <textarea 
+                        value={editBio}
+                        onChange={(e) => setEditBio(e.target.value)}
+                        rows={5}
+                        className="w-full px-4 py-3 bg-slate-50/50 border border-slate-200/60 rounded-xl focus:outline-none focus:ring-2 focus:ring-accent/50 font-medium text-slate-700 resize-none"
+                      />
+                    </div>
+                    <div className="flex justify-end gap-3 pt-4">
+                      <button 
+                        onClick={() => {
+                          setIsEditing(false);
+                          setEditName(artist.name);
+                          setEditBio(artist.bio || '');
+                        }}
+                        className="px-6 py-2.5 font-bold text-slate-500 hover:text-slate-800 hover:bg-slate-100 rounded-xl transition-colors"
+                        disabled={isSaving}
+                      >
+                        Cancel
+                      </button>
+                      <button 
+                        onClick={handleSaveEdit}
+                        disabled={isSaving || !editName.trim()}
+                        className="flex items-center gap-2 px-6 py-2.5 bg-accent hover:bg-accent-hover text-white font-bold rounded-xl transition-all shadow-md hover:shadow-lg disabled:opacity-50"
+                      >
+                        {isSaving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
+                        Save Profile
+                      </button>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ) : (
-              <>
-                <div className="relative group/title inline-flex items-center justify-center">
+              ) : (
+                <>
                   <h1 className="text-5xl md:text-7xl font-black text-slate-800 tracking-tight drop-shadow-sm mb-6">
                     {artist.name}
                   </h1>
-                  {isModerator && (
-                    <button 
-                      data-testid="edit-name-btn"
-                      onClick={() => setIsEditing(true)}
-                      className="absolute -right-12 top-2 p-2 bg-white/60 hover:bg-white text-slate-400 hover:text-accent rounded-full opacity-0 group-hover/title:opacity-100 transition-all shadow-sm backdrop-blur-sm border border-white/50"
-                      title="Edit Profile"
-                    >
-                      <Edit2 className="w-5 h-5" />
-                    </button>
-                  )}
-                </div>
-                
-                <div className="relative group/bio max-w-2xl bg-white/60 backdrop-blur-xl p-8 rounded-[2rem] border border-white/50 shadow-glass">
-                  {artist.bio ? (
-                    <p className="text-lg md:text-xl text-slate-700 leading-relaxed font-medium">
-                      {artist.bio}
-                    </p>
-                  ) : (
-                    <p className="text-lg md:text-xl text-slate-400 italic font-medium">
-                      Biography not provided
-                    </p>
-                  )}
-                  {isModerator && (
-                    <button 
-                      onClick={() => setIsEditing(true)}
-                      className="absolute top-4 right-4 p-2 bg-white/60 hover:bg-white text-slate-400 hover:text-accent rounded-full opacity-0 group-hover/bio:opacity-100 transition-all shadow-sm backdrop-blur-sm border border-white/50"
-                      title="Edit Profile"
-                    >
-                      <Edit2 className="w-4 h-4" />
-                    </button>
-                  )}
-                </div>
-              </>
-            )}
+                  
+                  <div className="w-full bg-white/60 backdrop-blur-xl p-8 rounded-[2rem] border border-white/50 shadow-glass">
+                    {artist.bio ? (
+                      <p className="text-lg md:text-xl text-slate-700 leading-relaxed font-medium">
+                        {artist.bio}
+                      </p>
+                    ) : (
+                      <p className="text-lg md:text-xl text-slate-400 italic font-medium">
+                        Biography not provided
+                      </p>
+                    )}
+                  </div>
+                </>
+              )}
+            </div>
+
           </div>
 
           {/* Songs Vertical List Section */}
