@@ -19,16 +19,16 @@
     - [x] Update `app/artist/[id]/page.tsx` to include an "Add Song" button for moderators.
 - [x] Task: Conductor - User Manual Verification 'Phase 2: Song Creation Feature (TDD)' (Protocol in workflow.md) 64c15a6
 
-## Phase 3: Song Editing Feature (TDD)
-- [ ] Task: Setup Song Editing Route & Tests
-    - [ ] Create `__tests__/app/song/[id]/edit/page.test.tsx` with failing tests.
-- [ ] Task: Implement Edit Song Page
-    - [ ] Create `app/song/[id]/edit/page.tsx`.
-    - [ ] Fetch existing song data and populate the form.
-    - [ ] Implement submission logic for text fields.
-- [ ] Task: Implement Cover Art Upload
-    - [ ] Add cover upload UI to the edit page.
-    - [ ] Implement image file upload handler.
-- [ ] Task: Integrate "Edit Song" button
-    - [ ] Update `app/song/[id]/page.tsx` to include an "Edit Song" button for moderators.
-- [ ] Task: Conductor - User Manual Verification 'Phase 3: Song Editing Feature (TDD)' (Protocol in workflow.md)
+## Phase 3: Song Editing Feature (TDD) [checkpoint: a5a56eb]
+- [x] Task: Setup Song Editing Route & Tests
+    - [x] Create `__tests__/app/song/[id]/edit/page.test.tsx` with failing tests.
+- [x] Task: Implement Edit Song Page
+    - [x] Create `app/song/[id]/edit/page.tsx`.
+    - [x] Fetch existing song data and populate the form.
+    - [x] Implement submission logic for text fields.
+- [x] Task: Implement Cover Art Upload
+    - [x] Add cover upload UI to the edit page.
+    - [x] Implement image file upload handler.
+- [x] Task: Integrate "Edit Song" button
+    - [x] Update `app/song/[id]/page.tsx` to include an "Edit Song" button for moderators.
+- [x] Task: Conductor - User Manual Verification 'Phase 3: Song Editing Feature (TDD)' (Protocol in workflow.md) a5a56eb
