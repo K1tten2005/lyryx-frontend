@@ -1,11 +1,11 @@
 # Implementation Plan: Artist Management
 
 ## Phase 1: API Integration (TDD)
-- [ ] Task: Define TypeScript types for Artist Management API
-    - [ ] Update `lib/api/artist.ts` with `PostArtistIn`, `PatchUpdateArtistIn` types
-- [ ] Task: Implement API mutation functions
-    - [ ] Create `createArtist`, `updateArtist`, and `updateArtistAvatar` functions in `lib/api/artist.ts`
-    - [ ] Update `__tests__/lib/api/artist.test.ts` with failing tests, then implement to pass
+- [x] Task: Define TypeScript types for Artist Management API ff57727
+    - [x] Update `lib/api/artist.ts` with `PostArtistIn`, `PatchUpdateArtistIn` types ff57727
+- [x] Task: Implement API mutation functions ff57727
+    - [x] Create `createArtist`, `updateArtist`, and `updateArtistAvatar` functions in `lib/api/artist.ts` ff57727
+    - [x] Update `__tests__/lib/api/artist.test.ts` with failing tests, then implement to pass ff57727
 - [ ] Task: Conductor - User Manual Verification 'Phase 1: API Integration (TDD)' (Protocol in workflow.md)
 
 ## Phase 2: Create Artist Modal (TDD)
