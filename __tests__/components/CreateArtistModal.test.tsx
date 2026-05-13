@@ -42,7 +42,7 @@ describe("CreateArtistModal", () => {
 
   it("renders correctly", () => {
     render(<CreateArtistModal isOpen={true} onClose={mockOnClose} />);
-    expect(screen.getByRole("heading", { name: "Create Artist" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "New Artist" })).toBeInTheDocument();
     expect(screen.getByLabelText(/Name/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/Biography/i)).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Create" })).toBeInTheDocument();
@@ -50,7 +50,7 @@ describe("CreateArtistModal", () => {
 
   it("does not render when isOpen is false", () => {
     render(<CreateArtistModal isOpen={false} onClose={mockOnClose} />);
-    expect(screen.queryByRole("heading", { name: "Create Artist" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("heading", { name: "New Artist" })).not.toBeInTheDocument();
   });
 
   it("validates required fields", async () => {

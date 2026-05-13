@@ -50,7 +50,12 @@ export default function CreateArtistModal({ isOpen, onClose }: CreateArtistModal
           bio: data.bio || '',
         });
       } catch (err: any) {
-        if (err.message.toLowerCase().includes('unauthorized') || err.message.includes('401')) {
+        if (
+          err.status === 401 || 
+          err.message.toLowerCase().includes('unauthorized') || 
+          err.message.toLowerCase().includes('jwt') ||
+          err.message.toLowerCase().includes('expired')
+        ) {
           try {
             currentToken = await refreshAuth() || '';
             if (!currentToken) throw new Error('Session expired. Please log in again.');
