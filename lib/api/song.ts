@@ -68,6 +68,31 @@ export const AiTranslationResponseSchema = z.object({
 
 export type AiTranslationResponse = z.infer<typeof AiTranslationResponseSchema>;
 
+export const PostSongInSchema = z.object({
+  artist_id: z.number(),
+  title: z.string(),
+  lyrics: z.string(),
+  release_date: z.string(),
+  cover_url: z.string().optional(),
+});
+
+export type PostSongIn = z.infer<typeof PostSongInSchema>;
+
+export const PatchUpdateSongInSchema = z.object({
+  artist_id: z.number().optional(),
+  title: z.string().optional(),
+  lyrics: z.string().optional(),
+  release_date: z.string().optional(),
+});
+
+export type PatchUpdateSongIn = z.infer<typeof PatchUpdateSongInSchema>;
+
+export const PatchUpdateCoverOutSchema = z.object({
+  cover_url: z.string(),
+});
+
+export type PatchUpdateCoverOut = z.infer<typeof PatchUpdateCoverOutSchema>;
+
 const API_URL = 'http://localhost:8080/v1';
 
 /**
@@ -358,3 +383,88 @@ export async function getAiTranslation(
   return AiTranslationResponseSchema.parse(data);
 }
 
+
+/**
+ * Creates a new song.
+ * @param token The user's authentication token.
+ * @param data The song creation data.
+ * @returns The created song.
+ */
+export async function createSong(token: string, data: PostSongIn): Promise<Song> {
+  const response = await fetch(`${API_URL}/song`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(data),
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json().catch(() => ({}));
+    const error = new Error(errorData.message || 'Failed to create song');
+    (error as any).status = response.status;
+    throw error;
+  }
+
+  const responseData = await response.json();
+  return SongSchema.parse(responseData);
+}
+
+/**
+ * Updates a song's details.
+ * @param token The user's authentication token.
+ * @param songId The song ID.
+ * @param data The song update data.
+ * @returns The updated song.
+ */
+export async function updateSong(token: string, songId: number, data: PatchUpdateSongIn): Promise<Song> {
+  const response = await fetch(`${API_URL}/song/${songId}`, {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ ...data, songID: songId }),
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json().catch(() => ({}));
+    const error = new Error(errorData.message || 'Failed to update song');
+    (error as any).status = response.status;
+    throw error;
+  }
+
+  const responseData = await response.json();
+  return SongSchema.parse(responseData);
+}
+
+/**
+ * Uploads/updates a song's cover image.
+ * @param token The user's authentication token.
+ * @param songId The song ID.
+ * @param file The image file.
+ * @returns The cover URL.
+ */
+export async function updateSongCover(token: string, songId: number, file: File): Promise<PatchUpdateCoverOut> {
+  const formData = new FormData();
+  formData.append('cover', file);
+
+  const response = await fetch(`${API_URL}/song/${songId}/cover`, {
+    method: 'PATCH',
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+    body: formData,
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json().catch(() => ({}));
+    const error = new Error(errorData.message || 'Failed to update song cover');
+    (error as any).status = response.status;
+    throw error;
+  }
+
+  const responseData = await response.json();
+  return PatchUpdateCoverOutSchema.parse(responseData);
+}

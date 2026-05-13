@@ -1,4 +1,4 @@
-import { getSongById, getSongAnnotations, createAnnotation, updateAnnotation, deleteAnnotation, voteAnnotation, deleteVote, getAiAnnotation, getAiTranslation } from "@/lib/api/song";
+import { getSongById, getSongAnnotations, createAnnotation, updateAnnotation, deleteAnnotation, voteAnnotation, deleteVote, getAiAnnotation, getAiTranslation, createSong, updateSong, updateSongCover } from "@/lib/api/song";
 import { vi, describe, beforeEach, it, expect } from "vitest";
 
 // Mock the global fetch
@@ -382,5 +382,142 @@ describe("getAiTranslation", () => {
     });
 
     await expect(getAiTranslation(1, "en")).rejects.toThrow("Failed to fetch AI translation");
+  });
+});
+
+describe("createSong", () => {
+  beforeEach(() => {
+    vi.resetAllMocks();
+  });
+
+  it("should create a song successfully", async () => {
+    const mockResponse = {
+      id: 1,
+      title: "New Song",
+      lyrics: "Test lyrics",
+      release_date: "2026-05-13",
+      views: 0,
+      artist: { id: 1, name: "Artist Name" }
+    };
+
+    (global.fetch as any).mockResolvedValue({
+      ok: true,
+      json: async () => mockResponse,
+    });
+
+    const token = "mock-token";
+    const data = {
+      artist_id: 1,
+      title: "New Song",
+      lyrics: "Test lyrics",
+      release_date: "2026-05-13"
+    };
+
+    const result = await createSong(token, data);
+
+    expect(global.fetch).toHaveBeenCalledWith("http://localhost:8080/v1/song", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer mock-token",
+      },
+      body: JSON.stringify(data),
+    });
+    expect(result).toEqual(mockResponse);
+  });
+
+  it("should throw an error on failure", async () => {
+    (global.fetch as any).mockResolvedValue({
+      ok: false,
+      status: 400,
+      json: async () => ({ message: "Bad Request" }),
+    });
+
+    await expect(createSong("token", {
+      artist_id: 1, title: "Title", lyrics: "Lyrics", release_date: "Date"
+    })).rejects.toThrow("Bad Request");
+  });
+});
+
+describe("updateSong", () => {
+  beforeEach(() => {
+    vi.resetAllMocks();
+  });
+
+  it("should update a song successfully", async () => {
+    const mockResponse = {
+      id: 1,
+      title: "Updated Title",
+      lyrics: "Updated lyrics",
+      release_date: "2026-05-13",
+      views: 0,
+      artist: { id: 1, name: "Artist Name" }
+    };
+
+    (global.fetch as any).mockResolvedValue({
+      ok: true,
+      json: async () => mockResponse,
+    });
+
+    const token = "mock-token";
+    const data = { title: "Updated Title", lyrics: "Updated lyrics" };
+
+    const result = await updateSong(token, 1, data);
+
+    expect(global.fetch).toHaveBeenCalledWith("http://localhost:8080/v1/song/1", {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer mock-token",
+      },
+      body: JSON.stringify({ ...data, songID: 1 }),
+    });
+    expect(result).toEqual(mockResponse);
+  });
+
+  it("should throw an error on failure", async () => {
+    (global.fetch as any).mockResolvedValue({
+      ok: false,
+      status: 403,
+      json: async () => ({ message: "Forbidden" }),
+    });
+
+    await expect(updateSong("token", 1, { title: "Title" })).rejects.toThrow("Forbidden");
+  });
+});
+
+describe("updateSongCover", () => {
+  beforeEach(() => {
+    vi.resetAllMocks();
+  });
+
+  it("should update song cover successfully", async () => {
+    const mockResponse = { cover_url: "http://example.com/cover.jpg" };
+
+    (global.fetch as any).mockResolvedValue({
+      ok: true,
+      json: async () => mockResponse,
+    });
+
+    const file = new File(["dummy"], "cover.jpg", { type: "image/jpeg" });
+    const result = await updateSongCover("mock-token", 1, file);
+
+    expect(global.fetch).toHaveBeenCalledWith("http://localhost:8080/v1/song/1/cover", {
+      method: "PATCH",
+      headers: { Authorization: "Bearer mock-token" },
+      body: expect.any(FormData),
+    });
+    expect(result).toEqual(mockResponse);
+  });
+
+  it("should throw an error on failure", async () => {
+    (global.fetch as any).mockResolvedValue({
+      ok: false,
+      status: 500,
+      json: async () => ({ message: "Internal Error" }),
+    });
+
+    const file = new File(["dummy"], "cover.jpg", { type: "image/jpeg" });
+    await expect(updateSongCover("token", 1, file)).rejects.toThrow("Internal Error");
   });
 });
