@@ -19,7 +19,7 @@
     - [x] Update `components/UserDropdown.tsx` to conditionally render the modal trigger for moderators d370865
 - [x] Task: Conductor - User Manual Verification 'Phase 2: Create Artist Modal (TDD)' (Protocol in workflow.md) 1555d35
 
-## Phase 3: Inline Edit on Artist Page (TDD)
+## Phase 3: Inline Edit on Artist Page (TDD) [checkpoint: 435622d]
 - [x] Task: Update Artist Page tests for Inline Editing c4df5ef
     - [x] Update `__tests__/app/artist/[id]/page.test.tsx` to simulate a moderator user c4df5ef
     - [x] Add tests for clicking to edit name/bio and saving c4df5ef
@@ -28,4 +28,4 @@
     - [x] Update `app/artist/[id]/page.tsx` c4df5ef
     - [x] Add editable state for name and bio with Save/Cancel buttons c4df5ef
     - [x] Add hidden file input and hover overlay for avatar upload c4df5ef
-- [ ] Task: Conductor - User Manual Verification 'Phase 3: Inline Edit on Artist Page (TDD)' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 3: Inline Edit on Artist Page (TDD)' (Protocol in workflow.md) 435622d
