@@ -1,7 +1,7 @@
 # Implementation Plan: AI Lyrics Translation
 
 ## Phase 1: API Client & Data Types
-- [ ] Task: Update API Types and Functions
+- [x] Task: Update API Types and Functions (5e8cc64)
     - [ ] Update `lib/api/song.ts` to include the `GetAiTranslationOut` type.
     - [ ] Create `getAiTranslation` function in `lib/api/song.ts` to call `/v1/song/{id}/ai-translation`.
 - [ ] Task: Write Tests for API Client
