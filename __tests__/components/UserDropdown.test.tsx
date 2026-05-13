@@ -130,23 +130,4 @@ describe('UserDropdown', () => {
     expect(profileLink.tagName).toBe('A');
     expect(screen.queryByText('Create Artist')).not.toBeInTheDocument();
   });
-
-  it('renders Create Artist button for moderators', () => {
-    (useAuth as any).mockReturnValue({
-      user: { user_id: 123, username: 'moduser', reputation_score: 10, role: 'moderator' },
-      logout: mockLogout,
-    });
-
-    render(<UserDropdown />);
-    
-    // Open menu
-    fireEvent.click(screen.getByRole('button'));
-    
-    const createArtistBtn = screen.getByRole('menuitem', { name: /create artist/i });
-    expect(createArtistBtn).toBeInTheDocument();
-    
-    // Clicking it should open the modal
-    fireEvent.click(createArtistBtn);
-    expect(screen.getByRole('heading', { name: "Create Artist" })).toBeInTheDocument();
-  });
 });

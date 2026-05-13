@@ -7,6 +7,7 @@ import { useState } from 'react';
 import { usePathname } from 'next/navigation';
 import AuthModal from './AuthModal';
 import UserDropdown from './UserDropdown';
+import CreateDropdown from './CreateDropdown';
 import SearchBar from './SearchBar';
 
 export default function Navbar() {
@@ -33,9 +34,12 @@ export default function Navbar() {
           </Link>
         </div>
 
-        <div className="w-1/3 flex justify-end h-10">
+        <div className="w-1/3 flex justify-end items-center h-10">
           {!isInitialized ? null : isAuthenticated ? (
-            <UserDropdown />
+            <>
+              <CreateDropdown />
+              <UserDropdown />
+            </>
           ) : (
             <button
               onClick={() => setIsAuthModalOpen(true)}
