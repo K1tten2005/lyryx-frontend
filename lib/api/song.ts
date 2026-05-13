@@ -61,6 +61,13 @@ export const AiAnnotationResponseSchema = z.object({
 
 export type AiAnnotationResponse = z.infer<typeof AiAnnotationResponseSchema>;
 
+export const AiTranslationResponseSchema = z.object({
+  id: z.number(),
+  response: z.string(),
+});
+
+export type AiTranslationResponse = z.infer<typeof AiTranslationResponseSchema>;
+
 const API_URL = 'http://localhost:8080/v1';
 
 /**
@@ -282,19 +289,27 @@ export async function getAiAnnotation(
   songId: number,
   question: string,
   startIndex: number,
-  endIndex: number
+  endIndex: number,
+  token?: string
 ): Promise<AiAnnotationResponse> {
+  const authToken = token || (typeof window !== 'undefined' ? localStorage.getItem('access_token') : null);
   const params = new URLSearchParams({
     question,
     start_index: startIndex.toString(),
     end_index: endIndex.toString(),
   });
 
+  const headers: Record<string, string> = {
+    'Content-Type': 'application/json',
+  };
+  
+  if (authToken) {
+    headers['Authorization'] = `Bearer ${authToken}`;
+  }
+
   const response = await fetch(`${API_URL}/song/${songId}/ai-annotation?${params.toString()}`, {
     method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-    },
+    headers,
   });
 
   if (!response.ok) {
@@ -303,5 +318,43 @@ export async function getAiAnnotation(
 
   const data = await response.json();
   return AiAnnotationResponseSchema.parse(data);
+}
+
+/**
+ * Fetches an AI-powered translation of the song's lyrics.
+ * @param songId The song ID.
+ * @param language The target language code (e.g., 'en', 'de', 'ru').
+ * @param token The user's authentication token (optional).
+ * @returns The translated lyrics.
+ */
+export async function getAiTranslation(
+  songId: number,
+  language: string,
+  token?: string
+): Promise<AiTranslationResponse> {
+  const authToken = token || (typeof window !== 'undefined' ? localStorage.getItem('access_token') : null);
+  const params = new URLSearchParams({
+    language,
+  });
+
+  const headers: Record<string, string> = {
+    'Content-Type': 'application/json',
+  };
+  
+  if (authToken) {
+    headers['Authorization'] = `Bearer ${authToken}`;
+  }
+
+  const response = await fetch(`${API_URL}/song/${songId}/ai-translation?${params.toString()}`, {
+    method: 'GET',
+    headers,
+  });
+
+  if (!response.ok) {
+    throw new Error(`Failed to fetch AI translation: ${response.status} ${response.statusText}`);
+  }
+
+  const data = await response.json();
+  return AiTranslationResponseSchema.parse(data);
 }
 

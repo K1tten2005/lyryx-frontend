@@ -1,4 +1,4 @@
-import { getSongById, getSongAnnotations, createAnnotation, updateAnnotation, deleteAnnotation, voteAnnotation, deleteVote, getAiAnnotation } from "@/lib/api/song";
+import { getSongById, getSongAnnotations, createAnnotation, updateAnnotation, deleteAnnotation, voteAnnotation, deleteVote, getAiAnnotation, getAiTranslation } from "@/lib/api/song";
 import { vi, describe, beforeEach, it, expect } from "vitest";
 
 // Mock the global fetch
@@ -343,5 +343,44 @@ describe("getAiAnnotation", () => {
     });
 
     await expect(getAiAnnotation(1, "test", 0, 5)).rejects.toThrow("Failed to fetch AI annotation");
+  });
+});
+
+describe("getAiTranslation", () => {
+  beforeEach(() => {
+    vi.resetAllMocks();
+  });
+
+  it("should fetch AI translation successfully", async () => {
+    const mockResponse = {
+      id: 1,
+      response: "This is a translation.",
+    };
+
+    (global.fetch as any).mockResolvedValue({
+      ok: true,
+      json: async () => mockResponse,
+    });
+
+    const result = await getAiTranslation(1, "en", "mock-token");
+    expect(global.fetch).toHaveBeenCalledWith(
+      "http://localhost:8080/v1/song/1/ai-translation?language=en",
+      expect.objectContaining({
+        method: "GET",
+        headers: expect.objectContaining({
+          Authorization: "Bearer mock-token",
+        }),
+      })
+    );
+    expect(result).toEqual(mockResponse);
+  });
+
+  it("should throw an error if fetch fails", async () => {
+    (global.fetch as any).mockResolvedValue({
+      ok: false,
+      status: 500,
+    });
+
+    await expect(getAiTranslation(1, "en")).rejects.toThrow("Failed to fetch AI translation");
   });
 });
