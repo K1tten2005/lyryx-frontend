@@ -1,12 +1,12 @@
 # Implementation Plan: AI Lyrics Translation
 
-## Phase 1: API Client & Data Types
+## Phase 1: API Client & Data Types [checkpoint: 9f33518]
 - [x] Task: Update API Types and Functions (5e8cc64)
     - [ ] Update `lib/api/song.ts` to include the `GetAiTranslationOut` type.
     - [ ] Create `getAiTranslation` function in `lib/api/song.ts` to call `/v1/song/{id}/ai-translation`.
-- [ ] Task: Write Tests for API Client
+- [x] Task: Write Tests for API Client (5e8cc64)
     - [ ] Write unit tests for `getAiTranslation` in `__tests__/lib/api/song.test.ts`.
-- [ ] Task: Conductor - User Manual Verification 'Phase 1: API Client & Data Types' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 1: API Client & Data Types' (9f33518)
 
 ## Phase 2: UI Component Implementation
 - [ ] Task: Write Tests for UI State
