@@ -1,22 +1,34 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { getArtistById, ArtistProfile } from '@/lib/api/artist';
+import { useEffect, useState, useRef } from 'react';
+import { getArtistById, updateArtist, updateArtistAvatar, ArtistProfile } from '@/lib/api/artist';
 import { notFound } from 'next/navigation';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Music, Calendar, Eye, User } from 'lucide-react';
+import { Music, Calendar, Eye, User, Edit2, Upload, Loader2, Save, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { useAuth } from '@/contexts/AuthContext';
+import toast from 'react-hot-toast';
 
 export default function ArtistPage({ params }: { params: { id: string } }) {
+  const { user, token, refreshAuth } = useAuth();
   const [artist, setArtist] = useState<ArtistProfile | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [hasMore, setHasMore] = useState(true);
   const [loadingMore, setLoadingMore] = useState(false);
   const limit = 20;
+
+  // Editing state
+  const isModerator = user?.role === 'moderator';
+  const [isEditing, setIsEditing] = useState(false);
+  const [editName, setEditName] = useState('');
+  const [editBio, setEditBio] = useState('');
+  const [isSaving, setIsSaving] = useState(false);
+  const [isUploadingAvatar, setIsUploadingAvatar] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -29,6 +41,8 @@ export default function ArtistPage({ params }: { params: { id: string } }) {
           return;
         }
         setArtist(data);
+        setEditName(data.name);
+        setEditBio(data.bio || '');
         if (!data.songs || data.songs.length < limit) {
           setHasMore(false);
         }
@@ -44,6 +58,77 @@ export default function ArtistPage({ params }: { params: { id: string } }) {
     };
     fetchData();
   }, [params.id]);
+
+  const handleSaveEdit = async () => {
+    let currentToken = token;
+    if (!currentToken || !artist) return;
+
+    try {
+      setIsSaving(true);
+      let updatedArtist;
+      
+      try {
+        updatedArtist = await updateArtist(currentToken, artist.id, {
+          name: editName,
+          bio: editBio,
+        });
+      } catch (err: any) {
+        if (err.status === 401 || err.message.toLowerCase().includes('unauthorized') || err.message.toLowerCase().includes('jwt') || err.message.toLowerCase().includes('expired')) {
+          currentToken = await refreshAuth() || '';
+          if (!currentToken) throw new Error('Session expired. Please log in again.');
+          
+          updatedArtist = await updateArtist(currentToken, artist.id, {
+            name: editName,
+            bio: editBio,
+          });
+        } else {
+          throw err;
+        }
+      }
+      
+      setArtist({ ...artist, ...updatedArtist });
+      setIsEditing(false);
+      toast.success('Profile updated successfully');
+    } catch (err: any) {
+      toast.error(err.message || 'Failed to update profile');
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
+  const handleAvatarUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    let currentToken = token;
+    if (!file || !currentToken || !artist) return;
+
+    try {
+      setIsUploadingAvatar(true);
+      let data;
+      
+      try {
+        data = await updateArtistAvatar(currentToken, artist.id, file);
+      } catch (err: any) {
+        if (err.status === 401 || err.message.toLowerCase().includes('unauthorized') || err.message.toLowerCase().includes('jwt') || err.message.toLowerCase().includes('expired')) {
+          currentToken = await refreshAuth() || '';
+          if (!currentToken) throw new Error('Session expired. Please log in again.');
+          
+          data = await updateArtistAvatar(currentToken, artist.id, file);
+        } else {
+          throw err;
+        }
+      }
+      
+      setArtist({ ...artist, avatar_url: data.avatar_url });
+      toast.success('Avatar updated successfully');
+    } catch (err: any) {
+      toast.error(err.message || 'Failed to update avatar');
+    } finally {
+      setIsUploadingAvatar(false);
+      if (fileInputRef.current) {
+        fileInputRef.current.value = '';
+      }
+    }
+  };
 
   const handleLoadMore = async () => {
     if (!artist || !hasMore || loadingMore) return;
@@ -125,24 +210,120 @@ export default function ArtistPage({ params }: { params: { id: string } }) {
                   <User className="w-20 h-20 text-accent/50" />
                 )}
                 <div className="absolute inset-0 bg-glossy-button opacity-20 pointer-events-none rounded-full"></div>
+                
+                {/* Avatar Upload Overlay (Moderator only) */}
+                {isModerator && (
+                  <label 
+                    htmlFor="avatar-upload" 
+                    data-testid="avatar-upload-overlay"
+                    className="absolute inset-0 bg-black/50 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer z-10"
+                  >
+                    {isUploadingAvatar ? (
+                      <Loader2 className="w-8 h-8 text-white animate-spin" />
+                    ) : (
+                      <>
+                        <Upload className="w-8 h-8 text-white mb-2 drop-shadow-md" />
+                        <span className="text-white text-xs font-bold uppercase tracking-wider drop-shadow-md">Upload</span>
+                      </>
+                    )}
+                    <input 
+                      id="avatar-upload" 
+                      data-testid="avatar-upload-input"
+                      type="file" 
+                      accept="image/jpeg, image/png, image/webp" 
+                      className="hidden" 
+                      onChange={handleAvatarUpload}
+                      ref={fileInputRef}
+                      disabled={isUploadingAvatar}
+                    />
+                  </label>
+                )}
               </div>
             </div>
             
-            <h1 className="text-5xl md:text-7xl font-black text-slate-800 tracking-tight drop-shadow-sm mb-6">
-              {artist.name}
-            </h1>
-            
-            <div className="max-w-2xl bg-white/60 backdrop-blur-xl p-8 rounded-[2rem] border border-white/50 shadow-glass">
-              {artist.bio ? (
-                <p className="text-lg md:text-xl text-slate-700 leading-relaxed font-medium">
-                  {artist.bio}
-                </p>
-              ) : (
-                <p className="text-lg md:text-xl text-slate-400 italic font-medium">
-                  Biography not provided
-                </p>
-              )}
-            </div>
+            {isEditing ? (
+              <div className="w-full max-w-2xl bg-white/80 backdrop-blur-xl p-8 rounded-[2rem] border border-white/50 shadow-glass mb-6 animate-in fade-in zoom-in-95 duration-200">
+                <div className="space-y-4 text-left">
+                  <div>
+                    <label className="block text-sm font-bold text-slate-700 mb-1 uppercase tracking-wide">Name</label>
+                    <input 
+                      value={editName}
+                      onChange={(e) => setEditName(e.target.value)}
+                      className="w-full px-4 py-3 bg-slate-50/50 border border-slate-200/60 rounded-xl focus:outline-none focus:ring-2 focus:ring-accent/50 font-black text-slate-800 text-2xl"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-bold text-slate-700 mb-1 uppercase tracking-wide">Biography</label>
+                    <textarea 
+                      value={editBio}
+                      onChange={(e) => setEditBio(e.target.value)}
+                      rows={5}
+                      className="w-full px-4 py-3 bg-slate-50/50 border border-slate-200/60 rounded-xl focus:outline-none focus:ring-2 focus:ring-accent/50 font-medium text-slate-700 resize-none"
+                    />
+                  </div>
+                  <div className="flex justify-end gap-3 pt-4">
+                    <button 
+                      onClick={() => {
+                        setIsEditing(false);
+                        setEditName(artist.name);
+                        setEditBio(artist.bio || '');
+                      }}
+                      className="px-6 py-2.5 font-bold text-slate-500 hover:text-slate-800 hover:bg-slate-100 rounded-xl transition-colors"
+                      disabled={isSaving}
+                    >
+                      Cancel
+                    </button>
+                    <button 
+                      onClick={handleSaveEdit}
+                      disabled={isSaving || !editName.trim()}
+                      className="flex items-center gap-2 px-6 py-2.5 bg-accent hover:bg-accent-hover text-white font-bold rounded-xl transition-all shadow-md hover:shadow-lg disabled:opacity-50"
+                    >
+                      {isSaving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
+                      Save Profile
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <>
+                <div className="relative group/title inline-flex items-center justify-center">
+                  <h1 className="text-5xl md:text-7xl font-black text-slate-800 tracking-tight drop-shadow-sm mb-6">
+                    {artist.name}
+                  </h1>
+                  {isModerator && (
+                    <button 
+                      data-testid="edit-name-btn"
+                      onClick={() => setIsEditing(true)}
+                      className="absolute -right-12 top-2 p-2 bg-white/60 hover:bg-white text-slate-400 hover:text-accent rounded-full opacity-0 group-hover/title:opacity-100 transition-all shadow-sm backdrop-blur-sm border border-white/50"
+                      title="Edit Profile"
+                    >
+                      <Edit2 className="w-5 h-5" />
+                    </button>
+                  )}
+                </div>
+                
+                <div className="relative group/bio max-w-2xl bg-white/60 backdrop-blur-xl p-8 rounded-[2rem] border border-white/50 shadow-glass">
+                  {artist.bio ? (
+                    <p className="text-lg md:text-xl text-slate-700 leading-relaxed font-medium">
+                      {artist.bio}
+                    </p>
+                  ) : (
+                    <p className="text-lg md:text-xl text-slate-400 italic font-medium">
+                      Biography not provided
+                    </p>
+                  )}
+                  {isModerator && (
+                    <button 
+                      onClick={() => setIsEditing(true)}
+                      className="absolute top-4 right-4 p-2 bg-white/60 hover:bg-white text-slate-400 hover:text-accent rounded-full opacity-0 group-hover/bio:opacity-100 transition-all shadow-sm backdrop-blur-sm border border-white/50"
+                      title="Edit Profile"
+                    >
+                      <Edit2 className="w-4 h-4" />
+                    </button>
+                  )}
+                </div>
+              </>
+            )}
           </div>
 
           {/* Songs Vertical List Section */}

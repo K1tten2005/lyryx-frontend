@@ -1,12 +1,15 @@
 import { render, screen, waitFor, fireEvent } from "@testing-library/react";
 import ArtistPage from "@/app/artist/[id]/page";
 import { vi, describe, beforeEach, it, expect } from "vitest";
-import { getArtistById } from "@/lib/api/artist";
+import { getArtistById, updateArtist, updateArtistAvatar } from "@/lib/api/artist";
 import { notFound } from "next/navigation";
+import { useAuth } from "@/contexts/AuthContext";
+import toast from "react-hot-toast";
 
 // Mock next/navigation
 vi.mock("next/navigation", () => ({
   notFound: vi.fn(),
+  useRouter: () => ({ push: vi.fn() }),
 }));
 
 // Mock Navbar and Footer
@@ -19,17 +22,21 @@ vi.mock("@/components/Footer", () => ({
 }));
 
 vi.mock("@/contexts/AuthContext", () => ({
-  useAuth: vi.fn(() => ({
-    user: null,
-    token: null,
-    isAuthenticated: false,
-    refreshAuth: vi.fn(),
-  })),
+  useAuth: vi.fn(),
+}));
+
+vi.mock("react-hot-toast", () => ({
+  default: {
+    success: vi.fn(),
+    error: vi.fn(),
+  },
 }));
 
 // Mock the API
 vi.mock("@/lib/api/artist", () => ({
   getArtistById: vi.fn(),
+  updateArtist: vi.fn(),
+  updateArtistAvatar: vi.fn(),
 }));
 
 const mockParams = { id: "1" };
@@ -37,8 +44,15 @@ const mockParams = { id: "1" };
 describe("ArtistPage", () => {
   beforeEach(() => {
     vi.resetAllMocks();
+    (useAuth as any).mockReturnValue({
+      user: null,
+      token: null,
+      isAuthenticated: false,
+      refreshAuth: vi.fn(),
+    });
   });
 
+  // ... (existing read-only tests) ...
   it("renders artist details successfully with songs", async () => {
     const mockArtist = {
       id: 1,
@@ -180,6 +194,95 @@ describe("ArtistPage", () => {
       expect(screen.getByText("Song 21")).toBeInTheDocument();
       // Button should disappear because next fetch returns < 20 items
       expect(screen.queryByRole("button", { name: /Load More Songs/i })).not.toBeInTheDocument();
+    });
+  });
+
+  describe("Inline Editing (Moderator)", () => {
+    beforeEach(() => {
+      (useAuth as any).mockReturnValue({
+        user: { role: 'moderator' },
+        token: 'mod-token',
+        isAuthenticated: true,
+        refreshAuth: vi.fn(),
+      });
+      (getArtistById as any).mockResolvedValue({
+        id: 1,
+        name: "The Beatles",
+        bio: "English rock band",
+        avatar_url: "http://example.com/beatles.jpg",
+        songs: []
+      });
+    });
+
+    it("does not show edit controls to regular users", async () => {
+      (useAuth as any).mockReturnValue({
+        user: { role: 'user' },
+        token: 'user-token',
+        isAuthenticated: true,
+      });
+
+      render(<ArtistPage params={mockParams} />);
+      await waitFor(() => {
+        expect(screen.getByText("The Beatles")).toBeInTheDocument();
+      });
+
+      // Name should just be text, not have an edit button next to it
+      expect(screen.queryByTestId("edit-name-btn")).not.toBeInTheDocument();
+      expect(screen.queryByTestId("avatar-upload-overlay")).not.toBeInTheDocument();
+    });
+
+    it("allows moderator to edit name and bio", async () => {
+      (updateArtist as any).mockResolvedValue({
+        id: 1,
+        name: "New Name",
+        bio: "New Bio",
+        avatar_url: "http://example.com/beatles.jpg",
+        songs: []
+      });
+
+      render(<ArtistPage params={mockParams} />);
+      
+      await waitFor(() => {
+        expect(screen.getByText("The Beatles")).toBeInTheDocument();
+      });
+
+      // Click edit buttons (these need to be implemented with these testids)
+      const editNameBtn = screen.getByTestId("edit-name-btn");
+      fireEvent.click(editNameBtn);
+
+      const nameInput = screen.getByDisplayValue("The Beatles");
+      fireEvent.change(nameInput, { target: { value: "New Name" } });
+      
+      const saveBtn = screen.getByRole("button", { name: /save/i });
+      fireEvent.click(saveBtn);
+
+      await waitFor(() => {
+        expect(updateArtist).toHaveBeenCalledWith("mod-token", 1, { name: "New Name", bio: "English rock band" });
+        expect(toast.success).toHaveBeenCalledWith("Profile updated successfully");
+        expect(screen.getByText("New Name")).toBeInTheDocument();
+      });
+    });
+
+    it("allows moderator to upload avatar", async () => {
+      (updateArtistAvatar as any).mockResolvedValue({
+        avatar_url: "http://example.com/new-avatar.jpg",
+      });
+
+      render(<ArtistPage params={mockParams} />);
+      
+      await waitFor(() => {
+        expect(screen.getByText("The Beatles")).toBeInTheDocument();
+      });
+
+      const fileInput = screen.getByTestId("avatar-upload-input");
+      const file = new File(["dummy"], "avatar.png", { type: "image/png" });
+      
+      fireEvent.change(fileInput, { target: { files: [file] } });
+
+      await waitFor(() => {
+        expect(updateArtistAvatar).toHaveBeenCalledWith("mod-token", 1, file);
+        expect(toast.success).toHaveBeenCalledWith("Avatar updated successfully");
+      });
     });
   });
 });
