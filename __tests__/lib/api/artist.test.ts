@@ -9,7 +9,7 @@ describe("getArtistById", () => {
     vi.resetAllMocks();
   });
 
-  it("should fetch artist by ID successfully", async () => {
+  it("should fetch artist by ID successfully with default pagination", async () => {
     const mockArtist = {
       id: 1,
       name: "The Beatles",
@@ -32,7 +32,26 @@ describe("getArtistById", () => {
     });
 
     const artist = await getArtistById(1);
-    expect(global.fetch).toHaveBeenCalledWith("http://localhost:8080/v1/artist/1", expect.any(Object));
+    expect(global.fetch).toHaveBeenCalledWith("http://localhost:8080/v1/artist/1?limit=20&offset=0", expect.any(Object));
+    expect(artist).toEqual(mockArtist);
+  });
+
+  it("should fetch artist by ID successfully with custom pagination", async () => {
+    const mockArtist = {
+      id: 1,
+      name: "The Beatles",
+      bio: "",
+      avatar_url: "",
+      songs: []
+    };
+
+    (global.fetch as any).mockResolvedValue({
+      ok: true,
+      json: async () => mockArtist,
+    });
+
+    const artist = await getArtistById(1, 10, 20);
+    expect(global.fetch).toHaveBeenCalledWith("http://localhost:8080/v1/artist/1?limit=10&offset=20", expect.any(Object));
     expect(artist).toEqual(mockArtist);
   });
 

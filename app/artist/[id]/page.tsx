@@ -14,18 +14,24 @@ export default function ArtistPage({ params }: { params: { id: string } }) {
   const [artist, setArtist] = useState<ArtistProfile | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [hasMore, setHasMore] = useState(true);
+  const [loadingMore, setLoadingMore] = useState(false);
+  const limit = 20;
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         setLoading(true);
         const artistId = parseInt(params.id);
-        const data = await getArtistById(artistId);
+        const data = await getArtistById(artistId, limit, 0);
         if (!data) {
           notFound();
           return;
         }
         setArtist(data);
+        if (!data.songs || data.songs.length < limit) {
+          setHasMore(false);
+        }
       } catch (err: any) {
         if (err.message === 'NEXT_NOT_FOUND') {
           notFound();
@@ -38,6 +44,33 @@ export default function ArtistPage({ params }: { params: { id: string } }) {
     };
     fetchData();
   }, [params.id]);
+
+  const handleLoadMore = async () => {
+    if (!artist || !hasMore || loadingMore) return;
+
+    try {
+      setLoadingMore(true);
+      const nextOffset = artist.songs.length;
+      const data = await getArtistById(artist.id, limit, nextOffset);
+      
+      if (data && data.songs) {
+        setArtist({
+          ...artist,
+          songs: [...artist.songs, ...data.songs]
+        });
+        
+        if (data.songs.length < limit) {
+          setHasMore(false);
+        }
+      } else {
+        setHasMore(false);
+      }
+    } catch (err: any) {
+      console.error('Failed to load more songs:', err);
+    } finally {
+      setLoadingMore(false);
+    }
+  };
 
   if (loading) return (
     <div className="min-h-screen flex flex-col">
@@ -162,6 +195,18 @@ export default function ArtistPage({ params }: { params: { id: string } }) {
                     </div>
                   </Link>
                 ))}
+                
+                {hasMore && (
+                  <div className="flex justify-center mt-8">
+                    <button
+                      onClick={handleLoadMore}
+                      disabled={loadingMore}
+                      className="px-8 py-4 bg-white/80 backdrop-blur-md border border-white/50 shadow-glass-sm hover:shadow-glass text-slate-800 font-black uppercase tracking-widest rounded-2xl transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed hover:-translate-y-1 active:translate-y-0"
+                    >
+                      {loadingMore ? 'Loading...' : 'Load More Songs'}
+                    </button>
+                  </div>
+                )}
               </div>
             ) : (
               <div className="bg-white/60 backdrop-blur-md rounded-[2.5rem] border border-white/50 shadow-glass p-16 text-center">

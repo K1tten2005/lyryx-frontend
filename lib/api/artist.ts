@@ -16,8 +16,12 @@ export interface ArtistProfile {
   songs: ArtistSong[];
 }
 
-export async function getArtistById(id: number): Promise<ArtistProfile | null> {
-  const response = await fetch(`${API_URL}/v1/artist/${id}`, {
+export async function getArtistById(id: number, limit: number = 20, offset: number = 0): Promise<ArtistProfile | null> {
+  const url = new URL(`${API_URL}/v1/artist/${id}`);
+  url.searchParams.append('limit', limit.toString());
+  url.searchParams.append('offset', offset.toString());
+
+  const response = await fetch(url.toString(), {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',

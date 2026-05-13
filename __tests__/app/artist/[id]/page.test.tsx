@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from "@testing-library/react";
+import { render, screen, waitFor, fireEvent } from "@testing-library/react";
 import ArtistPage from "@/app/artist/[id]/page";
 import { vi, describe, beforeEach, it, expect } from "vitest";
 import { getArtistById } from "@/lib/api/artist";
@@ -123,6 +123,63 @@ describe("ArtistPage", () => {
 
     await waitFor(() => {
       expect(screen.getByText("No songs found")).toBeInTheDocument();
+    });
+  });
+
+  it("loads more songs when Load More is clicked", async () => {
+    // Initial fetch returns exactly 20 songs, indicating there might be more
+    const initialSongs = Array.from({ length: 20 }, (_, i) => ({
+      id: i,
+      title: `Song ${i}`,
+      cover_url: "",
+      release_date: "2026-05-13",
+      views: 100
+    }));
+
+    const mockArtistInitial = {
+      id: 1,
+      name: "The Beatles",
+      bio: "English rock band",
+      avatar_url: "",
+      songs: initialSongs
+    };
+
+    const nextSongs = [
+      {
+        id: 21,
+        title: "Song 21",
+        cover_url: "",
+        release_date: "2026-05-13",
+        views: 200
+      }
+    ];
+
+    const mockArtistNext = {
+      id: 1,
+      name: "The Beatles",
+      bio: "English rock band",
+      avatar_url: "",
+      songs: nextSongs
+    };
+
+    (getArtistById as any)
+      .mockResolvedValueOnce(mockArtistInitial)
+      .mockResolvedValueOnce(mockArtistNext);
+
+    render(<ArtistPage params={mockParams} />);
+
+    await waitFor(() => {
+      expect(screen.getByText("Song 0")).toBeInTheDocument();
+      expect(screen.getByText("Song 19")).toBeInTheDocument();
+      expect(screen.getByRole("button", { name: /Load More Songs/i })).toBeInTheDocument();
+    });
+
+    fireEvent.click(screen.getByRole("button", { name: /Load More Songs/i }));
+
+    await waitFor(() => {
+      expect(screen.getByText("Song 21")).toBeInTheDocument();
+      // Button should disappear because next fetch returns < 20 items
+      expect(screen.queryByRole("button", { name: /Load More Songs/i })).not.toBeInTheDocument();
     });
   });
 });
