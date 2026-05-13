@@ -8,5 +8,5 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 ---
 
-- [ ] **Track: Implement AI Lyrics Translation**
+- [x] **Track: Implement AI Lyrics Translation**
 *Link: [./tracks/ai_translation_20260513/](./tracks/ai_translation_20260513/)*
