@@ -23,7 +23,7 @@ interface CreateArtistModalProps {
 }
 
 export default function CreateArtistModal({ isOpen, onClose }: CreateArtistModalProps) {
-  const { token } = useAuth();
+  const { token, refreshAuth } = useAuth();
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -37,14 +37,35 @@ export default function CreateArtistModal({ isOpen, onClose }: CreateArtistModal
   });
 
   const onSubmit = async (data: ArtistFormData) => {
-    if (!token) return;
+    let currentToken = token;
+    if (!currentToken) return;
 
     try {
       setIsSubmitting(true);
-      const newArtist = await createArtist(token, {
-        name: data.name,
-        bio: data.bio || '',
-      });
+      let newArtist;
+      
+      try {
+        newArtist = await createArtist(currentToken, {
+          name: data.name,
+          bio: data.bio || '',
+        });
+      } catch (err: any) {
+        if (err.message.toLowerCase().includes('unauthorized') || err.message.includes('401')) {
+          try {
+            currentToken = await refreshAuth() || '';
+            if (!currentToken) throw new Error('Session expired. Please log in again.');
+            
+            newArtist = await createArtist(currentToken, {
+              name: data.name,
+              bio: data.bio || '',
+            });
+          } catch (refreshErr: any) {
+            throw refreshErr;
+          }
+        } else {
+          throw err;
+        }
+      }
       
       toast.success('Artist created successfully!');
       reset();
