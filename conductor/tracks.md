@@ -7,3 +7,6 @@ This file tracks all major tracks for the project. Each track has its own detail
 *Link: [./tracks/user_profile_dropdown_20260511/](./tracks/user_profile_dropdown_20260511/)*
 
 ---
+
+- [ ] **Track: Implement AI Lyrics Translation**
+*Link: [./tracks/ai_translation_20260513/](./tracks/ai_translation_20260513/)*
