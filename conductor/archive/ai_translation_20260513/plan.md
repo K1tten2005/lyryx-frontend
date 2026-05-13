@@ -1,0 +1,26 @@
+# Implementation Plan: AI Lyrics Translation
+
+## Phase 1: API Client & Data Types [checkpoint: 9f33518]
+- [x] Task: Update API Types and Functions (5e8cc64)
+    - [ ] Update `lib/api/song.ts` to include the `GetAiTranslationOut` type.
+    - [ ] Create `getAiTranslation` function in `lib/api/song.ts` to call `/v1/song/{id}/ai-translation`.
+- [x] Task: Write Tests for API Client (5e8cc64)
+    - [ ] Write unit tests for `getAiTranslation` in `__tests__/lib/api/song.test.ts`.
+- [x] Task: Conductor - User Manual Verification 'Phase 1: API Client & Data Types' (9f33518)
+
+## Phase 2: UI Component Implementation [checkpoint: 940f0c4]
+- [x] Task: Write Tests for UI State (aec8a0f)
+    - [ ] Create tests in `__tests__/app/song/[id]/page.test.tsx` verifying the presence and behavior of the translation toggle and language dropdown.
+- [x] Task: Implement Translation State and Fetching (aec8a0f)
+    - [ ] Add state variables in `app/song/[id]/page.tsx` for `targetLanguage`, `isTranslationLoading`, and `translatedLyrics` (or similar).
+    - [ ] Implement the `handleTranslate` function that calls `getAiTranslation` and manages loading state.
+- [x] Task: Implement Translation Controls UI (aec8a0f)
+    - [ ] Render the "Translate" button with loading spinner state above the lyrics.
+    - [ ] Render the language selection dropdown next to the button.
+    - [ ] Implement toggle functionality (hide/show translated lyrics).
+- [x] Task: Implement Interleaved Rendering Logic (aec8a0f)
+    - [ ] Modify the lyrics rendering logic in `app/song/[id]/page.tsx`.
+    - [ ] Split both `song.lyrics` and `translatedLyrics` by newline.
+    - [ ] Update the rendering algorithm to correctly map original text and annotations while injecting the corresponding translated line below each original line.
+    - [ ] Apply italicized and smaller text styling to the translated lines.
+- [x] Task: Conductor - User Manual Verification 'Phase 2: UI Component Implementation' (940f0c4)
