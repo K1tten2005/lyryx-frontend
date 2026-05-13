@@ -8,6 +8,6 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 ---
 
-- [ ] **Track: нужно добавить страницу артиста. в папке docs есть сваггер, из него бери эндпоинт /artist/id. там же возвращаются его песни**
+- [x] **Track: нужно добавить страницу артиста. в папке docs есть сваггер, из него бери эндпоинт /artist/id. там же возвращаются его песни**
 *Link: [./tracks/artist_page_20260513/](./tracks/artist_page_20260513/)*
 
