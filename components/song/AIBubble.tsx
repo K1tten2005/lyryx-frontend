@@ -107,7 +107,7 @@ export function AIBubble({
                 <div className="w-16 h-16 border-4 border-indigo-200 border-t-indigo-500 rounded-full animate-spin"></div>
                 <Sparkles className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-6 h-6 text-indigo-500 animate-pulse" />
               </div>
-              <p className="mt-4 font-black uppercase tracking-widest text-xs text-indigo-400 animate-pulse">Consulting the AI...</p>
+              <p className="mt-4 font-black uppercase tracking-widest text-xs text-indigo-400 animate-pulse">Спрашиваем у ИИ...</p>
             </div>
           )}
 
