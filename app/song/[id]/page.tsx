@@ -220,12 +220,12 @@ export default function SongPage({ params }: { params: { id: string } }) {
         const songId = parseInt(params.id);
         return createAnnotation(songId, content, selection.startIndex, selection.endIndex, authToken);
       });
-      toast.success('Annotation saved!');
+      toast.success('Аннотация сохранена!');
       await fetchAnnotations();
       setIsCreateMode(false);
       setSelection(null);
     } catch (error: any) {
-      console.error("Failed to create annotation:", error);
+      console.error("Не удалось сохранить аннотацию:", error);
       toast.error(error.message || 'Ошибка при сохранении аннотации');
       throw error;
     }
